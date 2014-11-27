@@ -1,4 +1,8 @@
 
+Changes for 1.0.1 (released 2014-11-27):
+ * fixed Linux build
+ * code style improvements
+
 Changes for 1.0.0 (released 2014-11-27):
  * Initial Open Source release
  * Builtin SourceMap with Caller & Interpolation extensions
