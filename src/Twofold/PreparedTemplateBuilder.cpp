@@ -36,9 +36,9 @@ using namespace intern;
 class PreparedTemplateBuilder::Private
 {
 public:
-    Private(const MessageHandlerPtr &_messageHandler, const TextLoaderPtr &_textLoader)
-        : messageHandler(_messageHandler)
-        , textLoader(_textLoader)
+    Private(const MessageHandlerPtr &messageHandler, const TextLoaderPtr &textLoader)
+        : messageHandler(messageHandler)
+        , textLoader(textLoader)
         , lineProcessor(buildLineProcessor())
     {}
 
@@ -68,12 +68,12 @@ public:
     {
         const auto result = textLoader->load(name);
         if (result.status != TextLoader::Success) {
-            return PreparedTemplate { QString{}, SourceMapping{{}}, FileLineColumnPositionList{} }; // could not load
+            return { QString{}, SourceMapping{{}}, FileLineColumnPositionList{} }; // could not load
         }
 
         lineProcessor(result.name, result.text);
         const auto preparedJavascript = preparedJavascriptBuilder.build();
-        return PreparedTemplate { preparedJavascript.javascript, preparedJavascript.sourceMap, preparedJavascript.originPositions };
+        return { preparedJavascript.javascript, preparedJavascript.sourceMap, preparedJavascript.originPositions };
     }
 
     const MessageHandlerPtr messageHandler;

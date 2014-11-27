@@ -29,7 +29,7 @@ function methodArgs(args) {
         \#{', '}
     }
     // use backslash to avoid linebreaks
-        \arg
+        \#{arg}
   });
 }
 function showMethod(method) {
