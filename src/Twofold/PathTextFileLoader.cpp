@@ -46,7 +46,7 @@ const QString PathTextFileLoader::absolutePath(const QString &name) const
 
         return fullPath; // readable path found
     }
-    return QString();
+    return {};
 }
 
 PathTextFileLoader::Result PathTextFileLoader::load(const QString &name) const
@@ -63,9 +63,9 @@ PathTextFileLoader::Result PathTextFileLoader::load(const QString &name) const
         if (!file.isOpen())
             continue; // file not readable, try next path
 
-        return Result { Success, fullPath,  QTextStream(&file).readAll() };
+        return { Success, fullPath,  QTextStream(&file).readAll() };
     }
-    return Result { candidate.isEmpty() ? NotFound : ErrorLoading, candidate, QString() };
+    return { candidate.isEmpty() ? NotFound : ErrorLoading, candidate, QString() };
 }
 
 } // namespace Twofold

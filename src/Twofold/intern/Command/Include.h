@@ -30,7 +30,6 @@
 namespace Twofold {
 namespace intern {
 
-class LineProcessor;
 class PreparedJavascriptBuilder;
 struct LineCommand;
 
@@ -49,8 +48,8 @@ public:
     using ProcessIncludedTextFunction = std::function<void(const QString &name, const QString &text)> ;
     using Stack = std::vector<QString>;
 
-    Include(const MessageHandlerPtr &m_messageHandler,
-            const TextLoaderPtr &m_textLoader,
+    Include(const MessageHandlerPtr &messageHandler,
+            const TextLoaderPtr &textLoader,
             PreparedJavascriptBuilder &builder,
             const ProcessIncludedTextFunction &processIncludeText);
 
