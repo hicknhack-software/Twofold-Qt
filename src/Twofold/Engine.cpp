@@ -80,7 +80,7 @@ public:
         undefineInputs(inputs);
 
         const auto sourceMapText = scriptTargetBuilder.build();
-        return Target { sourceMapText.sourceMap, sourceMapText.text };
+        return { sourceMapText.sourceMap, sourceMapText.text };
     }
 
     void showSyntaxError(QScriptSyntaxCheckResult checkResult, const PreparedTemplate &preparedTemplate)

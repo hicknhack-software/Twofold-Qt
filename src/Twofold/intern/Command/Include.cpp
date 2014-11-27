@@ -41,11 +41,11 @@ QString extractNameArgument(const LineCommand &command)
 {
     auto nameBegin = std::find_if(command.end, command.line.end, isDoubleQuote);
     if (nameBegin == command.line.end)
-        return QString(); // no initial double quote found
+        return {}; // no initial double quote found
     nameBegin++;
     auto nameEnd = std::find_if(nameBegin, command.line.end, isDoubleQuote);
     if (nameEnd == command.line.end)
-        return QString(); // no second double quote found
+        return {}; // no second double quote found
     return toQString(nameBegin, nameEnd);
 }
 
@@ -105,9 +105,9 @@ private:
 
 } // namespace
 
-Include::Include(const MessageHandlerPtr &m_messageHandler, const TextLoaderPtr &m_textLoader, PreparedJavascriptBuilder &builder, const ProcessIncludedTextFunction &processIncludeText)
-    : m_messageHandler(m_messageHandler)
-    , m_textLoader(m_textLoader)
+Include::Include(const MessageHandlerPtr &messageHandler, const TextLoaderPtr &textLoader, PreparedJavascriptBuilder &builder, const ProcessIncludedTextFunction &processIncludeText)
+    : m_messageHandler(messageHandler)
+    , m_textLoader(textLoader)
     , m_builder(builder)
     , m_processIncludeText(processIncludeText)
 {

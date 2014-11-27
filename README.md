@@ -37,7 +37,7 @@ Twofold is basically Javascript that is extended with constructs to generate sou
 
 ```twofold
   \ indented output #{interpolated} without a line break
-  | intendet output #{interpolated} with a line break
+  | indented output #{interpolated} with a line break
   # include "indent_the_included_file.twofold"
   = change_indentation_of_javascript()
 // every line is regular javascript
@@ -63,7 +63,7 @@ function methodArgs(args) {
         \#{', '}
     }
     // use backslash to avoid linebreaks
-        \arg
+        \#{arg}
   });
 }
 function showMethod(method) {

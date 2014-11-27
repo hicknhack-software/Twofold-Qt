@@ -43,5 +43,5 @@ compiler_clean.commands = -$(DEL_FILE) $$shell_path($$TARGET_NAME/Makefile)
 
 prepareBuild.depends = makeBuildFolder
 buildInstall.depends = prepareBuild
-install.depends = $(DESTDIR_TARGET)
+install.depends = $(DESTDIR_TARGET) $(TARGET)
 QMAKE_EXTRA_TARGETS += makeBuildFolder prepareBuild buildInstall install compiler_clean
