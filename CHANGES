@@ -1,5 +1,5 @@
 
-Changes for 1.0.0 (released 2014-11-17):
+Changes for 1.0.0 (released 2014-11-27):
  * Initial Open Source release
- * Builtin SourceMap with TemplateMap support
+ * Builtin SourceMap with Caller & Interpolation extensions
  * Indention aware expressions
