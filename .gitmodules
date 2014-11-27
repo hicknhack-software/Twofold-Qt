@@ -1,0 +1,3 @@
+[submodule "vendor/SourceMap"]
+	path = vendor/SourceMap
+	url = https://github.com/hicknhack-software/SourceMap-Qt.git
