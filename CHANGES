@@ -1,4 +1,8 @@
 
+Changes for 1.0.2 (released 2014-12-14):
+ * fixed Windows build again
+ * improved Readme
+
 Changes for 1.0.1 (released 2014-11-27):
  * fixed Linux build
  * code style improvements
