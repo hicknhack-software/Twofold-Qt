@@ -11,13 +11,13 @@ We also have a purely Javascript based implementation for NodeJS.
 * more difficult than regular html. It requires tight controls about every whitespace and tools for indentation.
 * often requires more control structures in order to access models or AST-like structures.
 
-We faced this question and Twofold is the result.
+We faced these challanges and Twofold is the result.
 
 ## Features
 
 * indentation handling
 * source maps for generated javascript
-  * javascript exeptions and syntax errors will point into your template
+  * javascript exceptions and syntax errors will point into your template
 * nested source maps for generated targets
   * positions of all the calls that lead to any target character
 * control of every generated line and every whitespace
@@ -26,10 +26,12 @@ We faced this question and Twofold is the result.
 ## Requirements
 
 * C++11 compiler
-  * Tested with GCC 4.8.2 on MinGW
-  * Tested with Visual Studio 2013 November CTP Compiler
-* Qt 5.3.x
-  * Tested with the binary distributions of Qt 5.3.2 on Windows
+  * Tested with GCC 4.9.1 on MinGW
+  * Tested with Visual Studio 2013 Community Edition Compiler (use jom)
+  * Other compilers might work, but are not currently tested
+* Qt 5.4.x
+  * Tested with the binary distributions of Qt 5.4.0 on Windows
+  * Other Qt versions might work, but are not currently tested
 
 ## How does it work?
 
@@ -45,7 +47,7 @@ Twofold is basically Javascript that is extended with constructs to generate sou
 
 These control characters have to be the first non-whitespace character on each line.
 Every whitespace before them is ignored.
-Every whitespace after is used as the indentation. Indentation is cumulative and added to each outputted line.
+Every whitespace after is used as the indentation. Indentation is cumulative and added to each generated line.
 
 **Hint:** Use the whitespaces before control characters to indent them in a column deeper than any surrounding javascript.
 This gives you a visual splitter.
@@ -133,7 +135,7 @@ Twofold is simple. We find it very useful as it is.
   }
   ````
 
-* please add an issue
+* feel free to add your wish as an issue
 
 ## License
 
