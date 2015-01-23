@@ -43,6 +43,12 @@ compiler_clean.commands = -$(DEL_FILE) $$shell_path($$TARGET_NAME/Makefile)
 
 prepareBuild.depends = makeBuildFolder
 buildInstall.depends = prepareBuild
-install.depends = $(DESTDIR_TARGET) $(TARGET)
-empty.target = $(TARGET)
-QMAKE_EXTRA_TARGETS += makeBuildFolder prepareBuild buildInstall install compiler_clean empty
+
+win32:!win32-g++: install.depends = $(DESTDIR_TARGET)
+else {
+    install.depends = $(DESTDIR_TARGET) $(TARGET)
+    empty.target = "$(TARGET)"
+    empty.commands = cd .
+    QMAKE_EXTRA_TARGETS += empty
+}
+QMAKE_EXTRA_TARGETS += makeBuildFolder prepareBuild buildInstall install compiler_clean
