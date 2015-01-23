@@ -27,7 +27,7 @@ We faced these challanges and Twofold is the result.
 
 * C++11 compiler
   * Tested with GCC 4.9.1 on MinGW
-  * Tested with Visual Studio 2013 Community Edition Compiler (use jom)
+  * Tested with Visual Studio 2013 Community Edition Compiler
   * Other compilers might work, but are not currently tested
 * Qt 5.4.x
   * Tested with the binary distributions of Qt 5.4.0 on Windows
