@@ -16,8 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef TWOFOLD_INTERN_FIND_LAST_H
-#define TWOFOLD_INTERN_FIND_LAST_H
+#pragma once
 
 #include <algorithm>
 
@@ -50,4 +49,3 @@ It find_last(It begin, It eend, const Type& value) {
 } // namespace intern
 } // namespace Twofold
 
-#endif // TWOFOLD_INTERN_FIND_LAST_H

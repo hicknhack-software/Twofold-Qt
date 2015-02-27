@@ -16,8 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef TWOFOLD_INTERN_COMMAND_INCLUDE_H
-#define TWOFOLD_INTERN_COMMAND_INCLUDE_H
+#pragma once
 
 #include "Twofold/MessageHandler.h"
 #include "Twofold/TextLoader.h"
@@ -66,5 +65,3 @@ private:
 } // namespace Command
 } // namespace intern
 } // namespace Twofold
-
-#endif // TWOFOLD_INTERN_COMMAND_INCLUDE_H

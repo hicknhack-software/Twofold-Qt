@@ -16,8 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef TWOFOLD_SOURCEMAP_H
-#define TWOFOLD_SOURCEMAP_H
+#pragma once
 
 #include "SourceMap/Extension/Caller.h"
 #include "SourceMap/Extension/Interpolation.h"
@@ -51,5 +50,3 @@ extern template SourceMapping;
 #endif
 
 } // namespace Twofold
-
-#endif // TWOFOLD_SOURCEMAP_H

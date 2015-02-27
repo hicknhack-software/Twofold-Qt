@@ -16,8 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef TWOFOLD_PATHTEXTFILELOADER_H
-#define TWOFOLD_PATHTEXTFILELOADER_H
+#pragma once
 
 #include "Twofold/TextLoader.h"
 
@@ -51,5 +50,3 @@ private:
 };
 
 } // namespace Twofold
-
-#endif // TWOFOLD_PATHTEXTFILELOADER_H

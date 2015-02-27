@@ -16,8 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef FAKEMESSAGEHANDLER_H
-#define FAKEMESSAGEHANDLER_H
+#pragma once
 
 #include "Twofold/SourceMap.h"
 #include "Twofold/MessageHandler.h"
@@ -76,4 +75,3 @@ public:
     Position errorTemplatePosition;
 };
 
-#endif // FAKEMESSAGEHANDLER_H

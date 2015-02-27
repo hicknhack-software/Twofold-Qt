@@ -16,8 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef TWOFOLD_INTERN_COMMAND_MISSING_H
-#define TWOFOLD_INTERN_COMMAND_MISSING_H
+#pragma once
 
 #include "Twofold/MessageHandler.h"
 
@@ -48,4 +47,3 @@ private:
 } // namespace intern
 } // namespace Twofold
 
-#endif // TWOFOLD_INTERN_COMMAND_MISSING_H

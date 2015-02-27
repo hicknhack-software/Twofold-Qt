@@ -16,8 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef TWOFOLD_INTERN_LINE_COMMAND_H
-#define TWOFOLD_INTERN_LINE_COMMAND_H
+#pragma once
 
 #include <QString>
 #include <QMap>
@@ -60,4 +59,3 @@ private:
 } // namespace intern
 } // namespace Twofold
 
-#endif // TWOFOLD_INTERN_LINE_COMMAND_H

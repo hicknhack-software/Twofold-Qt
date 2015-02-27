@@ -16,8 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef TWOFOLD_INTERN_QSTRINGHELPER_H
-#define TWOFOLD_INTERN_QSTRINGHELPER_H
+#pragma once
 
 #include <QString>
 
@@ -31,4 +30,3 @@ inline QString toQString(const QString::const_iterator &begin, const QString::co
 } // namespace intern
 } // namespace Twofold
 
-#endif // TWOFOLD_INTERN_QSTRINGHELPER_H

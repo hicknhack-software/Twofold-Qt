@@ -16,8 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef FAKEMESSAGEHANDLER_H
-#define FAKEMESSAGEHANDLER_H
+#pragma once
 
 #include "Twofold/MessageHandler.h"
 
@@ -66,4 +65,3 @@ public:
     MessageCount count;
 };
 
-#endif // FAKEMESSAGEHANDLER_H

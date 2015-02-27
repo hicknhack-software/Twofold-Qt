@@ -16,8 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef FAKETEXTLOADER_H
-#define FAKETEXTLOADER_H
+#pragma once
 
 #include "Twofold/TextLoader.h"
 
@@ -49,4 +48,3 @@ private:
     QString m_text;
 };
 
-#endif // FAKETEXTLOADER_H

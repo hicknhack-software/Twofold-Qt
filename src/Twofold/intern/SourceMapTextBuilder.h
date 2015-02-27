@@ -16,8 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef TWOFOLD_INTERN_SOURCEMAPBUILDER_H
-#define TWOFOLD_INTERN_SOURCEMAPBUILDER_H
+#pragma once
 
 #include "Twofold/SourceMap.h"
 #include "Twofold/intern/TextBuilder.h"
@@ -84,4 +83,3 @@ private:
 } // namespace intern
 } // namespace Twofold
 
-#endif // TWOFOLD_INTERN_SOURCEMAPBUILDER_H

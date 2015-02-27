@@ -16,8 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef TWOFOLD_TARGETBUILDER_H
-#define TWOFOLD_TARGETBUILDER_H
+#pragma once
 
 #include "Twofold/PreparedTemplateBuilder.h"
 
@@ -65,5 +64,3 @@ private:
 };
 
 } // namespace Twofold
-
-#endif // TWOFOLD_TARGETBUILDER_H
