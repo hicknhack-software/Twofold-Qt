@@ -59,5 +59,3 @@ public:
 };
 
 } // namespace Twofold
-
-#endif // TWOFOLD_MESSAGEHANDLER_H
