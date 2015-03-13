@@ -24,13 +24,6 @@ install:
 - if [ "$QT_BASE" = "53" ]; then sudo apt-get install -qq qt53base qt53script; source /opt/qt53/bin/qt53-env.sh; fi
 - if [ "$QT_BASE" = "54" ]; then sudo apt-get install -qq qt54base qt54script; source /opt/qt54/bin/qt54-env.sh; fi
 
-before_script: []
-
 script:
 - qmake -r "QMAKE_CXX=$CXX" "QMAKE_CC=$CC"
 - make check
-
-# branches:
-#   only:
-#   - develop
-#   - master
