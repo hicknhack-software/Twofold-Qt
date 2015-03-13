@@ -33,7 +33,7 @@ namespace Command {
 
 namespace {
 
-#define MAX_INCLUDE_STACK_DEPTH 1000
+#define MAX_INCLUDE_STACK_DEPTH 500
 
 inline bool isDoubleQuote(QChar chr) { return chr == '"'; }
 
