@@ -1,10 +1,11 @@
-
 # Twofold
 
 **Generate correctly indented source code with the evil forces of Javascript and Qt**
 
 This is the C++ implementation of Twofold.
 We also have a purely Javascript based implementation for NodeJS.
+
+[![Build Status Development](https://travis-ci.org/hicknhack-software/Twofold-Qt.svg?branch=develop)](https://travis-ci.org/hicknhack-software/Twofold-Qt)
 
 ## What is the best method to generate source code?
 
@@ -26,11 +27,12 @@ We faced these challanges and Twofold is the result.
 ## Requirements
 
 * C++11 compiler
-  * Tested with GCC 4.9.1 on MinGW
-  * Tested with Visual Studio 2013 Community Edition Compiler
+  * Tested with GCC 4.9.1 on Linux (Travis) and MinGW (Windows)
+  * Tested with Visual Studio 2013 Community Edition Compiler (x86 and amd64)
+  * Tested with Clang 3.4 on Linux and Clang 3.6 on Windows
   * Other compilers might work, but are not currently tested
 * Qt 5.4.x
-  * Tested with the binary distributions of Qt 5.4.0 on Windows
+  * Tested with the binary distributions of Qt 5.4.1 on Linux and Windows
   * Other Qt versions might work, but are not currently tested
 
 ## How does it work?
