@@ -39,7 +39,7 @@ struct OriginText
     inline OriginText(const FileLine &line,
                       TextSpan span,
                       Interpolation interpolation = Interpolation::OneToOne)
-        : origin({ line.position.name, {line.position.line, 1 + span.begin - line.begin}})
+        : origin({ line.position.name, {line.position.line, 1 + static_cast<int>(span.begin - line.begin)}})
         , span(span), interpolation(interpolation)
     {}
 

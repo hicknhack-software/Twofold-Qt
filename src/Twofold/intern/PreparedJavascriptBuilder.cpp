@@ -94,8 +94,8 @@ PreparedJavascriptBuilder &PreparedJavascriptBuilder::operator <<(const OriginSc
     if (0 == std::distance(expr.text.span.begin, expr.text.span.end))
         return *this; // avoid empty script expressions
 
-    const int originLength = std::distance(expr.text.span.begin, expr.text.span.end);
-    const int originIndex = this->addOriginPosition(expr.text.origin);
+    const auto originLength = std::distance(expr.text.span.begin, expr.text.span.end);
+    const auto originIndex = this->addOriginPosition(expr.text.origin);
 
     const QString prefix = s_prefix.arg(originIndex);
     const QString postfix = s_postfix.arg(originIndex);
@@ -115,8 +115,8 @@ PreparedJavascriptBuilder &PreparedJavascriptBuilder::operator<<(const OriginTar
     if (0 == std::distance(target.text.span.begin, target.text.span.end))
         return *this; // avoid empty text
 
-    const int originLength = std::distance(target.text.span.begin, target.text.span.end);
-    const int originIndex = this->addOriginPosition(target.text.origin);
+    const auto originLength = std::distance(target.text.span.begin, target.text.span.end);
+    const auto originIndex = this->addOriginPosition(target.text.origin);
 
     const QString postfix = s_postfix.arg(originIndex);
 
@@ -132,8 +132,8 @@ PreparedJavascriptBuilder &PreparedJavascriptBuilder::operator <<(const IndentTa
     static QString s_prefix("_template.indentPart(\"");
     static QString s_postfix("\", %1);"); // origin index
 
-    const int originLength = std::distance(indent.text.span.begin, indent.text.span.end);
-    const int originIndex = this->addOriginPosition(indent.text.origin);
+    const auto originLength = std::distance(indent.text.span.begin, indent.text.span.end);
+    const auto originIndex = this->addOriginPosition(indent.text.origin);
 
     const QString postfix = s_postfix.arg(originIndex);
 
@@ -149,8 +149,8 @@ PreparedJavascriptBuilder &PreparedJavascriptBuilder::operator <<(const PushTarg
     static QString s_prefix("_template.pushIndentation(\"");
     static QString s_postfix("\", %1);"); // origin index
 
-    const int originLength = std::distance(indent.text.span.begin, indent.text.span.end);
-    const int originIndex = this->addOriginPosition(indent.text.origin);
+    const auto originLength = std::distance(indent.text.span.begin, indent.text.span.end);
+    const auto originIndex = this->addOriginPosition(indent.text.origin);
 
     const QString postfix = s_postfix.arg(originIndex);
 
@@ -185,7 +185,7 @@ PreparedJavascriptBuilder &PreparedJavascriptBuilder::operator <<(const NewLine)
     return *this;
 }
 
-int PreparedJavascriptBuilder::addOriginPosition(const FileLineColumnPosition &position)
+size_t PreparedJavascriptBuilder::addOriginPosition(const FileLineColumnPosition &position)
 {
     m_originPositions.push_back(position);
     return m_originPositions.size() - 1;

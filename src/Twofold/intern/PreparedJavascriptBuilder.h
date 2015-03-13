@@ -80,7 +80,7 @@ public:
     PreparedJavascriptBuilder &operator <<(const NewLine);
 
 private:
-    int addOriginPosition(const FileLineColumnPosition &position);
+    size_t addOriginPosition(const FileLineColumnPosition &position);
 
 private:
     SourceMapTextBuilder m_sourceMapBuilder;
