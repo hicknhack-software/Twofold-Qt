@@ -24,23 +24,37 @@
 #include "Twofold/intern/QStringHelper.h"
 #include "Twofold/intern/QCharHelper.h"
 
+#include "Twofold/intern/Javascript/BraceCounter.h"
+
 namespace Twofold {
 namespace intern {
 namespace Line {
 
-Call::Call(PreparedJavascriptBuilder &builder)
-    : m_builder(builder)
-{
-}
+Call::Call(const MessageHandlerPtr &messageHandler,
+           PreparedJavascriptBuilder &builder)
+    : m_messageHandler(messageHandler), m_builder(builder) {}
 
-void Call::operator()(const FileLine &line) const
-{
-    auto begin = line.firstNonSpace+1;
+using BraceCounter = Twofold::intern::Javascript::BraceCounter;
+
+void Call::operator()(const FileLine &line) const {
+    auto begin = line.firstNonSpace + 1;
     auto end = std::find_if_not(begin, line.end, QCharHelper::isSpace);
 
-    m_builder << PushTargetIndentation {{line, TextSpan {begin, end}}};
-    m_builder << OriginScript {{line, TextSpan {end, line.end}}};
-    m_builder << PopTargetIndentation{{line, TextSpan {line.end, line.end}}};
+    auto depth = BraceCounter::countExpressionDepth(end, line.end);
+    if (0 < depth) {
+        m_messageHandler->templateMessage(MessageType::Error, line.position,
+                                          "expression is not terminated");
+    }
+    if (0 > depth) {
+        m_messageHandler->templateMessage(MessageType::Error, line.position,
+                                          "expression is invalid");
+    }
+
+    if (0 == depth)
+        m_builder << PushTargetIndentation{{line, TextSpan{begin, end}}};
+    m_builder << OriginScript{{line, TextSpan{end, line.end}}};
+    if (0 == depth)
+        m_builder << PopTargetIndentation{{line, TextSpan{line.end, line.end}}};
 }
 
 } // namespace Line

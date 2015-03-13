@@ -18,33 +18,33 @@
  */
 #pragma once
 
-#include "Twofold/MessageHandler.h"
+#include "Twofold/intern/LineProcessor.h"
 
 namespace Twofold {
 namespace intern {
+namespace Javascript {
 
-struct FileLine;
-class PreparedJavascriptBuilder;
-
-namespace Line {
-
-/**
- * @brief line processing for calling a javascript function
- * whose output is handled indentation aware.
- */
-class Call
+class BraceCounter
 {
 public:
-    Call(const MessageHandlerPtr &messageHandler, PreparedJavascriptBuilder &builder);
+    using String = QString;
+    using It = QString::const_iterator;
+    /**
+     * @return the nesting level of braces at the end
+     * >0 means that not all braces were closed
+     * <0 means more braces are closed than opened
+     *
+     * It does not enforce that the braces are matching pairs
+     */
+    static int countExpressionDepth(It begin, It end, int beginDepth = 0);
 
-    void operator() (const FileLine& line) const;
-
-private:
-    const MessageHandlerPtr m_messageHandler;
-    PreparedJavascriptBuilder &m_builder;
+    /**
+     * @return the iterator to the end of the javascript expression
+     * will return end if no end of the expression was found
+     */
+    static It findExpressionEnd(It begin, It end);
 };
 
-} // namespace Line
+} // namespace Javascript
 } // namespace intern
 } // namespace Twofold
-

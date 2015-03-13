@@ -36,7 +36,8 @@ SOURCES += \
     Twofold/intern/Line/Command.cpp \
     Twofold/intern/Line/InterpolateLine.cpp \
     Twofold/intern/Line/Interpolation.cpp \
-    Twofold/intern/Line/Passtrough.cpp
+    Twofold/intern/Line/Passtrough.cpp \
+    Twofold/intern/Javascript/BraceCounter.cpp
 
 HEADERS += \
     Twofold/intern/find_last.h \
@@ -53,7 +54,8 @@ HEADERS += \
     Twofold/intern/Line/Command.h \
     Twofold/intern/Line/InterpolateLine.h \
     Twofold/intern/Line/Interpolation.h \
-    Twofold/intern/Line/Passtrough.h
+    Twofold/intern/Line/Passtrough.h \
+    Twofold/intern/Javascript/BraceCounter.h
     Twofold/intern/Base64VLQ.h
 
 INSTALL_HEADERS += \

@@ -115,6 +115,18 @@ void TestIntegration::testTarget_data()
             = b(2);
     )EXAMPLE";
             QTest::newRow("complex callers") << complex_callers << " a1\n b1\nc\n a2\n b2\n" << context << MessageCount();
+
+    const QString bug_no1 = R"EXAMPLE(
+            function a(cb) {
+            for(var i=0; i<2; i++) {
+        | #{cb()}
+    }
+}
+        = a(function() {
+                return "CB"; })
+
+)EXAMPLE";
+QTest::newRow("bug_no1") << bug_no1 << " CB\n CB\n" << QVariantHash() << MessageCount{1,1,0};
 }
 
 void TestIntegration::testTarget()

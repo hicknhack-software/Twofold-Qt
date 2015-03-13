@@ -24,75 +24,21 @@
 #include "Twofold/intern/QStringHelper.h"
 #include "Twofold/intern/QCharHelper.h"
 
+#include "Twofold/intern/Javascript/BraceCounter.h"
+
 #include <algorithm>
 
 namespace Twofold {
 namespace intern {
 namespace Line {
 
-namespace {
-
 #define HASH '#'
 #define CURLY_OPEN '{'
-#define CURLY_CLOSE '}'
-#define DOUBLE_QUOTE '"'
-#define SINGLE_QUOTE '\''
-#define BACK_SLASH '\\'
 
+namespace {
+
+using BraceCounter = Twofold::intern::Javascript::BraceCounter;
 inline bool isHash(QChar chr) { return chr == HASH; }
-
-inline bool isCurlyOrQuote(QChar chr)
-{
-    switch (chr.unicode())
-    {
-    case CURLY_OPEN:
-    case CURLY_CLOSE:
-    case DOUBLE_QUOTE:
-    case SINGLE_QUOTE:
-        return true;
-    default:
-        return false;
-    }
-}
-
-QString::const_iterator findQuoteEnd(const QString::const_iterator& begin, const FileLine& line)
-{
-    QChar quote = *begin;
-    auto it = begin + 1;
-    while (it != line.end) {
-        if (*it == quote) return it; // found closing quote
-        if (*it == BACK_SLASH) {
-            it++;
-            if (it == line.end) break; // invalid (TODO: continue next line)
-        }
-        it++;
-    }
-    return it; // invalid
-}
-
-QString::const_iterator findExpressionEnd(QString::const_iterator begin, const FileLine& line)
-{
-    int depth = 0;
-    while (begin != line.end) {
-        auto it = std::find_if(begin, line.end, isCurlyOrQuote);
-        if (it == line.end) return it; // invalid
-        switch (it->unicode())
-        {
-        case CURLY_CLOSE:
-            if (0 == depth) return it; // found end
-            depth--;
-            break;
-        case CURLY_OPEN:
-            depth++;
-            break;
-        default: // quote
-            it = findQuoteEnd(it, line);
-            if (it == line.end) return it; // invalid
-        }
-        begin = it + 1;
-    }
-    return begin;
-}
 
 void reportError(const MessageHandlerPtr& messageHandler, const FileLine &line, const QString &message)
 {
@@ -129,7 +75,7 @@ void Interpolation::operator()(const FileLine &line) const
         case CURLY_OPEN:
             m_builder << OriginTarget {{line, TextSpan{begin, end}}};
             expressionBegin++;
-            auto expressionEnd = findExpressionEnd(expressionBegin, line);
+            auto expressionEnd = BraceCounter::findExpressionEnd(expressionBegin, line.end);
             if (expressionEnd == line.end) {
                 reportError(m_messageHandler, line, "Missing close bracket!");
                 begin = line.end;

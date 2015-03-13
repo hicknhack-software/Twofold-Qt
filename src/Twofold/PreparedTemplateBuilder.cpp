@@ -47,7 +47,7 @@ public:
         LineProcessor::Map map;
         map['\\'] = Line::Interpolation(messageHandler, preparedJavascriptBuilder);
         map['|'] = Line::InterpolateLine(messageHandler, preparedJavascriptBuilder);
-        map['='] = Line::Call(preparedJavascriptBuilder);
+        map['='] = Line::Call(messageHandler, preparedJavascriptBuilder);
         map['#'] = Line::Command(buildLineCommand());
         LineProcessor::Function fallback = Line::Passtrough(preparedJavascriptBuilder);
         return { std::move(map), std::move(fallback) };
