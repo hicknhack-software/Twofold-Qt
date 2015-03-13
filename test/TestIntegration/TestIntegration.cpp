@@ -161,11 +161,11 @@ void TestIntegration::testTargetSourceMap_data()
 
     //                                                1         2
     //                                       123456789012345678901234567
-    QTest::newRow("inline expression 1") << "| simple #{(1 == 2)? 'Really?' : 'Correct'}" << "Correct" << 1 << 12 << 1u;
+    QTest::newRow("inline expression 1") << "| simple #{(1 == 2)? 'Really?' : 'Correct'}" << "Correct" << 1 << 12 << size_t(1);
 
     //                                                           1
     //                                       123456789  12345678901
-    QTest::newRow("inline expression 2") << "| simple \n|#{'hello'}" << "ello" << 2 << 4 << 1u;
+    QTest::newRow("inline expression 2") << "| simple \n|#{'hello'}" << "ello" << 2 << 4 << size_t(1);
 
     const QString complex_callers = R"EXAMPLE(
             function txta(p) {
@@ -179,8 +179,8 @@ void TestIntegration::testTargetSourceMap_data()
     |c
             = txtb(2);
     )EXAMPLE";
-    QTest::newRow("complex callers 1") << complex_callers << "txtb2" << 7 << 14 << 1u;
-    QTest::newRow("complex callers 2") << complex_callers << "txta1" << 3 << 14 << 2u;
+    QTest::newRow("complex callers 1") << complex_callers << "txtb2" << 7 << 14 << size_t(1);
+    QTest::newRow("complex callers 2") << complex_callers << "txta1" << 3 << 14 << size_t(2);
 }
 
 void TestIntegration::testTargetSourceMap()
