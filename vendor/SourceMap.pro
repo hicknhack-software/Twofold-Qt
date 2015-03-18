@@ -22,6 +22,8 @@ TARGET_NAME = SourceMap
 win32:!win32-g++: TARGET = SourceMap.lib
 else: TARGET = libSourceMap.a
 
+QMAKE_OPTIONS += -r -spec $$QMAKESPEC
+
 CONFIG(debug, debug|release): QMAKE_OPTIONS += CONFIG+=debug
 else: QMAKE_OPTIONS += CONFIG+=release
 
