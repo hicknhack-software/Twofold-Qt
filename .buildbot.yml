@@ -1,0 +1,20 @@
+profiles:
+  platform: Trusty
+  commands: default
+  setup:
+    - qt530
+    - gcc490
+
+actions:
+- name: prepare
+  default:
+  - 'qmake'
+
+- name: build
+  default:
+  - 'make'
+
+- name: test
+  default:
+  - 'make check'
+
