@@ -1,4 +1,5 @@
 profiles:
+- name: Qt5.3
   platform: Trusty
   commands: default
   setup:
