@@ -1,21 +1,19 @@
 profiles:
 - name: Qt5.3
-  platform: Trusty
-  commands: default
+  platform: Ubuntu1404
+  commands: standard
   setup:
-    - qt530
-    - gcc490
+    - qt530_gcc490
 
 actions:
 - name: prepare
-  default:
+  standard:
   - 'qmake'
 
 - name: build
-  default:
+  standard:
   - 'make'
 
 - name: test
-  default:
+  standard:
   - 'make check'
-
