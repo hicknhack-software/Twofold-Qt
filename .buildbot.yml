@@ -1,19 +1,31 @@
 profiles:
-- name: Qt5.3
+- name: Qt53
   platform: Ubuntu1404
   commands: standard
   setup:
     - qt530_gcc490
 
+- name: Qt54_Windows
+  platform: Windows2012R2
+  commands: win
+  setup:
+    - qt54_mingw_491
+
 actions:
 - name: prepare
   standard:
+  - 'qmake'
+  win:
   - 'qmake'
 
 - name: build
   standard:
   - 'make'
+  win:
+  - 'mingw32-make.exe'  
 
 - name: test
   standard:
   - 'make check'
+  win:
+  - 'mingw32-make.exe check'
