@@ -14,9 +14,9 @@ profiles:
 actions:
 - name: prepare
   standard:
-  - 'qmake'
+  - 'qmake -r'
   win:
-  - 'qmake'
+  - 'qmake -r'
 
 - name: build
   standard:
