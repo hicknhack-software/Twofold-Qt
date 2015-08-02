@@ -53,7 +53,7 @@ public:
     Result load(const QString &name) const
     {
         static const QString templateText1 = QString::fromLatin1(R"EXAMPLE(
-for(var i = 0; i <= 10000; i++) {
+for(var i = 0; i <= %1; i++) {
     | Das ist ein kurzer Text! #{i}
     # include "lib.twofold"
 }
