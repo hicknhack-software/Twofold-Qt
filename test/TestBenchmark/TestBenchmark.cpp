@@ -31,20 +31,28 @@ public:
 
 private Q_SLOTS:
     void prepare();
+    void execute_data();
     void execute();
+    void calls();
+    void exceptions();
 
 private:
+    Twofold::Engine engine;
     QVariantHash context;
+    Twofold::PreparedTemplate prepared;
+    Twofold::Target target;
 };
 
 #include "TestBenchmark.moc"
+
+#define TEMPLATE_REPETITION 1000
 
 class FakeTextLoader : public Twofold::TextLoader
 {
 public:
     Result load(const QString &name) const
     {
-        static const QString templateText1 = R"EXAMPLE(
+        static const QString templateText1 = QString::fromLatin1(R"EXAMPLE(
 for(var i = 0; i <= 10000; i++) {
     | Das ist ein kurzer Text! #{i}
     # include "lib.twofold"
@@ -67,7 +75,8 @@ if (type.isArray) {
     |  #{ (i==0 ? ':' : ',') } public #{ baseNames[i] }
      }
 |};
-)EXAMPLE";
+)EXAMPLE"
+        ).arg(TEMPLATE_REPETITION);
 
         static const QString templateText2 = R"EXAMPLE(
 |Line 1 included
@@ -81,6 +90,12 @@ if (type.isArray) {
 };
 
 TestBenchmark::TestBenchmark()
+    : engine(std::make_shared<Twofold::MessageHandler>(),
+             std::make_shared<FakeTextLoader>())
+#if defined(_MSC_VER) && _MSC_VER < 1900
+    , prepared({})
+    , target({})
+#endif
 {
     QObject* pType = new QObject();
     pType->setProperty( "isArray", true );
@@ -98,23 +113,52 @@ TestBenchmark::TestBenchmark()
 
 void TestBenchmark::prepare()
 {
-    using namespace Twofold;
-    Engine engine(std::make_shared<MessageHandler>(),
-                  std::make_shared<FakeTextLoader>());
     QBENCHMARK {
         engine.prepare("TextTemplate.twofold");
     }
 }
 
+void TestBenchmark::execute_data()
+{
+    prepared = engine.prepare("TextTemplate.twofold");
+}
+
 void TestBenchmark::execute()
 {
-    using namespace Twofold;
-    Engine engine(std::make_shared<MessageHandler>(),
-                  std::make_shared<FakeTextLoader>());
-    PreparedTemplate prepared = engine.prepare("TextTemplate.twofold");
-
     QBENCHMARK {
         engine.exec(prepared, context);
+    }
+}
+
+extern int func(int x, int y);
+extern int func_except(int x, int y);
+
+int func(int x, int y) {
+    return (x + y);
+}
+
+int func_except(int x, int y) {
+    throw (x + y);
+}
+
+void TestBenchmark::calls()
+{
+    int r = 1;
+    QBENCHMARK {
+        r *= func(49, 430);
+    }
+}
+
+void TestBenchmark::exceptions()
+{
+    int r = 1;
+    QBENCHMARK {
+        try {
+            func_except(49, 430);
+        }
+        catch(int x) {
+            r *= x;
+        }
     }
 }
 

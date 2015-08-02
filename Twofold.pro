@@ -33,4 +33,7 @@ OTHER_FILES += \
     CHANGES \
     LICENSE \
     NOTICE \
-    README.md
+    README.md \
+    .buildbot.yml \
+    .travis.yml \
+    .gitmodules

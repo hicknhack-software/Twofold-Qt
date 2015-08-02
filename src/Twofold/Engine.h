@@ -33,6 +33,12 @@ struct Target
 {
     const SourceMapping sourceMap;
     const QString text;
+
+    inline Target& operator=(const Target& src) {
+        this->~Target();
+        new(this) Target(src);
+        return *this;
+    }
 };
 
 /**
