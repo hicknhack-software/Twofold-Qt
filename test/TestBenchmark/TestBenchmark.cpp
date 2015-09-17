@@ -35,6 +35,8 @@ private Q_SLOTS:
     void execute();
     void calls();
     void exceptions();
+    void executeCPP_data();
+    void executeCPP();
 
 private:
     Twofold::Engine engine;
@@ -45,7 +47,7 @@ private:
 
 #include "TestBenchmark.moc"
 
-#define TEMPLATE_REPETITION 1000
+#define TEMPLATE_REPETITION 10000
 
 class FakeTextLoader : public Twofold::TextLoader
 {
@@ -126,7 +128,7 @@ void TestBenchmark::execute_data()
 void TestBenchmark::execute()
 {
     QBENCHMARK {
-        engine.exec(prepared, context);
+        target = engine.exec(prepared, context);
     }
 }
 
@@ -159,6 +161,39 @@ void TestBenchmark::exceptions()
         catch(int x) {
             r *= x;
         }
+    }
+}
+
+#include "Twofold/intern/QtScriptTargetBuilderApi.h"
+
+void TestBenchmark::executeCPP_data()
+{
+    prepared = engine.prepare("TextTemplate.twofold");
+}
+
+void TestBenchmark::executeCPP()
+{
+    using namespace Twofold;
+    using namespace Twofold::intern;
+    QBENCHMARK {
+        QtScriptTargetBuilderApi _template(prepared.originPositions);
+        for(auto i = 0; i <= TEMPLATE_REPETITION*10; ++i) {
+            _template.indentPart(QString::fromLatin1(" "), 0);
+            _template.append(QString::fromLatin1("Das ist ein kurzer Text! "), 1);
+            _template.pushPartIndent(2);_template.append(QString::number(i), 2);_template.popPartIndent();
+            _template.newLine();
+            _template.pushIndentation(QString::fromLatin1(" "), 3);
+
+            _template.indentPart(QString::fromLatin1(""), 4);
+            _template.append(QString::fromLatin1("Line 1 included"), 5);
+            _template.newLine();
+            _template.indentPart(QString::fromLatin1(""), 6);
+            _template.append(QString::fromLatin1("Line 2 incldued"), 7);
+            _template.newLine();
+            _template.popIndentation();
+        }
+        const auto sourceMapText = _template.build();
+        target = Target{ sourceMapText.sourceMap, sourceMapText.text };
     }
 }
 
