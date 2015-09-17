@@ -34,8 +34,6 @@ using MessageHandlerChainPtr = std::shared_ptr<MessageHandlerChain>;
 class MessageHandlerChain : public MessageHandler
 {
 public:
-    ~MessageHandlerChain() override {}
-
     void add(MessageHandlerPtr handler);
     void remove(MessageHandlerPtr handler);
 

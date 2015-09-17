@@ -38,7 +38,6 @@ class QtScriptTargetBuilderApi : public QObject
 
 public:
     QtScriptTargetBuilderApi(const FileLineColumnPositionList &originPositions);
-    ~QtScriptTargetBuilderApi() {}
 
     inline SourceMapText build() const { return m_sourceMapBuilder.build(); }
 
