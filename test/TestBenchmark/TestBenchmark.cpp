@@ -35,6 +35,7 @@ private Q_SLOTS:
     void execute();
     void calls();
     void exceptions();
+    void destuctors();
     void executeCPP_data();
     void executeCPP();
 
@@ -162,6 +163,42 @@ void TestBenchmark::exceptions()
             r *= x;
         }
     }
+}
+
+static std::vector<const char*> s_subjects;
+class Subject {
+    const char* m_name;
+public:
+    Subject(const char* name) : m_name(name) {
+        s_subjects.push_back(name);
+    }
+    ~Subject() {
+        Q_ASSERT(!s_subjects.empty() && s_subjects.back() == m_name);
+        s_subjects.pop_back();
+    }
+};
+
+class Base {
+    Subject m_base { "Base" };
+public:
+    virtual ~Base() = default;
+    virtual bool test() = 0;
+};
+class Derived : public Base {
+    Subject m_derived { "Derived" };
+    bool test() { return true; }
+};
+
+void TestBenchmark::destuctors()
+{
+    QVERIFY( s_subjects.empty() );
+    {
+        std::unique_ptr< Base > t { new Derived() };
+        auto r = t->test();
+        QVERIFY( r );
+    }
+    for (auto s : s_subjects) qDebug() << s;
+    QVERIFY( s_subjects.empty() );
 }
 
 #include "Twofold/intern/QtScriptTargetBuilderApi.h"
