@@ -45,7 +45,7 @@ protected:
     using PositionStack = Twofold::FileLineColumnPositionList;
 
 public:
-    virtual ~MessageHandler() {}
+    virtual ~MessageHandler() = default;
 
     virtual void message(Type type, const Text &text);
 

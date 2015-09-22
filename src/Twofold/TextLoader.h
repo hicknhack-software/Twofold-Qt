@@ -47,8 +47,7 @@ public:
     };
 
 public:
-    virtual ~TextLoader() {}
-
+    virtual ~TextLoader() = default;
     virtual Result load(const QString& name) const = 0;
 };
 

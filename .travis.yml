@@ -7,22 +7,38 @@ compiler:
 env:
 - QT_BASE=53
 - QT_BASE=54
+- QT_BASE=55
 
 matrix:
   allow_failures:
   - compiler: clang
     env: QT_BASE=53
+  - compiler: clang
+    env: QT_BASE=55
 
 before_install:
-- if [ "$CXX" = "g++" ]; then sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y; fi
+- sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+- |
+  if [ "$CXX" = "clang" ]; then
+    sudo sh -c "echo 'deb http://llvm.org/apt/precise/ llvm-toolchain-precise-3.6-binaries main' >> /etc/apt/sources.list"
+    sudo sh -c "echo 'deb http://llvm.org/apt/precise/ llvm-toolchain-precise main' >> /etc/apt/sources.list"
+    wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key | sudo apt-key add -
+  fi
 - if [ "$QT_BASE" = "53" ]; then sudo add-apt-repository ppa:beineri/opt-qt532 -y; fi
 - if [ "$QT_BASE" = "54" ]; then sudo add-apt-repository ppa:beineri/opt-qt541 -y; fi
+- if [ "$QT_BASE" = "55" ]; then sudo add-apt-repository ppa:beineri/opt-qt55 -y; fi
 - sudo apt-get update -qq
 
 install:
-- if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-4.9 gcc-4.9; export CXX="g++-4.9" CC="gcc-4.9"; $CXX --version; fi
-- if [ "$QT_BASE" = "53" ]; then sudo apt-get install -qq qt53base qt53script; source /opt/qt53/bin/qt53-env.sh; fi
-- if [ "$QT_BASE" = "54" ]; then sudo apt-get install -qq qt54base qt54script; source /opt/qt54/bin/qt54-env.sh; fi
+- sudo apt-get install -qq g++-4.9 gcc-4.9
+- if [ "$CXX" = "g++" ]; then export CXX="g++-4.9" CC="gcc-4.9"; fi
+- |
+  if [ "$CXX" = "clang" ]; then
+    sudo apt-get install -qq llvm-3.6
+    export CXX="clang++" CC="clang"
+  fi
+- $CXX --version
+- sudo apt-get install -qq qt${QT_BASE}base qt${QT_BASE}script; source /opt/qt${QT_BASE}/bin/qt${QT_BASE}-env.sh
 
 script:
 - qmake -r "QMAKE_CXX=$CXX" "QMAKE_CC=$CC"

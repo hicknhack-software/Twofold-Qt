@@ -35,6 +35,9 @@ private Q_SLOTS:
     void execute();
     void calls();
     void exceptions();
+    void destuctors();
+    void executeCPP_data();
+    void executeCPP();
 
 private:
     Twofold::Engine engine;
@@ -45,7 +48,7 @@ private:
 
 #include "TestBenchmark.moc"
 
-#define TEMPLATE_REPETITION 1000
+#define TEMPLATE_REPETITION 10000
 
 class FakeTextLoader : public Twofold::TextLoader
 {
@@ -126,7 +129,7 @@ void TestBenchmark::execute_data()
 void TestBenchmark::execute()
 {
     QBENCHMARK {
-        engine.exec(prepared, context);
+        target = engine.exec(prepared, context);
     }
 }
 
@@ -159,6 +162,75 @@ void TestBenchmark::exceptions()
         catch(int x) {
             r *= x;
         }
+    }
+}
+
+static std::vector<const char*> s_subjects;
+class Subject {
+    const char* m_name;
+public:
+    Subject(const char* name) : m_name(name) {
+        s_subjects.push_back(name);
+    }
+    ~Subject() {
+        Q_ASSERT(!s_subjects.empty() && s_subjects.back() == m_name);
+        s_subjects.pop_back();
+    }
+};
+
+class Base {
+    Subject m_base { "Base" };
+public:
+    virtual ~Base() = default;
+    virtual bool test() = 0;
+};
+class Derived : public Base {
+    Subject m_derived { "Derived" };
+    bool test() { return true; }
+};
+
+void TestBenchmark::destuctors()
+{
+    QVERIFY( s_subjects.empty() );
+    {
+        std::unique_ptr< Base > t { new Derived() };
+        auto r = t->test();
+        QVERIFY( r );
+    }
+    for (auto s : s_subjects) qDebug() << s;
+    QVERIFY( s_subjects.empty() );
+}
+
+#include "Twofold/intern/QtScriptTargetBuilderApi.h"
+
+void TestBenchmark::executeCPP_data()
+{
+    prepared = engine.prepare("TextTemplate.twofold");
+}
+
+void TestBenchmark::executeCPP()
+{
+    using namespace Twofold;
+    using namespace Twofold::intern;
+    QBENCHMARK {
+        QtScriptTargetBuilderApi _template(prepared.originPositions);
+        for(auto i = 0; i <= TEMPLATE_REPETITION*10; ++i) {
+            _template.indentPart(QString::fromLatin1(" "), 0);
+            _template.append(QString::fromLatin1("Das ist ein kurzer Text! "), 1);
+            _template.pushPartIndent(2);_template.append(QString::number(i), 2);_template.popPartIndent();
+            _template.newLine();
+            _template.pushIndentation(QString::fromLatin1(" "), 3);
+
+            _template.indentPart(QString::fromLatin1(""), 4);
+            _template.append(QString::fromLatin1("Line 1 included"), 5);
+            _template.newLine();
+            _template.indentPart(QString::fromLatin1(""), 6);
+            _template.append(QString::fromLatin1("Line 2 incldued"), 7);
+            _template.newLine();
+            _template.popIndentation();
+        }
+        const auto sourceMapText = _template.build();
+        target = Target{ sourceMapText.sourceMap, sourceMapText.text };
     }
 }
 
