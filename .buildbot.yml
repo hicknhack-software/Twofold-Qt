@@ -1,31 +1,51 @@
 profiles:
-- name: Qt53
-  platform: Ubuntu1404
-  commands: standard
-  setup:
-    - qt530_gcc490
+- name: "Linux Qt5.3 GCC 4.9"
+  platform: Linux
+  commands: std
+  setup: ['qt53_gcc49']
 
-- name: Qt54_Windows
-  platform: Windows2012R2
-  commands: win
-  setup:
-    - qt54_mingw_491
+- name: "Linux Qt5.4 GCC 4.9"
+  platform: Linux
+  commands: std
+  setup: ['qt54_gcc49']
+
+- name: "Linux Qt5.5 GCC 5.1"
+  platform: Linux
+  commands: std
+  setup: ['qt55_gcc51']
+
+- name: "Windows Qt5.4 MinGW 4.9.1"
+  platform: Windows
+  commands: mingw
+  setup: ['qt54_mingw491']
+
+- name: "Windows Qt5.5 MingGW 4.9.2"
+  platform: Windows
+  commands: mingw
+  setup: ['qt55_mingw492']
+
+- name: "Windows Qt5.5 MSVC 2012 x32"
+  platform: Windows
+  commands: msvc
+  setup: ['qt55_msvc2012']
+
+- name: "Windows Qt5.5 MSVC 2013 x64"
+  platform: Windows
+  commands: msvc
+  setup: ['qt55_msvc2013_x64']
 
 actions:
-- name: prepare
-  standard:
-  - 'qmake -r'
-  win:
-  - 'qmake -r'
+- name: Prepare
+  std: 'qmake -r'
+  msvc: 'qmake -r'
+  mingw: 'qmake -r'
 
-- name: build
-  standard:
-  - 'make'
-  win:
-  - 'mingw32-make.exe'  
+- name: Build
+  std: 'make'
+  msvc: 'nmake.exe'
+  mingw: 'mingw32-make.exe'
 
-- name: test
-  standard:
-  - 'make check'
-  win:
-  - 'mingw32-make.exe check'
+- name: Test
+  std: 'make check'
+  msvc: 'nmake check'
+  mingw: 'mingw32-make.exe check'
