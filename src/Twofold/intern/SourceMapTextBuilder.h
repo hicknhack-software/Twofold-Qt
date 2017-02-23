@@ -48,6 +48,7 @@ struct OriginText
     Interpolation interpolation; // text generated or from source
 };
 
+template <typename SourceMapping>
 struct SourceMapText
 {
     const SourceMapping sourceMap;
@@ -62,7 +63,8 @@ struct SourceMapText
 class SourceMapTextBuilder
 {
 public:
-    SourceMapText build() const;
+    template <typename SourceMapping>
+    SourceMapText<SourceMapping> build() const;
 
     inline bool isBlankLine() const { return m_textBuilder.isBlankLine(); }
     inline const QString& indentation() const { return m_textBuilder.indentation(); }

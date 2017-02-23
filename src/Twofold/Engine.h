@@ -29,6 +29,7 @@
 
 namespace Twofold {
 
+template <typename SourceMapping>
 struct Target
 {
     const SourceMapping sourceMap;
@@ -47,19 +48,20 @@ struct Target
  * It's not thread safe!
  * A single QScriptEngine is encapsulated, that changes states during execution.
  */
+template <typename SourceMapping>
 class Engine
 {
 public:
     Engine(MessageHandlerPtr messageHandler, TextLoaderPtr textLoader);
     Engine(TextLoaderPtr textLoader, MessageHandlerPtr messageHandler);
 
-    void showTemplateSyntaxErrors(const PreparedTemplate &preparedTemplate) const;
+    void showTemplateSyntaxErrors(const PreparedTemplate<SourceMapping> &preparedTemplate) const;
 
-    Target exec(const PreparedTemplate &preparedTemplate, const QVariantHash &inputs);
+    Target<SourceMapping> exec(const PreparedTemplate<SourceMapping> &preparedTemplate, const QVariantHash &inputs);
 
-    PreparedTemplate prepare(const QString &templateName) const;
+    PreparedTemplate<SourceMapping> prepare(const QString &templateName) const;
 
-    Target execTemplateName(const QString &templateName, const QVariantHash &inputs);
+    Target<SourceMapping> execTemplateName(const QString &templateName, const QVariantHash &inputs);
 
 private:
     class Private;
@@ -70,3 +72,5 @@ private:
 };
 
 } // namespace Twofold
+
+#include "Twofold/Engine_impl.h"

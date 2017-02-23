@@ -28,6 +28,7 @@
 
 namespace Twofold {
 
+template <typename SourceMapping>
 struct PreparedTemplate
 {
     const QString javascript;
@@ -53,7 +54,8 @@ public:
     PreparedTemplateBuilder(MessageHandlerPtr messageHandler, TextLoaderPtr textLoader);
     PreparedTemplateBuilder(TextLoaderPtr textLoader, MessageHandlerPtr messageHandler);
 
-    PreparedTemplate build(const QString &name) const;
+    template <typename SourceMapping>
+    PreparedTemplate<SourceMapping> build(const QString &name) const;
 
 private:
     class Private;

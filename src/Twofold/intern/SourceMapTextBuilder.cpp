@@ -21,7 +21,8 @@
 namespace Twofold {
 namespace intern {
 
-SourceMapText SourceMapTextBuilder::build() const
+template <typename SourceMapping>
+SourceMapText<SourceMapping> SourceMapTextBuilder::build() const
 {
     return SourceMapText { SourceMapping(m_sourceData), m_textBuilder.build() };
 }
