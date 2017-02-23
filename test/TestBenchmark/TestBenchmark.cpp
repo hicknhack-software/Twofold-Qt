@@ -40,10 +40,10 @@ private Q_SLOTS:
     void executeCPP();
 
 private:
-    Twofold::Engine engine;
+    Twofold::Engine<Twofold::SourceMapping> engine;
     QVariantHash context;
-    Twofold::PreparedTemplate prepared;
-    Twofold::Target target;
+    Twofold::PreparedTemplate<Twofold::SourceMapping> prepared;
+    Twofold::Target<Twofold::SourceMapping> target;
 };
 
 #include "TestBenchmark.moc"
@@ -229,8 +229,8 @@ void TestBenchmark::executeCPP()
             _template.newLine();
             _template.popIndentation();
         }
-        const auto sourceMapText = _template.build();
-        target = Target{ sourceMapText.sourceMap, sourceMapText.text };
+        const auto sourceMapText = _template.build<SourceMapping>();
+        target = Target<SourceMapping>{ sourceMapText.sourceMap, sourceMapText.text };
     }
 }
 

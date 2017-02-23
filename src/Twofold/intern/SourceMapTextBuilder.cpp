@@ -21,12 +21,6 @@
 namespace Twofold {
 namespace intern {
 
-template <typename SourceMapping>
-SourceMapText<SourceMapping> SourceMapTextBuilder::build() const
-{
-    return SourceMapText { SourceMapping(m_sourceData), m_textBuilder.build() };
-}
-
 void SourceMapTextBuilder::pushCaller(const FileLineColumnPosition &originPosition)
 {
     auto parentIndex = m_callerIndexStack.empty() ? CallerIndex{} : m_callerIndexStack.back();

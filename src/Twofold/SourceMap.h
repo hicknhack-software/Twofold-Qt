@@ -47,8 +47,8 @@ using SourceData = SourceMapping::Data;
 using SourceEntry = SourceMapping::Entry;
 
 using CallstackSourceMapping = SourceMap::Mapping< ExtColumnFormatInterpolation, ExtCallstackFormatCaller >;
-using CallstackSourceData = SourceMapping::Data;
-using CallstackSourceEntry = SourceMapping::Entry;
+using CallstackSourceData = CallstackSourceMapping::Data;
+using CallstackSourceEntry = CallstackSourceMapping::Entry;
 
 #ifdef _MSC_VER
 extern template SourceEntry;

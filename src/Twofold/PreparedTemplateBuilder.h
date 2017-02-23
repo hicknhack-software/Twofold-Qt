@@ -66,3 +66,5 @@ private:
 };
 
 } // namespace Twofold
+
+#include "Twofold/PreparedTemplateBuilder_impl.h"

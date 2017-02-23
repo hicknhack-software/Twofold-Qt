@@ -139,8 +139,8 @@ void TestIntegration::testTarget()
     auto messageHandler = std::make_shared<FakeMessageHandler>();
     auto textLoader = std::make_shared<FakeTextLoader>(templateText);
 
-    Engine engine(messageHandler, textLoader);
-    Target target = engine.execTemplateName("testTemplate", context);
+    Engine<SourceMapping> engine(messageHandler, textLoader);
+    Target<SourceMapping> target = engine.execTemplateName("testTemplate", context);
 
     if (messageHandler->count.message != messageCount.message) {
         messageHandler->display();
@@ -193,10 +193,10 @@ void TestIntegration::testTargetSourceMap()
 
     using namespace Twofold;
 
-    Engine engine(std::make_shared<FakeMessageHandler>(),
+    Engine<SourceMapping> engine(std::make_shared<FakeMessageHandler>(),
                   std::make_shared<FakeTextLoader>(templateText));
     QVariantHash context;
-    Target target = engine.execTemplateName("testTemplate", context);
+    Target<SourceMapping> target = engine.execTemplateName("testTemplate", context);
 
     auto targetBegin = target.text.cbegin();
     auto targetEnd = target.text.cend();
