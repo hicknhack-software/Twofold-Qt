@@ -32,10 +32,10 @@ namespace Twofold {
 using FileLineColumnPosition = SourceMap::FilePosition;
 using FileLineColumnPositionList = std::vector< FileLineColumnPosition >;
 
-using ExtInterpolation = SourceMap::Extension::Interpolation;
+using ExtInterpolation = SourceMap::Extension::ColumnFormatInterpolation;
 using Interpolation = SourceMap::Interpolation;
 
-using ExtCaller = SourceMap::Extension::Caller;
+using ExtCaller = SourceMap::Extension::CallstackFormatCaller;
 using Caller = SourceMap::Caller;
 using CallerList = SourceMap::CallerList;
 using CallerIndex = SourceMap::CallerIndex;
