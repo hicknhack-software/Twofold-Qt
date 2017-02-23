@@ -19,9 +19,11 @@ CONFIG += staticlib
 TARGET = Twofold
 
 SOURCES += \
+    Twofold/Engine.cpp \
     Twofold/MessageHandler.cpp \
     Twofold/MessageHandlerChain.cpp \
     Twofold/PathTextFileLoader.cpp \
+    Twofold/PreparedTemplateBuilder.cpp \
     Twofold/SourceMap.cpp \
     Twofold/intern/LineProcessor.cpp \
     Twofold/intern/PreparedJavascriptBuilder.cpp \
@@ -39,11 +41,20 @@ SOURCES += \
 
 HEADERS += \
     Twofold/intern/find_last.h \
+    Twofold/intern/LineProcessor.h \
+    Twofold/intern/PreparedJavascriptBuilder.h \
     Twofold/intern/QCharHelper.h \
     Twofold/intern/QStringHelper.h \
     Twofold/intern/QtScriptTargetBuilderApi.h \
     Twofold/intern/SourceMapTextBuilder.h \
     Twofold/intern/TextBuilder.h \
+    Twofold/intern/Command/Include.h \
+    Twofold/intern/Command/Missing.h \
+    Twofold/intern/Line/Call.h \
+    Twofold/intern/Line/Command.h \
+    Twofold/intern/Line/InterpolateLine.h \
+    Twofold/intern/Line/Interpolation.h \
+    Twofold/intern/Line/Passtrough.h \
     Twofold/intern/Javascript/BraceCounter.h \
     Twofold/intern/Base64VLQ.h
 
@@ -54,16 +65,7 @@ INSTALL_HEADERS += \
     Twofold/MessageHandlerChain.h \
     Twofold/PathTextFileLoader.h \
     Twofold/PreparedTemplateBuilder.h \
-    Twofold/PreparedTemplateBuilder_impl.h \
     Twofold/SourceMap.h \
-    Twofold/TextLoader.h \
-    Twofold/intern/Command/Include.h \
-    Twofold/intern/Command/Missing.h \
-    Twofold/intern/Line/Call.h \
-    Twofold/intern/Line/Command.h \
-    Twofold/intern/Line/InterpolateLine.h \
-    Twofold/intern/Line/Interpolation.h \
-    Twofold/intern/Line/Passtrough.h \ Twofold/intern/LineProcessor.h \
-    Twofold/intern/PreparedJavascriptBuilder.h \
+    Twofold/TextLoader.h
 
 include(../build/qmake/_lib.pri)

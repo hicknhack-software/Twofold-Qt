@@ -64,11 +64,7 @@ class PreparedJavascriptBuilder
 {
 public:
     template <typename SourceMapping>
-    PreparedJavascript<SourceMapping> build() const
-    {
-        auto sourceMapText = m_sourceMapBuilder.build<SourceMapping>();
-        return PreparedJavascript<SourceMapping> { sourceMapText.text, sourceMapText.sourceMap, m_originPositions };
-    }
+    PreparedJavascript<SourceMapping> build() const;
 
     inline const QString& indentation() const { return m_sourceMapBuilder.indentation(); }
     inline void setIndentation(const QString &indent) { m_sourceMapBuilder.setIndentation(indent); }

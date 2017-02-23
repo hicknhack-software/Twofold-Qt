@@ -64,10 +64,7 @@ class SourceMapTextBuilder
 {
 public:
     template <typename SourceMapping>
-    SourceMapText<SourceMapping> build() const
-    {
-        return SourceMapText<SourceMapping> { SourceMapping(m_sourceData), m_textBuilder.build() };
-    }
+    SourceMapText<SourceMapping> build() const;
 
     inline bool isBlankLine() const { return m_textBuilder.isBlankLine(); }
     inline const QString& indentation() const { return m_textBuilder.indentation(); }

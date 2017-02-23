@@ -35,20 +35,20 @@ FileLineColumnPositionList generateExceptionCallerStack(const PreparedTemplate<S
 {
     FileLineColumnPositionList callerStack;
     for (const auto& traceLine : backtrace) {
-        // traceline format: "<function>() at <line>"
-        auto begin = traceLine.begin();
-        const auto end = traceLine.end();
+	// traceline format: "<function>() at <line>"
+	auto begin = traceLine.begin();
+	const auto end = traceLine.end();
 
-        begin = find_last(begin, end, QChar(' '));
-        QString lineString = toQString(begin, end);
+	begin = find_last(begin, end, QChar(' '));
+	QString lineString = toQString(begin, end);
 
-        bool convertSuccesful = false;
-        const int line = lineString.toInt(&convertSuccesful);
-        const int column = 1;
-        if (convertSuccesful) {
-            const auto position = SourceMap::getOriginalPositionFromGenerated(preparedTemplate.sourceMap, {line, column});
-            callerStack.push_back(position);
-        }
+	bool convertSuccesful = false;
+	const int line = lineString.toInt(&convertSuccesful);
+	const int column = 1;
+	if (convertSuccesful) {
+	    const auto position = SourceMap::getOriginalPositionFromGenerated(preparedTemplate.sourceMap, {line, column});
+	    callerStack.push_back(position);
+	}
     }
     return callerStack;
 }
@@ -85,55 +85,55 @@ public:
 
     void showSyntaxError(QScriptSyntaxCheckResult checkResult, const PreparedTemplate<SourceMapping> &preparedTemplate)
     {
-        const int line = checkResult.errorLineNumber();
-        const int column = checkResult.errorColumnNumber();
-        FileLineColumnPositionList position {{ SourceMap::getOriginalPositionFromGenerated(preparedTemplate.sourceMap, {line, column}) }};
-        const QString text = "Syntax Error: " + checkResult.errorMessage();
-        m_messageHandler->javaScriptMessage(MessageType::Error, position, text);
+	const int line = checkResult.errorLineNumber();
+	const int column = checkResult.errorColumnNumber();
+	FileLineColumnPositionList position {{ SourceMap::getOriginalPositionFromGenerated(preparedTemplate.sourceMap, {line, column}) }};
+	const QString text = "Syntax Error: " + checkResult.errorMessage();
+	m_messageHandler->javaScriptMessage(MessageType::Error, position, text);
     }
 
     PreparedTemplateBuilder createPreparedBuilder() {
-        return { m_messageHandler, m_textLoader };
+	return { m_messageHandler, m_textLoader };
     }
 
 private:
     void showException(QScriptValue resultValue, const PreparedTemplate<SourceMapping> &preparedTemplate)
     {
-        const QStringList backtrace = m_scriptEngine.uncaughtExceptionBacktrace();
-        auto positionStack = intern::generateExceptionCallerStack<SourceMapping>(preparedTemplate, backtrace);
-        const int line = m_scriptEngine.uncaughtExceptionLineNumber();
-        const int column = 1; // TODO: use agent and stack!
-        positionStack.insert(positionStack.begin(), SourceMap::getOriginalPositionFromGenerated(preparedTemplate.sourceMap, {line, column}));
-        const QString text = "Uncaught Exception: " + resultValue.toString();
-        m_messageHandler->javaScriptMessage(MessageType::Error, positionStack, text);
+	const QStringList backtrace = m_scriptEngine.uncaughtExceptionBacktrace();
+	auto positionStack = intern::generateExceptionCallerStack<SourceMapping>(preparedTemplate, backtrace);
+	const int line = m_scriptEngine.uncaughtExceptionLineNumber();
+	const int column = 1; // TODO: use agent and stack!
+	positionStack.insert(positionStack.begin(), SourceMap::getOriginalPositionFromGenerated(preparedTemplate.sourceMap, {line, column}));
+	const QString text = "Uncaught Exception: " + resultValue.toString();
+	m_messageHandler->javaScriptMessage(MessageType::Error, positionStack, text);
     }
 
     void defineTemplateApi(intern::QtScriptTargetBuilderApi &templateApi)
     {
-        QScriptValue global = m_scriptEngine.globalObject();
-        global.setProperty("_template", m_scriptEngine.newQObject(&templateApi));
+	QScriptValue global = m_scriptEngine.globalObject();
+	global.setProperty("_template", m_scriptEngine.newQObject(&templateApi));
     }
 
     void undefineTemplateApi()
     {
-        QScriptValue global = m_scriptEngine.globalObject();
-        global.setProperty("_template", m_scriptEngine.undefinedValue());
+	QScriptValue global = m_scriptEngine.globalObject();
+	global.setProperty("_template", m_scriptEngine.undefinedValue());
     }
 
     void defineInputs(const QVariantHash &inputs)
     {
-        QScriptValue global = m_scriptEngine.globalObject();
-        for (auto key : inputs.keys()) {
-            global.setProperty( key, m_scriptEngine.toScriptValue(inputs[key]) );
-        }
+	QScriptValue global = m_scriptEngine.globalObject();
+	for (auto key : inputs.keys()) {
+	    global.setProperty( key, m_scriptEngine.toScriptValue(inputs[key]) );
+	}
     }
 
     void undefineInputs(const QVariantHash &inputs)
     {
-        QScriptValue global = m_scriptEngine.globalObject();
-        for (auto key : inputs.keys()) {
-            global.setProperty(key, m_scriptEngine.undefinedValue());
-        }
+	QScriptValue global = m_scriptEngine.globalObject();
+	for (auto key : inputs.keys()) {
+	    global.setProperty(key, m_scriptEngine.undefinedValue());
+	}
     }
 
     MessageHandlerPtr m_messageHandler;
@@ -180,7 +180,7 @@ PreparedTemplate<SourceMapping> Engine<SourceMapping>::prepare(const QString &te
 template <typename SourceMapping>
 Target<SourceMapping> Engine<SourceMapping>::execTemplateName(const QString &templateName, const QVariantHash &inputs)
 {
-    auto prepared = this->prepare(templateName);
+    auto prepared = this->prepare<SourceMapping>(templateName);
     return this->exec(prepared, inputs);
 }
 
@@ -191,3 +191,4 @@ void Engine<SourceMapping>::PrivateDeleter::operator()(typename Engine<SourceMap
 }
 
 } // namespace Twofold
+

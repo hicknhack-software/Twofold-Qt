@@ -82,7 +82,7 @@ void TestJavaScript::testInterpolation()
 
     PreparedTemplateBuilder builder(messageHandler, textLoader);
 
-    const PreparedTemplate<SourceMapping> result = builder.build<SourceMapping>(FAKE_TWOFOLD_NAME);
+    const PreparedTemplate result = builder.build(FAKE_TWOFOLD_NAME);
 
     QCOMPARE(messageHandler->count.message, 0);
     QCOMPARE(messageHandler->count.templateMessage, 0);
@@ -129,7 +129,7 @@ void TestJavaScript::testSourceMap()
 
     PreparedTemplateBuilder preparedBuilder(std::make_shared<FakeMessageHandler>(),
                                             std::make_shared<FakeTextLoader>(templateText));
-    const PreparedTemplate<SourceMapping> result = preparedBuilder.build<SourceMapping>("testTemplate");
+    const PreparedTemplate result = preparedBuilder.build("testTemplate");
 
     auto jsBegin = result.javascript.cbegin();
     auto jsEnd = result.javascript.cend();

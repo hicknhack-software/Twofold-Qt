@@ -16,9 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#pragma once
-
-#include "Twofold/PreparedTemplateBuilder.h"
+#include "PreparedTemplateBuilder.h"
 
 #include "Twofold/intern/Command/Include.h"
 #include "Twofold/intern/Command/Missing.h"
