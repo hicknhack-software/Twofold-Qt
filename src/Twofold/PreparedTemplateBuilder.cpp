@@ -64,8 +64,7 @@ public:
         return { std::move(map), std::move(fallback) };
     }
 
-    template <typename SourceMapping>
-    inline PreparedTemplate<SourceMapping> build(const QString &name) const
+    inline PreparedTemplate build(const QString &name) const
     {
         const auto result = textLoader->load(name);
         if (result.status != TextLoader::Success) {
@@ -73,7 +72,7 @@ public:
         }
 
         lineProcessor(result.name, result.text);
-        const auto preparedJavascript = preparedJavascriptBuilder.build<SourceMapping>();
+        const auto preparedJavascript = preparedJavascriptBuilder.build();
         return { preparedJavascript.javascript, preparedJavascript.sourceMap, preparedJavascript.originPositions };
     }
 
@@ -93,10 +92,9 @@ PreparedTemplateBuilder::PreparedTemplateBuilder(TextLoaderPtr textLoader, Messa
 {
 }
 
-template <typename SourceMapping>
-PreparedTemplate<SourceMapping> PreparedTemplateBuilder::build(const QString &name) const
+PreparedTemplate PreparedTemplateBuilder::build(const QString &name) const
 {
-    return m_private->build<SourceMapping>(name);
+    return m_private->build(name);
 }
 
 void PreparedTemplateBuilder::PrivateDeleter::operator()(PreparedTemplateBuilder::Private *p) const

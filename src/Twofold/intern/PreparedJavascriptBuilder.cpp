@@ -74,10 +74,9 @@ OriginText buildOriginText(FileLineColumnPosition origin,
 
 } // namespace
 
-template <typename SourceMapping>
-PreparedJavascript<SourceMapping> PreparedJavascriptBuilder::build() const
+PreparedJavascript PreparedJavascriptBuilder::build() const
 {
-    auto sourceMapText = m_sourceMapBuilder.build<SourceMapping>();
+    auto sourceMapText = m_sourceMapBuilder.build();
     return PreparedJavascript { sourceMapText.text, sourceMapText.sourceMap, m_originPositions };
 }
 

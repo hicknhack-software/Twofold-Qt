@@ -39,8 +39,7 @@ class QtScriptTargetBuilderApi : public QObject
 public:
     QtScriptTargetBuilderApi(const FileLineColumnPositionList &originPositions);
 
-    template <typename SourceMapping>
-    inline SourceMapText<SourceMapping> build() const { return m_sourceMapBuilder.build<SourceMapping>(); }
+    inline SourceMapText build() const { return m_sourceMapBuilder.build(); }
 
 public slots:
     void append(const QString &text, int originIndex);

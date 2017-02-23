@@ -47,7 +47,6 @@ using TargetNewLine = OriginTextTemplate<OriginTextType::NewLine>;
 /**
  * @brief data structure representing the prepared javascript
  */
-template <typename SourceMapping>
 struct PreparedJavascript
 {
     const QString javascript;
@@ -63,8 +62,7 @@ struct PreparedJavascript
 class PreparedJavascriptBuilder
 {
 public:
-    template <typename SourceMapping>
-    PreparedJavascript<SourceMapping> build() const;
+    PreparedJavascript build() const;
 
     inline const QString& indentation() const { return m_sourceMapBuilder.indentation(); }
     inline void setIndentation(const QString &indent) { m_sourceMapBuilder.setIndentation(indent); }

@@ -33,11 +33,9 @@ using FileLineColumnPosition = SourceMap::FilePosition;
 using FileLineColumnPositionList = std::vector< FileLineColumnPosition >;
 
 using ExtInterpolation = SourceMap::Extension::Interpolation;
-using ExtColumnFormatInterpolation = SourceMap::Extension::ColumnFormatInterpolation;
 using Interpolation = SourceMap::Interpolation;
 
 using ExtCaller = SourceMap::Extension::Caller;
-using ExtCallstackFormatCaller = SourceMap::Extension::CallstackFormatCaller;
 using Caller = SourceMap::Caller;
 using CallerList = SourceMap::CallerList;
 using CallerIndex = SourceMap::CallerIndex;
@@ -46,16 +44,9 @@ using SourceMapping = SourceMap::Mapping< ExtInterpolation, ExtCaller >;
 using SourceData = SourceMapping::Data;
 using SourceEntry = SourceMapping::Entry;
 
-using CallstackSourceMapping = SourceMap::Mapping< ExtColumnFormatInterpolation, ExtCallstackFormatCaller >;
-using CallstackSourceData = SourceMapping::Data;
-using CallstackSourceEntry = SourceMapping::Entry;
-
 #ifdef _MSC_VER
 extern template SourceEntry;
 extern template SourceMapping;
-
-extern template CallstackSourceData;
-extern template CallstackSourceEntry;
 #endif
 
 } // namespace Twofold

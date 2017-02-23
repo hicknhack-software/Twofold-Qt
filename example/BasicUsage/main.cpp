@@ -107,9 +107,9 @@ int main(int argc, char *argv[])
 
     using namespace Twofold;
 
-    Engine<SourceMapping> engine(std::make_shared<MessageHandler>(),
-                                 std::make_shared<FakeTextLoader>());
-    PreparedTemplate<SourceMapping> prepared = engine.prepare("main.twofold");
+    Engine engine(std::make_shared<MessageHandler>(),
+                  std::make_shared<FakeTextLoader>());
+    PreparedTemplate prepared = engine.prepare("main.twofold");
 
     ::qDebug() << "generated javascript:";
     ::qDebug() << prepared.javascript;
@@ -124,7 +124,7 @@ int main(int argc, char *argv[])
     context.insert( "args", QStringList() );
     context.insert( "methods", QVariantList() << QVariant::fromValue(&helloMethod) );
 
-    Target<SourceMapping> target = engine.exec(prepared, context);
+    Target target = engine.exec(prepared, context);
 
     ::qDebug() << "generated sourcecode:";
     ::qDebug() << target.text;
