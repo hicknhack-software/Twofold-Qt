@@ -37,6 +37,13 @@ QtScriptTargetBuilderApi::QtScriptTargetBuilderApi(const FileLineColumnPositionL
 void QtScriptTargetBuilderApi::append(const QString &text, int originIndex)
 {
     if (!text.isEmpty()) {
+        m_sourceMapBuilder << OriginText { m_originPositions[originIndex], text, Interpolation::OneToOne };
+    }
+}
+
+void QtScriptTargetBuilderApi::appendExpression(const QString &text, int originIndex)
+{
+    if (!text.isEmpty()) {
         m_sourceMapBuilder << OriginText { m_originPositions[originIndex], text, Interpolation::None };
     }
 }
@@ -69,7 +76,7 @@ void QtScriptTargetBuilderApi::indentPart(const QString &indent, int originIndex
     if (m_sourceMapBuilder.isBlankLine()) {
         m_partIndent = indent;
     }
-    m_sourceMapBuilder << OriginText { m_originPositions[originIndex], indent, Interpolation::None };
+    m_sourceMapBuilder << OriginText { m_originPositions[originIndex], indent, Interpolation::OneToOne };
 }
 
 void QtScriptTargetBuilderApi::pushPartIndent(int originIndex)

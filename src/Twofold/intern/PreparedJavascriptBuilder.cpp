@@ -88,7 +88,7 @@ PreparedJavascriptBuilder &PreparedJavascriptBuilder::operator <<(const OriginSc
 
 PreparedJavascriptBuilder &PreparedJavascriptBuilder::operator <<(const OriginScriptExpression &expr)
 {
-    static QString s_prefix("_template.pushPartIndent(%1);_template.append(");
+    static QString s_prefix("_template.pushPartIndent(%1);_template.appendExpression(");
     static QString s_postfix(", %1);_template.popPartIndent();"); // origin index
 
     if (0 == std::distance(expr.text.span.begin, expr.text.span.end))
