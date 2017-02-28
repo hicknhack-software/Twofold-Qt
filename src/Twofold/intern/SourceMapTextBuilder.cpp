@@ -45,6 +45,19 @@ SourceMapTextBuilder &SourceMapTextBuilder::operator <<(const OriginText &origin
         return *this; // empty span would create double entries
 
     auto callerIndex = m_callerIndexStack.empty() ? CallerIndex{} : m_callerIndexStack.back();
+
+    auto callers = SourceMap::get< ExtCaller >(m_sourceData);
+    if (callerIndex.value >= 0 && callerIndex.value < callers.size()) {
+        // this happens for expressions #{<expr>} because pushCaller and this operator is called with the same originPosition
+        if (callers[callerIndex.value].original == originText.origin) {
+            // take parent index
+            callerIndex.value = callers[callerIndex.value].parentIndex.value;
+
+            // remove caller
+            callers.erase(callers.begin() + callerIndex.value);
+        }
+    }
+
     m_sourceData.entries.push_back({{m_textBuilder.line(), m_textBuilder.column()},
                                     originText.origin,
                                     std::make_tuple(originText.interpolation, callerIndex)});
