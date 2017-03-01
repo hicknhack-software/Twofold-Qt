@@ -39,9 +39,9 @@ void QtScriptTargetBuilderApi::appendExpression(const QString &text, int originI
     }
 }
 
-void QtScriptTargetBuilderApi::newLine()
+void QtScriptTargetBuilderApi::newLine(int originIndex)
 {
-    m_sourceMapBuilder << NewLine();
+    m_sourceMapBuilder << OriginNewLine { m_originPositions[originIndex] };
 }
 
 void QtScriptTargetBuilderApi::pushIndentation(const QString &indent, int originIndex)

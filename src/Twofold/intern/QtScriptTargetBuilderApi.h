@@ -44,7 +44,7 @@ public:
 public slots:
     void append(const QString &text, int originIndex);
     void appendExpression(const QString &text, int originIndex);
-    void newLine();
+    void newLine(int originIndex);
 
     void pushIndentation(const QString &indent, int originIndex);
     void popIndentation();

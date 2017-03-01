@@ -58,11 +58,23 @@ SourceMapTextBuilder &SourceMapTextBuilder::operator <<(const OriginText &origin
         }
     }
 
-    m_sourceData.entries.push_back({{m_textBuilder.line(), m_textBuilder.column()},
-                                    originText.origin,
-                                    std::make_tuple(originText.interpolation, callerIndex)});
+    m_sourceData.addEntry({{m_textBuilder.line(), m_textBuilder.column()},
+                            originText.origin,
+                            std::make_tuple(originText.interpolation, callerIndex)});
 
     m_textBuilder << originText.span;
+    return *this;
+}
+
+SourceMapTextBuilder &SourceMapTextBuilder::operator <<(const OriginNewLine &originNewLine)
+{
+    const auto callerIndex = m_callerIndexStack.empty() ? CallerIndex{} : m_callerIndexStack.back();
+    const auto column = isBlankLine() ? std::max(1, originNewLine.origin.column - 1) : originNewLine.origin.column;
+    m_sourceData.addEntry({{m_textBuilder.line(), m_textBuilder.column()},
+                           {originNewLine.origin.name, {originNewLine.origin.line, column}},
+                            std::make_tuple(Interpolation::None, callerIndex)});
+
+    m_textBuilder << NewLine();
     return *this;
 }
 
