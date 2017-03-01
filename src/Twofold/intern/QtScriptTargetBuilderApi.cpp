@@ -21,15 +21,6 @@
 namespace Twofold {
 namespace intern {
 
-namespace {
-
-template< typename T, typename S>
-std::pair<T,S> make_pair(const T& t, const S& s) {
-    return std::pair<T,S>(t, s);
-}
-
-} // namespace
-
 QtScriptTargetBuilderApi::QtScriptTargetBuilderApi(const FileLineColumnPositionList &originPositions)
     : m_originPositions(originPositions)
 {}
@@ -57,7 +48,7 @@ void QtScriptTargetBuilderApi::pushIndentation(const QString &indent, int origin
 {
     QString fullIndent = indent;
     if (!m_indentationStack.empty()) fullIndent.prepend(m_indentationStack.back().second);
-    m_indentationStack.push_back(make_pair(indent, fullIndent));
+    m_indentationStack.push_back(std::make_pair(indent, fullIndent));
     m_sourceMapBuilder.pushCaller(m_originPositions[originIndex]);
     m_sourceMapBuilder.setIndentation(fullIndent);
 }
