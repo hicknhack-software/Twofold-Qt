@@ -47,14 +47,15 @@ SourceMapTextBuilder &SourceMapTextBuilder::operator <<(const OriginText &origin
     auto callerIndex = m_callerIndexStack.empty() ? CallerIndex{} : m_callerIndexStack.back();
 
     auto callers = SourceMap::get< ExtCaller >(m_sourceData);
-    if (callerIndex.value >= 0 && callerIndex.value < callers.size()) {
+    const auto indexValue = callerIndex.value;
+    if (indexValue >= 0 && indexValue < callers.size()) {
         // this happens for expressions #{<expr>} because pushCaller and this operator is called with the same originPosition
         if (callers[callerIndex.value].original == originText.origin) {
             // take parent index
-            callerIndex.value = callers[callerIndex.value].parentIndex.value;
+            callerIndex.value = callers[indexValue].parentIndex.value;
 
             // remove caller
-            callers.erase(callers.begin() + callerIndex.value);
+            callers.erase(callers.begin() + indexValue);
         }
     }
 
