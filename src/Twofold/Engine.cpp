@@ -46,9 +46,11 @@ FileLineColumnPositionList generateExceptionCallerStack(const PreparedTemplate &
         bool convertSuccesful = false;
         const int line = lineString.toInt(&convertSuccesful);
         const int column = 1;
-        if (convertSuccesful) {
+        if (convertSuccesful && (line > 0)) {
             const auto position = SourceMap::getOriginalPositionFromGenerated(preparedTemplate.sourceMap, {line, column});
-            callerStack.push_back(position);
+            if (callerStack.empty() || (callerStack.back() != position)) {
+                callerStack.push_back(position);
+            }
         }
     }
     return callerStack;
