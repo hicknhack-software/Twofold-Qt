@@ -55,11 +55,12 @@ HEADERS += \
     Twofold/intern/Line/InterpolateLine.h \
     Twofold/intern/Line/Interpolation.h \
     Twofold/intern/Line/Passtrough.h \
-    Twofold/intern/Javascript/BraceCounter.h
+    Twofold/intern/Javascript/BraceCounter.h \
     Twofold/intern/Base64VLQ.h
 
 INSTALL_HEADERS += \
     Twofold/Engine.h \
+    Twofold/BacktraceFilePosition.h \
     Twofold/MessageHandler.h \
     Twofold/MessageHandlerChain.h \
     Twofold/PathTextFileLoader.h \
