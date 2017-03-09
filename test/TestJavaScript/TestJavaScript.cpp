@@ -113,7 +113,7 @@ void TestJavaScript::testSourceMap_data()
 
     //                                              1         2
     //                                    123456789 012345678901
-    QTest::newRow("generated code 1") << "| simple \n|#{'hello'}" << "pend('hello" << 2 << 2;
+    QTest::newRow("generated code 1") << "| simple \n|#{'hello'}" << "pendExpression('hello" << 2 << 2;
     //                                             1
     //                                    12345678901
     QTest::newRow("generated code 2") << "|#{'hello'}" << ", 1);_template.pop" << 1 << 11;
