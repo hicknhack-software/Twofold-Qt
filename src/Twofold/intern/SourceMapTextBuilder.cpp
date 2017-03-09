@@ -48,7 +48,7 @@ SourceMapTextBuilder &SourceMapTextBuilder::operator <<(const OriginText &origin
 
     auto callers = SourceMap::get< ExtCaller >(m_sourceData);
     const auto indexValue = callerIndex.value;
-    if (indexValue >= 0 && indexValue < callers.size()) {
+    if (indexValue >= 0 && static_cast<CallerList::size_type>(indexValue) < callers.size()) {
         // this happens for expressions #{<expr>} because pushCaller and this operator is called with the same originPosition
         if (callers[callerIndex.value].original == originText.origin) {
             // take parent index
