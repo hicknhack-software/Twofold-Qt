@@ -45,11 +45,38 @@ SourceMapTextBuilder &SourceMapTextBuilder::operator <<(const OriginText &origin
         return *this; // empty span would create double entries
 
     auto callerIndex = m_callerIndexStack.empty() ? CallerIndex{} : m_callerIndexStack.back();
-    m_sourceData.entries.push_back({{m_textBuilder.line(), m_textBuilder.column()},
-                                    originText.origin,
-                                    std::make_tuple(originText.interpolation, callerIndex)});
+
+    auto callers = SourceMap::get< ExtCaller >(m_sourceData);
+    const auto indexValue = callerIndex.value;
+    if (indexValue >= 0 && static_cast<CallerList::size_type>(indexValue) < callers.size()) {
+        // this happens for expressions #{<expr>} because pushCaller and this operator is
+        // called with the same originPosition
+        if (callers[indexValue].original == originText.origin) {
+            // take parent index
+            callerIndex.value = callers[indexValue].parentIndex.value;
+
+            // remove caller
+            callers.erase(callers.begin() + indexValue);
+        }
+    }
+
+    m_sourceData.addEntry({{m_textBuilder.line(), m_textBuilder.column()},
+                            originText.origin,
+                            std::make_tuple(originText.interpolation, callerIndex)});
 
     m_textBuilder << originText.span;
+    return *this;
+}
+
+SourceMapTextBuilder &SourceMapTextBuilder::operator <<(const OriginNewLine &originNewLine)
+{
+    const auto callerIndex = m_callerIndexStack.empty() ? CallerIndex{} : m_callerIndexStack.back();
+    const auto column = isBlankLine() ? std::max(1, originNewLine.origin.column - 1) : originNewLine.origin.column;
+    m_sourceData.addEntry({{m_textBuilder.line(), m_textBuilder.column()},
+                           {originNewLine.origin.name, {originNewLine.origin.line, column}},
+                            std::make_tuple(Interpolation::None, callerIndex)});
+
+    m_textBuilder << NewLine();
     return *this;
 }
 

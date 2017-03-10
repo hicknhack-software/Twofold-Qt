@@ -19,6 +19,7 @@
 #pragma once
 
 #include "Twofold/SourceMap.h"
+#include "Twofold/BacktraceFilePosition.h"
 
 #include <memory>
 
@@ -42,7 +43,8 @@ protected:
     using Type = Twofold::MessageType;
     using Text = QString;
     using Position = Twofold::FileLineColumnPosition;
-    using PositionStack = Twofold::FileLineColumnPositionList;
+    using BacktracePosition = Twofold::BacktraceFilePosition;
+    using PositionStack = Twofold::BacktraceFilePositionList;
 
 public:
     virtual ~MessageHandler() = default;

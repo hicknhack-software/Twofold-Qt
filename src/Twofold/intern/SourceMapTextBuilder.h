@@ -48,6 +48,14 @@ struct OriginText
     Interpolation interpolation; // text generated or from source
 };
 
+struct OriginNewLine
+{
+    inline OriginNewLine(const FileLineColumnPosition &origin)
+        : origin(origin) {}
+
+    FileLineColumnPosition origin; // position this entry is from
+};
+
 struct SourceMapText
 {
     const SourceMapping sourceMap;
@@ -72,6 +80,7 @@ public:
     void popCaller();
 
     SourceMapTextBuilder& operator << (const OriginText& originText);
+    SourceMapTextBuilder& operator << (const OriginNewLine &originNewLine);
     SourceMapTextBuilder& operator << (const NewLine);
 
 private:

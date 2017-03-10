@@ -21,15 +21,6 @@
 namespace Twofold {
 namespace intern {
 
-namespace {
-
-template< typename T, typename S>
-std::pair<T,S> make_pair(const T& t, const S& s) {
-    return std::pair<T,S>(t, s);
-}
-
-} // namespace
-
 QtScriptTargetBuilderApi::QtScriptTargetBuilderApi(const FileLineColumnPositionList &originPositions)
     : m_originPositions(originPositions)
 {}
@@ -37,20 +28,27 @@ QtScriptTargetBuilderApi::QtScriptTargetBuilderApi(const FileLineColumnPositionL
 void QtScriptTargetBuilderApi::append(const QString &text, int originIndex)
 {
     if (!text.isEmpty()) {
+        m_sourceMapBuilder << OriginText { m_originPositions[originIndex], text, Interpolation::OneToOne };
+    }
+}
+
+void QtScriptTargetBuilderApi::appendExpression(const QString &text, int originIndex)
+{
+    if (!text.isEmpty()) {
         m_sourceMapBuilder << OriginText { m_originPositions[originIndex], text, Interpolation::None };
     }
 }
 
-void QtScriptTargetBuilderApi::newLine()
+void QtScriptTargetBuilderApi::newLine(int originIndex)
 {
-    m_sourceMapBuilder << NewLine();
+    m_sourceMapBuilder << OriginNewLine { m_originPositions[originIndex] };
 }
 
 void QtScriptTargetBuilderApi::pushIndentation(const QString &indent, int originIndex)
 {
     QString fullIndent = indent;
     if (!m_indentationStack.empty()) fullIndent.prepend(m_indentationStack.back().second);
-    m_indentationStack.push_back(make_pair(indent, fullIndent));
+    m_indentationStack.push_back(std::make_pair(indent, fullIndent));
     m_sourceMapBuilder.pushCaller(m_originPositions[originIndex]);
     m_sourceMapBuilder.setIndentation(fullIndent);
 }
@@ -69,7 +67,7 @@ void QtScriptTargetBuilderApi::indentPart(const QString &indent, int originIndex
     if (m_sourceMapBuilder.isBlankLine()) {
         m_partIndent = indent;
     }
-    m_sourceMapBuilder << OriginText { m_originPositions[originIndex], indent, Interpolation::None };
+    m_sourceMapBuilder << OriginText { m_originPositions[originIndex], indent, Interpolation::OneToOne };
 }
 
 void QtScriptTargetBuilderApi::pushPartIndent(int originIndex)

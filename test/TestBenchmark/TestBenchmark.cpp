@@ -217,16 +217,16 @@ void TestBenchmark::executeCPP()
         for(auto i = 0; i <= TEMPLATE_REPETITION*10; ++i) {
             _template.indentPart(QString::fromLatin1(" "), 0);
             _template.append(QString::fromLatin1("Das ist ein kurzer Text! "), 1);
-            _template.pushPartIndent(2);_template.append(QString::number(i), 2);_template.popPartIndent();
-            _template.newLine();
-            _template.pushIndentation(QString::fromLatin1(" "), 3);
+            _template.pushPartIndent(2);_template.appendExpression(QString::number(i), 2);_template.popPartIndent();
+            _template.newLine(3);
+            _template.pushIndentation(QString::fromLatin1(" "), 4);
 
-            _template.indentPart(QString::fromLatin1(""), 4);
-            _template.append(QString::fromLatin1("Line 1 included"), 5);
-            _template.newLine();
-            _template.indentPart(QString::fromLatin1(""), 6);
-            _template.append(QString::fromLatin1("Line 2 incldued"), 7);
-            _template.newLine();
+            _template.indentPart(QString::fromLatin1(""), 5);
+            _template.append(QString::fromLatin1("Line 1 included"), 6);
+            _template.newLine(7);
+            _template.indentPart(QString::fromLatin1(""), 8);
+            _template.append(QString::fromLatin1("Line 2 incldued"), 9);
+            _template.newLine(10);
             _template.popIndentation();
         }
         const auto sourceMapText = _template.build();

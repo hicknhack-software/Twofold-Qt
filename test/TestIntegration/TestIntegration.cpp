@@ -159,13 +159,15 @@ void TestIntegration::testTargetSourceMap_data()
     QTest::addColumn< int >( "templateColumn" );
     QTest::addColumn< size_t >( "callerCount" );
 
+    // callerCount must be 0 because SourceMapTextBuilder redirects parent index to avoid duplicated
+    // callers in the callstack.
     //                                                1         2
     //                                       123456789012345678901234567
-    QTest::newRow("inline expression 1") << "| simple #{(1 == 2)? 'Really?' : 'Correct'}" << "Correct" << 1 << 12 << size_t(1);
+    QTest::newRow("inline expression 1") << "| simple #{(1 == 2)? 'Really?' : 'Correct'}" << "Correct" << 1 << 12 << size_t(0);
 
     //                                                           1
     //                                       123456789  12345678901
-    QTest::newRow("inline expression 2") << "| simple \n|#{'hello'}" << "ello" << 2 << 4 << size_t(1);
+    QTest::newRow("inline expression 2") << "| simple \n|#{'hello'}" << "ello" << 2 << 4 << size_t(0);
 
     const QString complex_callers = R"EXAMPLE(
             function txta(p) {

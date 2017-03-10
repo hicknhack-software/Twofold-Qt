@@ -88,7 +88,7 @@ PreparedJavascriptBuilder &PreparedJavascriptBuilder::operator <<(const OriginSc
 
 PreparedJavascriptBuilder &PreparedJavascriptBuilder::operator <<(const OriginScriptExpression &expr)
 {
-    static QString s_prefix("_template.pushPartIndent(%1);_template.append(");
+    static QString s_prefix("_template.pushPartIndent(%1);_template.appendExpression(");
     static QString s_postfix(", %1);_template.popPartIndent();"); // origin index
 
     if (0 == std::distance(expr.text.span.begin, expr.text.span.end))
@@ -172,9 +172,12 @@ PreparedJavascriptBuilder &PreparedJavascriptBuilder::operator <<(const PopTarge
 
 PreparedJavascriptBuilder &PreparedJavascriptBuilder::operator <<(const TargetNewLine newLine)
 {
-    static QString s_code("_template.newLine();");
+    static const QString s_code("_template.newLine(%1);");
 
-    m_sourceMapBuilder << OriginText { newLine.text.origin, s_code, Interpolation::None };
+    const size_t originIndex = this->addOriginPosition(newLine.text.origin);
+    const QString code = s_code.arg(originIndex);
+
+    m_sourceMapBuilder << OriginText { newLine.text.origin, code, Interpolation::None };
     m_sourceMapBuilder << NewLine();
     return *this;
 }

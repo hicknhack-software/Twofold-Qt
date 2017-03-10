@@ -32,23 +32,26 @@ using namespace intern;
 
 namespace {
 
-FileLineColumnPositionList generateExceptionCallerStack(const PreparedTemplate &preparedTemplate, const QStringList &backtrace)
+BacktraceFilePositionList generateExceptionCallerStack(const PreparedTemplate &preparedTemplate, const QStringList &backtrace)
 {
-    FileLineColumnPositionList callerStack;
+    BacktraceFilePositionList callerStack;
     for (const auto& traceLine : backtrace) {
         // traceline format: "<function>() at <line>"
-        auto begin = traceLine.begin();
+        auto lineBegin = traceLine.begin();
         const auto end = traceLine.end();
-
-        begin = find_last(begin, end, QChar(' '));
-        QString lineString = toQString(begin, end);
+        lineBegin = find_last(lineBegin, end, QChar(' '));
+        const auto lineString = toQString(lineBegin, end);
 
         bool convertSuccesful = false;
         const int line = lineString.toInt(&convertSuccesful);
         const int column = 1;
-        if (convertSuccesful) {
+        if (convertSuccesful && (line > 0)) {
             const auto position = SourceMap::getOriginalPositionFromGenerated(preparedTemplate.sourceMap, {line, column});
-            callerStack.push_back(position);
+            if (callerStack.empty() || (callerStack.back() != position)) {
+                const auto functionEnd = std::find(traceLine.begin(), end, QChar('('));
+                const auto functionString = toQString(traceLine.begin(), functionEnd);
+                callerStack.push_back({functionString, position});
+            }
         }
     }
     return callerStack;
@@ -87,7 +90,7 @@ public:
     {
         const int line = checkResult.errorLineNumber();
         const int column = checkResult.errorColumnNumber();
-        FileLineColumnPositionList position {{ SourceMap::getOriginalPositionFromGenerated(preparedTemplate.sourceMap, {line, column}) }};
+        BacktraceFilePositionList position {{ QString(), SourceMap::getOriginalPositionFromGenerated(preparedTemplate.sourceMap, {line, column}) }};
         const QString text = "Syntax Error: " + checkResult.errorMessage();
         m_messageHandler->javaScriptMessage(MessageType::Error, position, text);
     }
@@ -103,7 +106,7 @@ private:
         auto positionStack = generateExceptionCallerStack(preparedTemplate, backtrace);
         const int line = m_scriptEngine.uncaughtExceptionLineNumber();
         const int column = 1; // TODO: use agent and stack!
-        positionStack.insert(positionStack.begin(), SourceMap::getOriginalPositionFromGenerated(preparedTemplate.sourceMap, {line, column}));
+        positionStack.insert(positionStack.begin(), {QString(), SourceMap::getOriginalPositionFromGenerated(preparedTemplate.sourceMap, {line, column})});
         const QString text = "Uncaught Exception: " + resultValue.toString();
         m_messageHandler->javaScriptMessage(MessageType::Error, positionStack, text);
     }
