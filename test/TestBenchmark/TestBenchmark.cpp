@@ -217,7 +217,7 @@ void TestBenchmark::executeCPP()
         for(auto i = 0; i <= TEMPLATE_REPETITION*10; ++i) {
             _template.indentPart(QString::fromLatin1(" "), 0);
             _template.append(QString::fromLatin1("Das ist ein kurzer Text! "), 1);
-            _template.pushPartIndent(2);_template.append(QString::number(i), 2);_template.popPartIndent();
+            _template.pushPartIndent(2);_template.appendExpression(QString::number(i), 2);_template.popPartIndent();
             _template.newLine(3);
             _template.pushIndentation(QString::fromLatin1(" "), 4);
 
