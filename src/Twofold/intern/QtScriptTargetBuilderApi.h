@@ -47,11 +47,16 @@ public slots:
     void newLine(int originIndex);
 
     void pushIndentation(const QString &indent, int originIndex);
+    void pushIncludeIndentation(const QString &indent, int originIndex);
     void popIndentation();
 
     void indentPart(const QString& indent, int originIndex);
     void pushPartIndent(int originIndex);
     void popPartIndent();
+
+private:
+    template <typename Func>
+    void pushIndentationInternal(const QString &indent, Func pushCallerFunc);
 
 private:
     SourceMapTextBuilder m_sourceMapBuilder;

@@ -28,7 +28,7 @@ namespace Twofold {
 namespace intern {
 
 enum class OriginTextType {
-    Script, ScriptExpression, Target, IndentPart, PushIndention, PopIndention, NewLine
+    Script, ScriptExpression, Target, IndentPart, PushIndention, PushIncludeIndentation, PopIndention, NewLine
 };
 
 template<OriginTextType>
@@ -41,6 +41,7 @@ using OriginScriptExpression = OriginTextTemplate<OriginTextType::ScriptExpressi
 using OriginTarget = OriginTextTemplate<OriginTextType::Target>;
 using IndentTargetPart = OriginTextTemplate<OriginTextType::IndentPart>;
 using PushTargetIndentation = OriginTextTemplate<OriginTextType::PushIndention>;
+using PushTargetIncludeIndentation = OriginTextTemplate<OriginTextType::PushIncludeIndentation>;
 using PopTargetIndentation = OriginTextTemplate<OriginTextType::PopIndention>;
 using TargetNewLine = OriginTextTemplate<OriginTextType::NewLine>;
 
@@ -73,6 +74,7 @@ public:
 
     PreparedJavascriptBuilder &operator <<(const IndentTargetPart& indent);
     PreparedJavascriptBuilder &operator <<(const PushTargetIndentation& indent);
+    PreparedJavascriptBuilder &operator <<(const PushTargetIncludeIndentation& indent);
     PreparedJavascriptBuilder &operator <<(const PopTargetIndentation &indent);
 
     PreparedJavascriptBuilder &operator <<(const TargetNewLine newLine);

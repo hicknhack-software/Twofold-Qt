@@ -135,7 +135,7 @@ void Include::operator()(const LineCommand &command)
     }
 
     auto indentBegin = command.line.firstNonSpace + 1;
-    m_builder << PushTargetIndentation {{command.line, TextSpan{indentBegin, command.begin}}};
+    m_builder << PushTargetIncludeIndentation {{command.line, TextSpan{indentBegin, command.begin}}};
     m_processIncludeText(result.name, result.text);
     m_builder << PopTargetIndentation {{command.line, TextSpan{command.end, command.end}}};
 }
