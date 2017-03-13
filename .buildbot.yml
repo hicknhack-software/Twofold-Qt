@@ -9,6 +9,11 @@ profiles:
   commands: std
   setup: ['qt54_gcc49']
 
+- name: "Linux Qt5.5.1 GCC 4.9"
+  platform: Linux
+  commands: std
+  setup: ['qt551_gcc49']
+
 - name: "Linux Qt5.5 GCC 5.1"
   platform: Linux
   commands: std
