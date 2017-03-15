@@ -1,19 +1,38 @@
+import CrossPlatformUtils
 import qbs
 import qbs.FileInfo
 
 Project {
-    property bool noBenchmark: (parent  && parent.noBenchmark !== undefined) ? parent.noBenchmark : false
-    property bool noVendor: false
-    property bool noExample: false
+    // Don't compile the unit tests
     property bool noTest: (parent  && parent.noTest !== undefined) ? parent.noTest : false
-    property string libInstallDir: (parent && parent.libInstallDir !== undefined) ? parent.libInstallDir : ""
+    // Don't compile the benchmark
+    property bool noBenchmark: (parent  && parent.noBenchmark !== undefined) ? parent.noBenchmark : false
+    // Don't compile the vendor code
+    property bool noVendor: false
+    // Don't compile the examples
+    property bool noExample: false
+
+    // Don't append the compiler signature to the target name e. g. "mylib{-msvc18.40629}-d.lib"
+    property bool noTargetNameCompiler: (parent && parent.noTargetNameCompiler !== undefined) ? parent.noTargetNameCompiler : false
+    // Don't append the build variant to the target name e. g. "mylib-msvc18.40629{-d}.lib"
+    property bool noTargetNameBuildVariant: (parent && parent.noTargetNameBuildVariant !== undefined) ? parent.noTargetNameBuildVariant : false
+    // Don't put the target os in the lib install directory e. g. "lib/{windows}-x86_64/"
+    property bool noLibInstallDirTargetOs: (parent && parent.noLibInstallDirTargetOs !== undefined) ? parent.noLibInstallDirTargetOs : false
+    // Don't put the architecture in the lib install directory e. g. "lib/windows{-x86_64}/"
+    property bool noLibInstallDirArchitecture: (parent && parent.noLibInstallDirArchitecture !== undefined) ? parent.noLibInstallDirArchitecture : false
+
+    // Relative path where to install all library relevant files like header and libraries.
     property string installPrefix: (parent && parent.installPrefix !== undefined) ? parent.installPrefix : ""
 
     minimumQbsVersion: "1.6"
 
+    qbsSearchPaths: [
+        "qbs/",
+    ]
+
     StaticLibrary {
         name: "Twofold"
-        targetName: name + (qbs.buildVariant.contains("debug") ? "-d" :"")
+        targetName: CrossPlatformUtils.libTargetName(cpp, "twofold", noTargetNameCompiler, noTargetNameBuildVariant)
         version: "1.0.0"
 
         files: [
@@ -89,7 +108,7 @@ Project {
         }
 
         Group {
-            name: "Install Main Header"
+            name: "Install header"
             fileTagsFilter: ["main-header"]
 
             qbs.install: true
@@ -98,12 +117,12 @@ Project {
         }
 
         Group {
-            name: "Install Library"
+            name: "Install library"
             fileTagsFilter: "staticlibrary"
 
             qbs.install: true
             qbs.installPrefix: project.installPrefix
-            qbs.installDir: FileInfo.joinPaths("lib", project.libInstallDir)
+            qbs.installDir: FileInfo.joinPaths("lib", CrossPlatformUtils.libDir(cpp, product.noLibInstallDirTargetOs, product.noLibInstallDirArchitecture))
         }
 
         Group {
