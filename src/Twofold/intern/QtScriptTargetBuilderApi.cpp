@@ -46,11 +46,14 @@ void QtScriptTargetBuilderApi::newLine(int originIndex)
 
 void QtScriptTargetBuilderApi::pushIndentation(const QString &indent, int originIndex)
 {
-    QString fullIndent = indent;
-    if (!m_indentationStack.empty()) fullIndent.prepend(m_indentationStack.back().second);
-    m_indentationStack.push_back(std::make_pair(indent, fullIndent));
-    m_sourceMapBuilder.pushCaller(m_originPositions[originIndex]);
-    m_sourceMapBuilder.setIndentation(fullIndent);
+    auto pushCaller = [=] { m_sourceMapBuilder.pushCaller(m_originPositions[originIndex]); };
+    pushIndentationInternal(indent, pushCaller);
+}
+
+void QtScriptTargetBuilderApi::pushIncludeIndentation(const QString &indent, int originIndex)
+{
+    auto pushCaller = [=] { m_sourceMapBuilder.pushIncludeCaller(m_originPositions[originIndex]); };
+    pushIndentationInternal(indent, pushCaller);
 }
 
 void QtScriptTargetBuilderApi::popIndentation()
@@ -79,6 +82,16 @@ void QtScriptTargetBuilderApi::popPartIndent()
 {
     m_partIndent = m_indentationStack.back().first;
     popIndentation();
+}
+
+template <typename Func>
+void QtScriptTargetBuilderApi::pushIndentationInternal(const QString &indent, Func pushCallerFunc)
+{
+    QString fullIndent = indent;
+    if (!m_indentationStack.empty()) fullIndent.prepend(m_indentationStack.back().second);
+    m_indentationStack.push_back(std::make_pair(indent, fullIndent));
+    m_sourceMapBuilder.setIndentation(fullIndent);
+    pushCallerFunc();
 }
 
 } // namespace intern

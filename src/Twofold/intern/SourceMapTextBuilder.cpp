@@ -34,6 +34,12 @@ void SourceMapTextBuilder::pushCaller(const FileLineColumnPosition &originPositi
     m_callerIndexStack.push_back(index);
 }
 
+void SourceMapTextBuilder::pushIncludeCaller(const FileLineColumnPosition &originPosition)
+{
+    m_sourceData.addInclude(originPosition.name);
+    pushCaller(originPosition);
+}
+
 void SourceMapTextBuilder::popCaller()
 {
     m_callerIndexStack.pop_back();
@@ -46,7 +52,7 @@ SourceMapTextBuilder &SourceMapTextBuilder::operator <<(const OriginText &origin
 
     auto callerIndex = m_callerIndexStack.empty() ? CallerIndex{} : m_callerIndexStack.back();
 
-    auto callers = SourceMap::get< ExtCaller >(m_sourceData);
+    auto &callers = SourceMap::get< ExtCaller >(m_sourceData);
     const auto indexValue = callerIndex.value;
     if (indexValue >= 0 && static_cast<CallerList::size_type>(indexValue) < callers.size()) {
         // this happens for expressions #{<expr>} because pushCaller and this operator is
