@@ -1,23 +1,13 @@
 profiles:
-- name: "Linux Qt5.3 GCC 4.9"
-  platform: Linux
-  commands: std
-  setup: ['qt53_gcc49']
-
-- name: "Linux Qt5.4 GCC 4.9"
-  platform: Linux
-  commands: std
-  setup: ['qt54_gcc49']
-
 - name: "Linux Qt5.5.1 GCC 4.9"
   platform: Linux
   commands: std
-  setup: ['qt551','gcc49']
+  setup: ['qt551_gcc49']
 
-- name: "Linux Qt5.5 GCC 5.1"
+- name: "Linux Qt5.5.1 GCC 5.4"
   platform: Linux
   commands: std
-  setup: ['qt55_gcc51']
+  setup: ['qt551_gcc54']
 
 - name: "Windows Qt5.4 MinGW 4.9.1"
   platform: Windows
