@@ -9,15 +9,20 @@ profiles:
   commands: std
   setup: ['qt551_gcc54']
 
+- name: "Linux Qt5.5.1 GCC 5.4 QBS 1.7.1"
+  platform: Linux
+  commands: std
+  setup: ['qbs171_qt551_gcc54']
+
 - name: "Windows Qt5.4 MinGW 4.9.1"
   platform: Windows
   commands: mingw
   setup: ['qt54_mingw491']
 
-- name: "Windows Qt5.5 MingGW 4.9.2"
+- name: "Windows Qt5.5.1 MingGW 4.9.2"
   platform: Windows
   commands: mingw
-  setup: ['qt55_mingw492']
+  setup: ['qt551_mingw492']
 
 - name: "Windows Qt5.5 MSVC 2012 x32"
   platform: Windows
