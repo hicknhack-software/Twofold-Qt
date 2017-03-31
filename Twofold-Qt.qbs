@@ -108,21 +108,22 @@ Project {
         }
 
         Group {
-            name: "Install header"
-            fileTagsFilter: ["main-header"]
+            name: "Install"
 
             qbs.install: true
             qbs.installPrefix: project.installPrefix
-            qbs.installDir: FileInfo.joinPaths("include", product.name)
-        }
 
-        Group {
-            name: "Install library"
-            fileTagsFilter: "staticlibrary"
+            Group {
+                name: "Header"
+                fileTagsFilter: "main-header"
+                qbs.installDir: FileInfo.joinPaths("include", product.name)
+            }
 
-            qbs.install: true
-            qbs.installPrefix: project.installPrefix
-            qbs.installDir: FileInfo.joinPaths("lib", CrossPlatformUtils.libDir(cpp, product.noLibInstallDirTargetOs, product.noLibInstallDirArchitecture))
+            Group {
+                name: "Library"
+                fileTagsFilter: "staticlibrary"
+                qbs.installDir: FileInfo.joinPaths("lib", CrossPlatformUtils.libDir(cpp, product.noLibInstallDirTargetOs, product.noLibInstallDirArchitecture))
+            }
         }
 
         Group {
