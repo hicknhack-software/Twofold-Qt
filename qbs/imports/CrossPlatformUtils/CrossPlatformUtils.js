@@ -18,11 +18,11 @@ function platformSignature(/*Module cpp*/cpp,
     var parts = [];
 
     if(noTargetOS === undefined || noTargetOS === false) {
-        parts.push(qbs.targetOS)
+        parts.push(qbs.targetOS.join("_"));
     }
 
     if(noArchitecture === undefined || noArchitecture === false) {
-        parts.push(qbs.architecture)
+        parts.push(qbs.architecture);
     }
 
     if(noCompiler === undefined || noCompiler === false) {
