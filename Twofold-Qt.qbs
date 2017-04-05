@@ -32,7 +32,7 @@ Project {
 
     StaticLibrary {
         name: "Twofold"
-        targetName: CrossPlatformUtils.libTargetName(cpp, "twofold", noTargetNameCompiler, noTargetNameBuildVariant)
+        targetName: CrossPlatformUtils.libTargetName(qbs, cpp, "twofold", noTargetNameCompiler, noTargetNameBuildVariant)
         version: "1.0.0"
 
         files: [
@@ -122,7 +122,7 @@ Project {
             Group {
                 name: "Library"
                 fileTagsFilter: "staticlibrary"
-                qbs.installDir: FileInfo.joinPaths("lib", CrossPlatformUtils.libDir(cpp, product.noLibInstallDirTargetOs, product.noLibInstallDirArchitecture))
+                qbs.installDir: FileInfo.joinPaths("lib", CrossPlatformUtils.libDir(qbs, cpp, product.noLibInstallDirTargetOs, product.noLibInstallDirArchitecture))
             }
         }
 
