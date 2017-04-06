@@ -1,8 +1,8 @@
 profiles:
-- name: "Linux Qt5.5.1 GCC 4.9"
-  platform: Linux
-  commands: std
-  setup: ['qt551_gcc49']
+# - name: "Linux Qt5.5.1 GCC 4.9"
+#   platform: Linux
+#   commands: std
+#   setup: ['qt551_gcc49']
 
 - name: "Linux Qt5.5.1 GCC 4.9 QBS 1.7.1"
   platform: Linux
