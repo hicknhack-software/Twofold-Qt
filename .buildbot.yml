@@ -4,6 +4,11 @@ profiles:
   commands: std
   setup: ['qt551_gcc49']
 
+- name: "Linux Qt5.5.1 GCC 4.9 QBS 1.7.1"
+  platform: Linux
+  commands: qbs
+  setup: ['qbs171_qt551_gcc49']
+
 - name: "Linux Qt5.5.1 GCC 5.4"
   platform: Linux
   commands: std
@@ -39,13 +44,16 @@ actions:
   std: 'qmake -r'
   msvc: 'qmake -r'
   mingw: 'qmake -r'
+  qbs: "echo 'No QBS Prepare'"
 
 - name: Build
   std: 'make'
   msvc: 'nmake.exe'
   mingw: 'mingw32-make.exe'
+  qbs: 'qbs'
 
 - name: Test
   std: 'make check'
   msvc: 'nmake check'
   mingw: 'mingw32-make.exe check'
+  qbs: "echo 'No QBS Test'"
