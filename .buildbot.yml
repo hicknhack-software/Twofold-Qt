@@ -44,16 +44,16 @@ actions:
   std: 'qmake -r'
   msvc: 'qmake -r'
   mingw: 'qmake -r'
-  qbs: "echo 'No QBS Prepare'"
+  qbs: 'env;alias'
 
 - name: Build
   std: 'make'
   msvc: 'nmake.exe'
   mingw: 'mingw32-make.exe'
-  qbs: 'qbs'
+  qbs: 'env;alias'
 
 - name: Test
   std: 'make check'
   msvc: 'nmake check'
   mingw: 'mingw32-make.exe check'
-  qbs: "echo 'No QBS Test'"
+  qbs: 'env;alias'
