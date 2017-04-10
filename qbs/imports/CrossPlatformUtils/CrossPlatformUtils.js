@@ -26,11 +26,13 @@ function platformSignature(/*Module qbs*/qbs,
     var parts = [];
 
     if(noTargetOS === undefined || noTargetOS === false) {
-        parts.push(qbs.targetOS.join("_"));
+        var targetOS = (qbs.targetOS.length > 0) ? qbs.targetOS[0] : "na";
+        parts.push(targetOS);
     }
 
     if(noArchitecture === undefined || noArchitecture === false) {
-        parts.push(qbs.architecture);
+        var architecture = (qbs.architecture === "x86_64") ? "x64" : qbs.architecture;
+        parts.push(architecture);
     }
 
     if(noCompiler === undefined || noCompiler === false) {
