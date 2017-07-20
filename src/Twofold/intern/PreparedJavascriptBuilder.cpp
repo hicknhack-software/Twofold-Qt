@@ -22,44 +22,27 @@
 
 #include <QRegularExpression>
 
+
 namespace Twofold {
 namespace intern {
 
 namespace {
 
-struct QStringAppendIterator
-        : public std::iterator<std::output_iterator_tag, void, void, void, void>
-{
-    inline QStringAppendIterator(QString& dst) : m_dst(dst) {}
-
-    inline QStringAppendIterator& operator=(const QString& n)
-    {
-        m_dst += n;
-        return *this;
-    }
-
-    inline QStringAppendIterator& operator*() { return *this; }
-    inline QStringAppendIterator& operator++() { return *this; }
-
-private:
-    QString& m_dst;
-};
-
 QString escapeForJavascriptString(const TextSpan& source)
 {
     QString out;
-    out.reserve(std::distance(source.begin, source.end));
-    std::transform(source.begin, source.end, QStringAppendIterator(out),
-                   [](QChar chr) -> QString {
-        switch (chr.unicode()) {
-        case '\\': return "\\\\";
-        case '\r': return "\\r";
-        case '\n': return "\\n";
-        case '"' : return "\\\"";
-        case '\'': return "\\'";
-        default: return chr;
+    out.reserve(static_cast<int>(std::distance(source.begin, source.end)));
+    for(auto c = source.begin; c != source.end; ++c) {
+        switch (c->unicode()) {
+            case '\\': out += "\\\\"; break;
+            case '\r': out += "\\r"; break;
+            case '\n': out += "\\n"; break;
+            case '"' : out += "\\\""; break;
+            case '\'': out += "\\'"; break;
+            default: out += *c; break;
         }
-    });
+    }
+
     return out;
 }
 
