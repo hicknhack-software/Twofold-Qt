@@ -35,7 +35,7 @@ struct BacktraceFilePosition : public FileLineColumnPosition
         , functionName(std::move(functionName))
     {}
 
-    inline bool isValid() const override { return ! functionName.isEmpty() && this->FileLineColumnPosition::isValid(); }
+    inline bool isValid() const { return ! functionName.isEmpty() && this->FileLineColumnPosition::isValid(); }
 
     QString functionName;
 };

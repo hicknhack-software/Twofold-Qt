@@ -34,12 +34,6 @@ void SourceMapTextBuilder::pushCaller(const FileLineColumnPosition &originPositi
     m_callerIndexStack.push_back(index);
 }
 
-void SourceMapTextBuilder::pushIncludeCaller(const FileLineColumnPosition &originPosition)
-{
-    m_sourceData.addInclude(originPosition.name);
-    pushCaller(originPosition);
-}
-
 void SourceMapTextBuilder::popCaller()
 {
     m_callerIndexStack.pop_back();
