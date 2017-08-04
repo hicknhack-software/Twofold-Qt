@@ -77,7 +77,6 @@ public:
     inline void setIndentation(const QString &indent) { m_textBuilder.setIndentation(indent); }
 
     void pushCaller(const FileLineColumnPosition &originPosition);
-    void pushIncludeCaller(const FileLineColumnPosition &originPosition);
     void popCaller();
 
     SourceMapTextBuilder& operator << (const OriginText& originText);

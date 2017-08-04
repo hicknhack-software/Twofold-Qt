@@ -144,23 +144,6 @@ PreparedJavascriptBuilder &PreparedJavascriptBuilder::operator <<(const PushTarg
     return *this;
 }
 
-PreparedJavascriptBuilder &PreparedJavascriptBuilder::operator <<(const PushTargetIncludeIndentation &indent)
-{
-    static QString s_prefix("_template.pushIncludeIndentation(\"");
-    static QString s_postfix("\", %1);"); // origin index
-
-    const auto originLength = std::distance(indent.text.span.begin, indent.text.span.end);
-    const auto originIndex = this->addOriginPosition(indent.text.origin);
-
-    const QString postfix = s_postfix.arg(originIndex);
-
-    m_sourceMapBuilder << buildOriginText(indent.text.origin, -1, s_prefix, Interpolation::None);
-    m_sourceMapBuilder << OriginText { indent.text.origin, escapeForJavascriptString(indent.text.span) };
-    m_sourceMapBuilder << buildOriginText(indent.text.origin, originLength, postfix, Interpolation::None);
-    m_sourceMapBuilder << NewLine();
-    return *this;
-}
-
 PreparedJavascriptBuilder &PreparedJavascriptBuilder::operator <<(const PopTargetIndentation &indent)
 {
     static QString s_code("_template.popIndentation();");
