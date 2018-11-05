@@ -99,14 +99,11 @@ Project {
             fileTags: [ "main-header"]
         }
 
-        Depends { name: "SourceMap" }
-        Depends { name: "Qt"; submodules: ["core", "script"] }
         Depends { name: "cpp" }
         cpp.includePaths: [ "src/" ]
-        Properties {
-            condition: qbs.toolchain.contains("gcc")
-            cpp.cxxFlags: ["-std=c++11"]
-        }
+
+        Depends { name: "Qt.script" }
+        Depends { name: "SourceMap" }
 
         Group {
             name: "Install"
@@ -142,14 +139,11 @@ Project {
         }
 
         Export {
+            Depends { name: "Qt.script" }
             Depends { name: "SourceMap" }
-            Depends { name: "Qt"; submodules: ["core", "script"] }
+
             Depends { name: "cpp" }
             cpp.includePaths: [ "src/" ]
-            Properties {
-                condition: qbs.toolchain.contains("gcc")
-                cpp.cxxFlags: ["-std=c++11"]
-            }
         }
     }
 
