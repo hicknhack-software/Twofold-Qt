@@ -1,4 +1,5 @@
 import NameUtils
+import qbs.FileInfo
 
 StaticLibrary {
     property bool noTargetNameCompiler: false
