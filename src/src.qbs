@@ -1,7 +1,6 @@
 import NameUtils
 
 StaticLibrary {
-    id: twofold
     name: "Twofold"
     targetName: NameUtils.libTargetName(cpp, qbs, "twofold", noTargetNameCompiler, noTargetNameBuildVariant)
     version: "1.0.0"
