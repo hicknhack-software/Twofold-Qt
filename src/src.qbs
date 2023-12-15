@@ -1,8 +1,9 @@
+import NameUtils
+
 StaticLibrary {
     id: twofold
     name: "Twofold"
-    //targetName: CrossPlatformUtils.libTargetName(twofold, "twofold", noTargetNameCompiler, noTargetNameBuildVariant)
-    targetName: "twofold"
+    targetName: NameUtils.libTargetName(cpp, qbs, "twofold", noTargetNameCompiler, noTargetNameBuildVariant)
     version: "1.0.0"
 
     files: [
@@ -89,8 +90,7 @@ StaticLibrary {
         Group {
             name: "Library"
             fileTagsFilter: "staticlibrary"
-            //qbs.installDir: FileInfo.joinPaths("lib", CrossPlatformUtils.libDir(product, product.noLibInstallDirTargetOs, product.noLibInstallDirArchitecture))
-            qbs.installDir: FileInfo.joinPaths("lib", "twofold")
+            qbs.installDir: FileInfo.joinPaths("lib", NameUtils.libDir(product.cpp, product.qbs, product.noLibInstallDirTargetOs, product.noLibInstallDirArchitecture))
         }
     }
 
