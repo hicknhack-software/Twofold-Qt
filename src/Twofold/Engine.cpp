@@ -155,6 +155,8 @@ Engine::Engine(TextLoaderPtr textLoader, MessageHandlerPtr messageHandler)
 
 }
 
+Engine::~Engine() = default;
+
 // void Engine::showTemplateSyntaxErrors(const PreparedTemplate &preparedTemplate) const
 // {
 //     auto checkResult = QScriptEngine::checkSyntax(preparedTemplate.javascript);

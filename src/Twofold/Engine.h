@@ -47,11 +47,13 @@ struct Target
  * It's not thread safe!
  * A single QScriptEngine is encapsulated, that changes states during execution.
  */
-class Engine
+class Engine final
 {
 public:
     Engine(MessageHandlerPtr messageHandler, TextLoaderPtr textLoader);
     Engine(TextLoaderPtr textLoader, MessageHandlerPtr messageHandler);
+    virtual ~Engine();
+
 
     //void showTemplateSyntaxErrors(const PreparedTemplate &preparedTemplate) const;
 
@@ -63,10 +65,7 @@ public:
 
 private:
     class Private;
-    struct PrivateDeleter {
-        void operator()(Private* p) const;
-    };
-    const std::unique_ptr<Private, PrivateDeleter> m_private;
+    const std::unique_ptr<Private> m_private;
 };
 
 } // namespace Twofold
