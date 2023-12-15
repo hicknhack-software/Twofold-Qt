@@ -23,7 +23,7 @@
 #include "Twofold/intern/QStringHelper.h"
 #include "Twofold/intern/find_last.h"
 
-#include <QScriptEngine>
+#include <QJSEngine>
 
 #include <vector>
 
@@ -74,8 +74,8 @@ public:
         defineInputs(inputs);
         defineTemplateApi(scriptTargetBuilder);
 
-        auto resultValue = m_scriptEngine.evaluate(preparedTemplate.javascript);
-        if (m_scriptEngine.hasUncaughtException()) {
+        QJSValue resultValue = m_scriptEngine.evaluate(preparedTemplate.javascript);
+        if (resultValue.isError()) {
             showException(resultValue, preparedTemplate);
         }
 
@@ -86,46 +86,46 @@ public:
         return { sourceMapText.sourceMap, sourceMapText.text };
     }
 
-    void showSyntaxError(QScriptSyntaxCheckResult checkResult, const PreparedTemplate &preparedTemplate)
-    {
-        const int line = checkResult.errorLineNumber();
-        const int column = checkResult.errorColumnNumber();
-        BacktraceFilePositionList position {{ QString(), SourceMap::getOriginalPositionFromGenerated(preparedTemplate.sourceMap, {line, column}) }};
-        const QString text = "Syntax Error: " + checkResult.errorMessage();
-        m_messageHandler->javaScriptMessage(MessageType::Error, position, text);
-    }
+    // void showSyntaxError(QScriptSyntaxCheckResult checkResult, const PreparedTemplate &preparedTemplate)
+    // {
+    //     const int line = checkResult.errorLineNumber();
+    //     const int column = checkResult.errorColumnNumber();
+    //     BacktraceFilePositionList position {{ QString(), SourceMap::getOriginalPositionFromGenerated(preparedTemplate.sourceMap, {line, column}) }};
+    //     const QString text = "Syntax Error: " + checkResult.errorMessage();
+    //     m_messageHandler->javaScriptMessage(MessageType::Error, position, text);
+    // }
 
     PreparedTemplateBuilder createPreparedBuilder() {
         return { m_messageHandler, m_textLoader };
     }
 
 private:
-    void showException(QScriptValue resultValue, const PreparedTemplate &preparedTemplate)
+    void showException(const QJSValue& resultValue, const PreparedTemplate &preparedTemplate)
     {
-        const QStringList backtrace = m_scriptEngine.uncaughtExceptionBacktrace();
-        auto positionStack = generateExceptionCallerStack(preparedTemplate, backtrace);
-        const int line = m_scriptEngine.uncaughtExceptionLineNumber();
-        const int column = 1; // TODO: use agent and stack!
-        positionStack.insert(positionStack.begin(), {QString(), SourceMap::getOriginalPositionFromGenerated(preparedTemplate.sourceMap, {line, column})});
+        //const QStringList backtrace = m_scriptEngine.uncaughtExceptionBacktrace();
+        BacktraceFilePositionList positionStack = {}; //generateExceptionCallerStack(preparedTemplate, backtrace);
+        // const int line = m_scriptEngine.uncaughtExceptionLineNumber();
+        // const int column = 1; // TODO: use agent and stack!
+        // positionStack.insert(positionStack.begin(), {QString(), SourceMap::getOriginalPositionFromGenerated(preparedTemplate.sourceMap, {line, column})});
         const QString text = "Uncaught Exception: " + resultValue.toString();
         m_messageHandler->javaScriptMessage(MessageType::Error, positionStack, text);
     }
 
     void defineTemplateApi(QtScriptTargetBuilderApi &templateApi)
     {
-        QScriptValue global = m_scriptEngine.globalObject();
+        QJSValue global = m_scriptEngine.globalObject();
         global.setProperty("_template", m_scriptEngine.newQObject(&templateApi));
     }
 
     void undefineTemplateApi()
     {
-        QScriptValue global = m_scriptEngine.globalObject();
-        global.setProperty("_template", m_scriptEngine.undefinedValue());
+        QJSValue global = m_scriptEngine.globalObject();
+        global.setProperty("_template", QJSValue(QJSValue::UndefinedValue));
     }
 
     void defineInputs(const QVariantHash &inputs)
     {
-        QScriptValue global = m_scriptEngine.globalObject();
+        QJSValue global = m_scriptEngine.globalObject();
         for (auto key : inputs.keys()) {
             global.setProperty( key, m_scriptEngine.toScriptValue(inputs[key]) );
         }
@@ -133,15 +133,15 @@ private:
 
     void undefineInputs(const QVariantHash &inputs)
     {
-        QScriptValue global = m_scriptEngine.globalObject();
+        QJSValue global = m_scriptEngine.globalObject();
         for (auto key : inputs.keys()) {
-            global.setProperty(key, m_scriptEngine.undefinedValue());
+            global.setProperty(key, QJSValue(QJSValue::UndefinedValue));
         }
     }
 
     MessageHandlerPtr m_messageHandler;
     TextLoaderPtr m_textLoader;
-    QScriptEngine m_scriptEngine;
+    QJSEngine m_scriptEngine;
 };
 
 Engine::Engine(MessageHandlerPtr messageHandler, TextLoaderPtr textLoader)
@@ -155,12 +155,12 @@ Engine::Engine(TextLoaderPtr textLoader, MessageHandlerPtr messageHandler)
 
 }
 
-void Engine::showTemplateSyntaxErrors(const PreparedTemplate &preparedTemplate) const
-{
-    auto checkResult = QScriptEngine::checkSyntax(preparedTemplate.javascript);
-    if (checkResult.state() == QScriptSyntaxCheckResult::Error)
-        m_private->showSyntaxError(checkResult, preparedTemplate);
-}
+// void Engine::showTemplateSyntaxErrors(const PreparedTemplate &preparedTemplate) const
+// {
+//     auto checkResult = QScriptEngine::checkSyntax(preparedTemplate.javascript);
+//     if (checkResult.state() == QScriptSyntaxCheckResult::Error)
+//         m_private->showSyntaxError(checkResult, preparedTemplate);
+// }
 
 Target Engine::exec(const PreparedTemplate &preparedTemplate, const QVariantHash &inputs)
 {
@@ -170,7 +170,7 @@ Target Engine::exec(const PreparedTemplate &preparedTemplate, const QVariantHash
 PreparedTemplate Engine::prepare(const QString &templateName) const
 {
     auto prepared = m_private->createPreparedBuilder().build(templateName);
-    this->showTemplateSyntaxErrors(prepared);
+    //this->showTemplateSyntaxErrors(prepared);
     return prepared;
 }
 
@@ -178,11 +178,6 @@ Target Engine::execTemplateName(const QString &templateName, const QVariantHash 
 {
     auto prepared = this->prepare(templateName);
     return this->exec(prepared, inputs);
-}
-
-void Engine::PrivateDeleter::operator()(Engine::Private *p) const
-{
-    delete p;
 }
 
 } // namespace Twofold

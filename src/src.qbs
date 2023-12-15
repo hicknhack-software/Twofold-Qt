@@ -13,16 +13,16 @@ StaticLibrary {
     version: "1.0.0"
 
     Depends { name: "cpp" }
+    cpp.cxxLanguageVersion: "c++20"
     cpp.includePaths: [ "./" ]
-
     Depends { name: "Qt.qml" }
     Depends { name: "SourceMap" }
 
     Export {
         Depends { name: "Qt.script" }
         Depends { name: "SourceMap" }
-
         Depends { name: "cpp" }
+        cpp.cxxLanguageVersion: "c++20"
         cpp.includePaths: [ "./" ]
     }
 

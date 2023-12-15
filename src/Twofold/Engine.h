@@ -53,7 +53,7 @@ public:
     Engine(MessageHandlerPtr messageHandler, TextLoaderPtr textLoader);
     Engine(TextLoaderPtr textLoader, MessageHandlerPtr messageHandler);
 
-    void showTemplateSyntaxErrors(const PreparedTemplate &preparedTemplate) const;
+    //void showTemplateSyntaxErrors(const PreparedTemplate &preparedTemplate) const;
 
     Target exec(const PreparedTemplate &preparedTemplate, const QVariantHash &inputs);
 
