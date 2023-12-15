@@ -1,5 +1,3 @@
-import qbs
-
 Project {
     AutotestRunner {
         name: "Twofold autotest-runner"
