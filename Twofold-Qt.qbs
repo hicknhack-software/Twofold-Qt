@@ -35,6 +35,10 @@ Project {
     references: [
         "vendor/vendor.qbs",
         "example/example.qbs",
-        "test/test.qbs",
     ]
+
+    SubProject {
+        condition: !noTest
+        filePath: "test/test.qbs"
+    }
 }

@@ -1,6 +1,5 @@
 CppApplication {
     name: "TestJavaScript"
-    condition: !noTest
 
     consoleApplication: true
     type: base.concat(["autotest"])

@@ -1,6 +1,5 @@
 CppApplication {
     name: "TestBenchmark"
-    condition: !noBenchmark
 
     consoleApplication: true
     type: base.concat(["autotest"])

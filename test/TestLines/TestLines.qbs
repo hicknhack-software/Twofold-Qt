@@ -1,6 +1,5 @@
 CppApplication {
     name: "TestLines"
-    condition: !noTest
 
     consoleApplication: true
     type: base.concat(["autotest"])
