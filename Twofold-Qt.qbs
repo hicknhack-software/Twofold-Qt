@@ -18,7 +18,6 @@ Project {
     property bool noLibInstallDirTargetOs: false
     // Don't put the architecture in the lib install directory e. g. "lib/windows{-x86_64}/"
     property bool noLibInstallDirArchitecture: false
-
     // Relative path where to install all library relevant files like header and libraries.
     property string installPrefix: ""
 
@@ -33,6 +32,14 @@ Project {
         filePath: "example/example.qbs"
     }
     SubProject {
+        Properties {
+            noTargetNameCompiler: parent.noTargetNameCompiler
+            noTargetNameBuildVariant: parent.noTargetNameBuildVariant
+            noLibInstallDirTargetOs: parent.noLibInstallDirTargetOs
+            noLibInstallDirArchitecture: parent.noLibInstallDirArchitecture
+            installPrefix: parent.installPrefix
+        }
+
         filePath: "src/src.qbs"
     }
     SubProject {

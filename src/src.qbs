@@ -1,6 +1,12 @@
 import NameUtils
 
 StaticLibrary {
+    property bool noTargetNameCompiler: false
+    property bool noTargetNameBuildVariant: false
+    property bool noLibInstallDirTargetOs: false
+    property bool noLibInstallDirArchitecture: false
+    property string installPrefix: ""
+
     name: "Twofold"
     targetName: NameUtils.libTargetName(cpp, qbs, "twofold", noTargetNameCompiler, noTargetNameBuildVariant)
     version: "1.0.0"
