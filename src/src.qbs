@@ -19,7 +19,7 @@ StaticLibrary {
     Depends { name: "SourceMap" }
 
     Export {
-        Depends { name: "Qt.script" }
+        Depends { name: "Qt.qml" }
         Depends { name: "SourceMap" }
         Depends { name: "cpp" }
         cpp.cxxLanguageVersion: "c++20"
