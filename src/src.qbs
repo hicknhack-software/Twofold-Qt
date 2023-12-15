@@ -86,7 +86,7 @@ StaticLibrary {
         name: "Install"
 
         qbs.install: true
-        qbs.installPrefix: project.installPrefix
+        qbs.installPrefix: product.installPrefix
 
         Group {
             name: "Header"
