@@ -5,6 +5,20 @@ StaticLibrary {
     targetName: NameUtils.libTargetName(cpp, qbs, "twofold", noTargetNameCompiler, noTargetNameBuildVariant)
     version: "1.0.0"
 
+    Depends { name: "cpp" }
+    cpp.includePaths: [ "./" ]
+
+    Depends { name: "Qt.script" }
+    Depends { name: "SourceMap" }
+
+    Export {
+        Depends { name: "Qt.script" }
+        Depends { name: "SourceMap" }
+
+        Depends { name: "cpp" }
+        cpp.includePaths: [ "./" ]
+    }
+
     files: [
         "Twofold/Engine.cpp",
         "Twofold/MessageHandler.cpp",
@@ -68,12 +82,6 @@ StaticLibrary {
         fileTags: [ "main-header"]
     }
 
-    Depends { name: "cpp" }
-    cpp.includePaths: [ "src/" ]
-
-    Depends { name: "Qt.script" }
-    Depends { name: "SourceMap" }
-
     Group {
         name: "Install"
 
@@ -96,6 +104,7 @@ StaticLibrary {
     Group {
         name: "Other files"
 
+        prefix: "../"
         files: [
             ".buildbot.yml",
             ".gitmodules",
@@ -105,13 +114,5 @@ StaticLibrary {
             "NOTICE",
             "README.md",
         ]
-    }
-
-    Export {
-        Depends { name: "Qt.script" }
-        Depends { name: "SourceMap" }
-
-        Depends { name: "cpp" }
-        cpp.includePaths: [ "src/" ]
     }
 }
