@@ -14,7 +14,7 @@ StaticLibrary {
     Depends { name: "cpp" }
     cpp.includePaths: [ "./" ]
 
-    Depends { name: "Qt.script" }
+    Depends { name: "Qt.qml" }
     Depends { name: "SourceMap" }
 
     Export {
