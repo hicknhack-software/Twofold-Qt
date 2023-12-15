@@ -1,6 +1,5 @@
 CppApplication {
     name: "BasicUsage"
-    condition: !noExample
     consoleApplication: true
 
     Depends { name: "Twofold" }

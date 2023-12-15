@@ -29,16 +29,18 @@ Project {
     ]
 
     SubProject {
+        condition: !noExample
+        filePath: "example/example.qbs"
+    }
+    SubProject {
         filePath: "src/src.qbs"
     }
-
-    references: [
-        "vendor/vendor.qbs",
-        "example/example.qbs",
-    ]
-
     SubProject {
         condition: !noTest
         filePath: "test/test.qbs"
+    }
+    SubProject {
+        condition: !noVendor
+        filePath: "vendor/vendor.qbs"
     }
 }
