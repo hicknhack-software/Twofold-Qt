@@ -24,7 +24,7 @@ Project {
     // Relative path where to install all library relevant files like header and libraries.
     property string installPrefix: ""
 
-    minimumQbsVersion: "1.6"
+    minimumQbsVersion: "2.2.1"
 
     qbsSearchPaths: [
         "qbs/",
