@@ -39,15 +39,25 @@ Project {
             noLibInstallDirArchitecture: parent.noLibInstallDirArchitecture
             installPrefix: parent.installPrefix
         }
-
         filePath: "src/src.qbs"
     }
     SubProject {
         condition: !noTest
+        Properties {
+            noBenchmark: parent.noBenchmark
+        }
         filePath: "test/test.qbs"
     }
     SubProject {
         condition: !noVendor
+        Properties {
+            noTest: parent.noTest
+            noTargetNameCompiler: parent.noTargetNameCompiler
+            noTargetNameBuildVariant: parent.noTargetNameBuildVariant
+            noLibInstallDirTargetOs: parent.noLibInstallDirTargetOs
+            noLibInstallDirArchitecture: parent.noLibInstallDirArchitecture
+            installPrefix: parent.installPrefix
+        }
         filePath: "vendor/vendor.qbs"
     }
 }
