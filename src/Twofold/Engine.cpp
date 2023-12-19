@@ -24,6 +24,7 @@
 #include "Twofold/intern/find_last.h"
 
 #include <QJSEngine>
+#include <QString>
 
 #include <vector>
 
@@ -32,26 +33,48 @@ using namespace intern;
 
 namespace {
 
-BacktraceFilePositionList generateExceptionCallerStack(const PreparedTemplate &preparedTemplate, const QStringList &backtrace)
+BacktraceFilePositionList generateExceptionCallerStack(const PreparedTemplate &preparedTemplate, const QStringList &exceptionStackTrace)
 {
-    BacktraceFilePositionList callerStack;
-    for (const auto& traceLine : backtrace) {
-        // traceline format: "<function>() at <line>"
-        auto lineBegin = traceLine.begin();
-        const auto end = traceLine.end();
-        lineBegin = find_last(lineBegin, end, QChar(' '));
-        const auto lineString = toQString(lineBegin, end);
+    using namespace Qt::StringLiterals;
 
-        bool convertSuccesful = false;
-        const int line = lineString.toInt(&convertSuccesful);
-        const int column = 1;
-        if (convertSuccesful && (line > 0)) {
-            const SourceMap::FilePosition position = SourceMap::getOriginalPositionFromGenerated(preparedTemplate.sourceMap, {line, column});
-            if (callerStack.empty() || (callerStack.back() != position)) {
-                const auto functionEnd = std::find(traceLine.begin(), end, QChar('('));
-                const auto functionString = toQString(traceLine.begin(), functionEnd);
-                callerStack.push_back({functionString, position});
-            }
+    BacktraceFilePositionList callerStack;
+    // NOTE(Lathan): stackframe message format: <function>:<line>:<column>:<filename>
+    // NOTE(Lathan): E.g. for native functions, function name and file name can be empty and line number and column
+    // can be -1
+    for (const auto& frameMsg : exceptionStackTrace) {
+        const QStringList msgParts = frameMsg.split(':', Qt::KeepEmptyParts);
+        Q_ASSERT(msgParts.size() == 4);
+        static constexpr qsizetype functionIndex{0};
+        static constexpr qsizetype lineIndex{1};
+        static constexpr qsizetype columnIndex{2};
+        static constexpr qsizetype filenameIndex{3};
+        const QString functionString = std::invoke([](const QString &functionString) {
+            return not functionString.isEmpty() ? functionString : u"<unknown function>"_s;
+        }, msgParts[functionIndex]);
+        const QString lineString = msgParts[lineIndex];
+        const QString columnString = msgParts[columnIndex];
+        const QString filename = msgParts[filenameIndex];
+        // NOTE(Lathan): The sourcemap knows the filenames.
+        Q_UNUSED(filename);
+
+        const std::optional<int> line = std::invoke([](const QString& valueString){
+            bool ok{false};
+            const int value = valueString.toInt(&ok);
+            return (ok && value > 0) ? std::optional{value} : std::nullopt;
+        }, lineString);
+        const std::optional<int> column = std::invoke([](const QString& valueString){
+            bool ok{false};
+            int value = valueString.toInt(&ok);
+            if (ok) value = std::max(1, value);
+            return ok ? std::optional{value} : std::nullopt;
+        }, columnString);
+
+        if (line && column) {
+            SourceMap::Position position {*line, *column};
+            const SourceMap::FilePosition filePosition = SourceMap::getOriginalPositionFromGenerated(preparedTemplate.sourceMap, position);
+            if (callerStack.empty() || (callerStack.back() != filePosition)) {
+                    callerStack.push_back({functionString, filePosition});
+                }
         }
     }
     return callerStack;
@@ -70,13 +93,16 @@ public:
 
     Target execPrepared(const PreparedTemplate &preparedTemplate, const QVariantHash &inputs)
     {
+        using namespace Qt::StringLiterals;
+
         QtScriptTargetBuilderApi scriptTargetBuilder(preparedTemplate.originPositions);
         defineInputs(inputs);
         defineTemplateApi(scriptTargetBuilder);
 
-        QJSValue resultValue = m_scriptEngine.evaluate(preparedTemplate.javascript);
-        if (resultValue.isError()) {
-            showError(resultValue, preparedTemplate);
+        QStringList exceptionStackTrace;
+        QJSValue resultValue = m_scriptEngine.evaluate(preparedTemplate.javascript, u""_s, 1, &exceptionStackTrace);
+        if (not exceptionStackTrace.isEmpty()) {
+            showError(resultValue, preparedTemplate, exceptionStackTrace);
         }
 
         undefineTemplateApi();
@@ -91,14 +117,11 @@ public:
     }
 
 private:
-    void showError(const QJSValue& resultValue, const PreparedTemplate &preparedTemplate)
+    void showError(const QJSValue& maybeError, const PreparedTemplate &preparedTemplate, const QStringList& exceptionStackTrace)
     {
-        //const QStringList backtrace = m_scriptEngine.uncaughtExceptionBacktrace();
-        BacktraceFilePositionList positionStack = {}; //generateExceptionCallerStack(preparedTemplate, backtrace);
-        // const int line = m_scriptEngine.uncaughtExceptionLineNumber();
-        // const int column = 1; // TODO: use agent and stack!
-        // positionStack.insert(positionStack.begin(), {QString(), SourceMap::getOriginalPositionFromGenerated(preparedTemplate.sourceMap, {line, column})});
-        const QString text = "Uncaught Exception: " + resultValue.toString();
+        using namespace Qt::StringLiterals;
+        BacktraceFilePositionList positionStack = generateExceptionCallerStack(preparedTemplate, exceptionStackTrace);
+        const QString text = u"Uncaught Exception: %1"_s.arg(maybeError.toString());
         m_messageHandler->javaScriptMessage(MessageType::Error, positionStack, text);
     }
 
