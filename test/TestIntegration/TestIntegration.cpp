@@ -27,6 +27,25 @@
 
 using namespace Twofold;
 
+class Object : public QObject {
+    Q_OBJECT
+    Q_PROPERTY(bool boolValue READ boolValue WRITE setBoolValue FINAL)
+    Q_PROPERTY(QString stringValue READ stringValue WRITE setStringValue FINAL)
+    Q_PROPERTY(int intValue READ intValue WRITE setIntValue FINAL)
+public:
+    bool boolValue() const { return m_boolValue; }
+    int intValue() const { return m_intValue; }
+    QString stringValue() const { return m_stringValue; }
+    void setBoolValue(bool newBoolValue) { m_boolValue = newBoolValue; }
+    void setIntValue(int newIntValue) { m_intValue = newIntValue; }
+    void setStringValue(const QString &newStringValue) { m_stringValue = newStringValue; }
+
+private:
+    bool m_boolValue;
+    QString m_stringValue;
+    int m_intValue;
+};
+
 class TestIntegration : public QObject
 {
     Q_OBJECT
@@ -45,11 +64,11 @@ void TestIntegration::testTarget_data()
     QTest::addColumn< QVariantHash >( "context" );
     QTest::addColumn< MessageCount >( "messageCount" );
 
-    QObject* qObject = new QObject();
+    auto* obj = new Object();
 
-    qObject->setProperty( "boolValue", true );
-    qObject->setProperty( "stringValue", "Text" );
-    qObject->setProperty( "intValue", 1 );
+    obj->setBoolValue(true);
+    obj->setStringValue("Text");
+    obj->setIntValue(1);
 
     QStringList qArray;
     qArray.append( "value1" );
@@ -58,7 +77,7 @@ void TestIntegration::testTarget_data()
 
     QVariantHash context;
 
-    context.insert( "qObject", QVariant::fromValue(qObject) );
+    context.insert( "qObject", QVariant::fromValue(obj) );
     context.insert( "qArray", qArray );
     context.insert( "boolValue", true );
     context.insert( "stringValue", "Text" );
