@@ -76,7 +76,7 @@ public:
 
         QJSValue resultValue = m_scriptEngine.evaluate(preparedTemplate.javascript);
         if (resultValue.isError()) {
-            showException(resultValue, preparedTemplate);
+            showError(resultValue, preparedTemplate);
         }
 
         undefineTemplateApi();
@@ -91,7 +91,7 @@ public:
     }
 
 private:
-    void showException(const QJSValue& resultValue, const PreparedTemplate &preparedTemplate)
+    void showError(const QJSValue& resultValue, const PreparedTemplate &preparedTemplate)
     {
         //const QStringList backtrace = m_scriptEngine.uncaughtExceptionBacktrace();
         BacktraceFilePositionList positionStack = {}; //generateExceptionCallerStack(preparedTemplate, backtrace);
