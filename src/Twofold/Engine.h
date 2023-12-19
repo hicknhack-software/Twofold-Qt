@@ -54,9 +54,6 @@ public:
     Engine(TextLoaderPtr textLoader, MessageHandlerPtr messageHandler);
     virtual ~Engine();
 
-
-    //void showTemplateSyntaxErrors(const PreparedTemplate &preparedTemplate) const;
-
     Target exec(const PreparedTemplate &preparedTemplate, const QVariantHash &inputs);
 
     PreparedTemplate prepare(const QString &templateName) const;

@@ -86,15 +86,6 @@ public:
         return { sourceMapText.sourceMap, sourceMapText.text };
     }
 
-    // void showSyntaxError(QScriptSyntaxCheckResult checkResult, const PreparedTemplate &preparedTemplate)
-    // {
-    //     const int line = checkResult.errorLineNumber();
-    //     const int column = checkResult.errorColumnNumber();
-    //     BacktraceFilePositionList position {{ QString(), SourceMap::getOriginalPositionFromGenerated(preparedTemplate.sourceMap, {line, column}) }};
-    //     const QString text = "Syntax Error: " + checkResult.errorMessage();
-    //     m_messageHandler->javaScriptMessage(MessageType::Error, position, text);
-    // }
-
     PreparedTemplateBuilder createPreparedBuilder() {
         return { m_messageHandler, m_textLoader };
     }
@@ -157,13 +148,6 @@ Engine::Engine(TextLoaderPtr textLoader, MessageHandlerPtr messageHandler)
 
 Engine::~Engine() = default;
 
-// void Engine::showTemplateSyntaxErrors(const PreparedTemplate &preparedTemplate) const
-// {
-//     auto checkResult = QScriptEngine::checkSyntax(preparedTemplate.javascript);
-//     if (checkResult.state() == QScriptSyntaxCheckResult::Error)
-//         m_private->showSyntaxError(checkResult, preparedTemplate);
-// }
-
 Target Engine::exec(const PreparedTemplate &preparedTemplate, const QVariantHash &inputs)
 {
     return m_private->execPrepared(preparedTemplate, inputs);
@@ -172,7 +156,6 @@ Target Engine::exec(const PreparedTemplate &preparedTemplate, const QVariantHash
 PreparedTemplate Engine::prepare(const QString &templateName) const
 {
     auto prepared = m_private->createPreparedBuilder().build(templateName);
-    //this->showTemplateSyntaxErrors(prepared);
     return prepared;
 }
 
