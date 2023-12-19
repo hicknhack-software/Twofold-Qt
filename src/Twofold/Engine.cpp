@@ -46,7 +46,7 @@ BacktraceFilePositionList generateExceptionCallerStack(const PreparedTemplate &p
         const int line = lineString.toInt(&convertSuccesful);
         const int column = 1;
         if (convertSuccesful && (line > 0)) {
-            const auto position = SourceMap::getOriginalPositionFromGenerated(preparedTemplate.sourceMap, {line, column});
+            const SourceMap::FilePosition position = SourceMap::getOriginalPositionFromGenerated(preparedTemplate.sourceMap, {line, column});
             if (callerStack.empty() || (callerStack.back() != position)) {
                 const auto functionEnd = std::find(traceLine.begin(), end, QChar('('));
                 const auto functionString = toQString(traceLine.begin(), functionEnd);
@@ -82,7 +82,7 @@ public:
         undefineTemplateApi();
         undefineInputs(inputs);
 
-        const auto sourceMapText = scriptTargetBuilder.build();
+        const SourceMapText sourceMapText = scriptTargetBuilder.build();
         return { sourceMapText.sourceMap, sourceMapText.text };
     }
 
