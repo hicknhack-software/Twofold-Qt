@@ -14,5 +14,6 @@ Project {
         "TestIntegration/TestIntegration.qbs",
         "TestJavaScript/TestJavaScript.qbs",
         "TestLines/TestLines.qbs",
+        "TestStacktrace/TestStacktrace.qbs"
     ]
 }
