@@ -32,7 +32,6 @@ StaticLibrary {
         "Twofold/MessageHandlerChain.cpp",
         "Twofold/PathTextFileLoader.cpp",
         "Twofold/PreparedTemplateBuilder.cpp",
-        "Twofold/SourceMap.cpp",
         "Twofold/intern/LineProcessor.cpp",
         "Twofold/intern/PreparedJavascriptBuilder.cpp",
         "Twofold/intern/QtScriptTargetBuilderApi.cpp",
@@ -62,7 +61,6 @@ StaticLibrary {
         "Twofold/intern/Line/Interpolation.h",
         "Twofold/intern/Line/Passtrough.h",
         "Twofold/intern/Javascript/BraceCounter.h",
-
         "Twofold/Engine.h",
         "Twofold/BacktraceFilePosition.h",
         "Twofold/MessageHandler.h",

@@ -44,9 +44,4 @@ using SourceMapping = SourceMap::Mapping< ExtInterpolation, ExtCaller >;
 using SourceData = SourceMapping::Data;
 using SourceEntry = SourceMapping::Entry;
 
-#ifdef _MSC_VER
-extern template SourceEntry;
-extern template SourceMapping;
-#endif
-
 } // namespace Twofold
