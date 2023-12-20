@@ -27,10 +27,10 @@ Project {
         "qbs/",
     ]
 
-    // SubProject {
-    //     condition: !noExample
-    //     filePath: "example/example.qbs"
-    // }
+    SubProject {
+        condition: !noExample
+        filePath: "example/example.qbs"
+    }
     SubProject {
         Properties {
             noTargetNameCompiler: parent.noTargetNameCompiler
@@ -41,13 +41,13 @@ Project {
         }
         filePath: "src/src.qbs"
     }
-    // SubProject {
-    //     condition: !noTest
-    //     Properties {
-    //         noBenchmark: parent.noBenchmark
-    //     }
-    //     filePath: "test/test.qbs"
-    // }
+    SubProject {
+        condition: !noTest
+        Properties {
+            noBenchmark: parent.noBenchmark
+        }
+        filePath: "test/test.qbs"
+    }
     SubProject {
         condition: !noVendor
         Properties {
