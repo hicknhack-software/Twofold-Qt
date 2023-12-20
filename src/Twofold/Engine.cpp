@@ -102,7 +102,7 @@ public:
         QStringList exceptionStackTrace;
         QJSValue resultValue = m_scriptEngine.evaluate(preparedTemplate.javascript, u""_s, 1, &exceptionStackTrace);
         if (not exceptionStackTrace.isEmpty()) {
-            showError(resultValue, preparedTemplate, exceptionStackTrace);
+            showException(resultValue, preparedTemplate, exceptionStackTrace);
         }
 
         undefineTemplateApi();
@@ -117,7 +117,7 @@ public:
     }
 
 private:
-    void showError(const QJSValue& maybeError, const PreparedTemplate &preparedTemplate, const QStringList& exceptionStackTrace)
+    void showException(const QJSValue& maybeError, const PreparedTemplate &preparedTemplate, const QStringList& exceptionStackTrace)
     {
         using namespace Qt::StringLiterals;
         BacktraceFilePositionList positionStack = generateExceptionCallerStack(preparedTemplate, exceptionStackTrace);
