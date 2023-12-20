@@ -34,23 +34,27 @@ void MessageHandlerChain::remove(MessageHandlerPtr handler)
 
 void MessageHandlerChain::message(Type type, const Text &text)
 {
-    for(auto handler : m_handlers) handler->message(type, text);
+    for(MessageHandlerPtr handler : m_handlers) {
+        handler->message(type, text);
+    }
 }
 
 void MessageHandlerChain::templateMessage(Type type,
                                           const Position &position,
                                           const Text &text)
 {
-    for(auto handler : m_handlers)
+    for(MessageHandlerPtr handler : m_handlers) {
         handler->templateMessage(type, position, text);
+    }
 }
 
 void MessageHandlerChain::javaScriptMessage(Type type,
                                             const PositionStack &postionStack,
                                             const Text &text)
 {
-    for(auto handler : m_handlers)
+    for(MessageHandlerPtr handler : m_handlers) {
         handler->javaScriptMessage(type, postionStack, text);
+    }
 }
 
 } // namespace Twofold
