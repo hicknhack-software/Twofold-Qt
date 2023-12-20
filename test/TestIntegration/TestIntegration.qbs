@@ -8,6 +8,8 @@ CppApplication {
     Depends { name: "Qt.testlib" }
 
     files: [
+        "FakeMessageHandler.h",
+        "FakeTextLoader.h",
         "TestIntegration.cpp"
     ]
 }
