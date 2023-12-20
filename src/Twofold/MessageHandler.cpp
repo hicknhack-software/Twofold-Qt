@@ -26,18 +26,19 @@ namespace Twofold {
 
 void MessageHandler::message(Type type, const Text &text)
 {
+    using namespace Qt::StringLiterals;
     switch( type ) {
     case Type::Info:
-        ::qDebug() << "Info:" << text;
+        ::qDebug().noquote() << u"Info:"_s << text;
         break;
     case Type::Warning:
-        ::qDebug() << "Warning:" << text;
+        ::qDebug().noquote() << u"Warning:"_s << text;
         break;
     case Type::Error:
-        ::qDebug() << "Error:" << text;
+        ::qDebug().noquote() << u"Error:"_s << text;
         break;
     default:
-        ::qDebug() << "Unknown: " << text;
+        ::qDebug().noquote() << u"Unknown:"_s << text;
     }
 }
 
@@ -45,9 +46,8 @@ void MessageHandler::templateMessage(Type type,
                                      const Position &position,
                                      const Text &text)
 {
-    const QString composed =
-            QString("%1:%2 Template Error: %3")
-            .arg(position.name).arg(position.line).arg(text);
+    using namespace Qt::StringLiterals;
+    const auto composed = u"%1:%2 Template Error: %3"_s.arg(position.name).arg(position.line).arg(text);
     this->message(type, composed);
 }
 
@@ -55,11 +55,11 @@ void MessageHandler::javaScriptMessage(Type type,
                                        const PositionStack &positionStack,
                                        const Text &text)
 {
+    using namespace Qt::StringLiterals;
     QStringList lines;
-    lines << QString("Scripting Error: %4").arg(text);
-    for (const auto &position : positionStack) {
-        lines << QString("  from %1:%2[%3]")
-                 .arg(position.name).arg(position.line).arg(position.column);
+    lines << u"Scripting Error: %4"_s.arg(text);
+    for (const BacktraceFilePosition &position : positionStack) {
+        lines << u"  from %1:%2[%3]"_s.arg(position.name).arg(position.line).arg(position.column);
     }
     this->message(type, lines.join('\n'));
 }
