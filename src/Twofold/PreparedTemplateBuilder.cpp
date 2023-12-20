@@ -82,6 +82,8 @@ public:
     const LineProcessor lineProcessor;
 };
 
+PreparedTemplateBuilder::~PreparedTemplateBuilder() = default;
+
 PreparedTemplateBuilder::PreparedTemplateBuilder(MessageHandlerPtr messageHandler, TextLoaderPtr textLoader)
     : m_private(new Private(messageHandler, textLoader))
 {
@@ -95,11 +97,6 @@ PreparedTemplateBuilder::PreparedTemplateBuilder(TextLoaderPtr textLoader, Messa
 PreparedTemplate PreparedTemplateBuilder::build(const QString &name) const
 {
     return m_private->build(name);
-}
-
-void PreparedTemplateBuilder::PrivateDeleter::operator()(PreparedTemplateBuilder::Private *p) const
-{
-    delete p;
 }
 
 } // namespace Twofold

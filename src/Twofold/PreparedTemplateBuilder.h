@@ -52,15 +52,13 @@ class PreparedTemplateBuilder
 public:
     PreparedTemplateBuilder(MessageHandlerPtr messageHandler, TextLoaderPtr textLoader);
     PreparedTemplateBuilder(TextLoaderPtr textLoader, MessageHandlerPtr messageHandler);
+    virtual ~PreparedTemplateBuilder();
 
     PreparedTemplate build(const QString &name) const;
 
 private:
     class Private;
-    struct PrivateDeleter {
-        void operator() (Private* p) const;
-    };
-    const std::unique_ptr<Private, PrivateDeleter> m_private;
+    const std::unique_ptr<Private> m_private;
 };
 
 } // namespace Twofold
