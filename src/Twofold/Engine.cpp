@@ -121,7 +121,7 @@ private:
     {
         using namespace Qt::StringLiterals;
         BacktraceFilePositionList positionStack = generateExceptionCallerStack(preparedTemplate, exceptionStackTrace);
-        const QString text = u"Uncaught Exception: %1"_s.arg(maybeError.toString());
+        const QString text = maybeError.isError() ? maybeError.toString() : u"Exception: %1"_s.arg(maybeError.toString());
         m_messageHandler->javaScriptMessage(MessageType::Error, positionStack, text);
     }
 
