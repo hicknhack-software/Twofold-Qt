@@ -142,7 +142,7 @@ private:
     void defineInputs(const QVariantHash &inputs)
     {
         QJSValue global = m_scriptEngine.globalObject();
-        for (auto key : inputs.keys()) {
+        for (const auto& [key, _] : inputs.asKeyValueRange()) {
             global.setProperty( key, m_scriptEngine.toScriptValue(inputs[key]) );
         }
     }
@@ -150,7 +150,7 @@ private:
     void undefineInputs(const QVariantHash &inputs)
     {
         QJSValue global = m_scriptEngine.globalObject();
-        for (auto key : inputs.keys()) {
+        for (const auto& [key, _] : inputs.asKeyValueRange()) {
             global.setProperty(key, QJSValue(QJSValue::UndefinedValue));
         }
     }
