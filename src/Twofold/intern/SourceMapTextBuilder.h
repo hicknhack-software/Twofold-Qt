@@ -72,16 +72,16 @@ class SourceMapTextBuilder
 public:
     SourceMapText build() const;
 
-    inline bool isBlankLine() const { return m_textBuilder.isBlankLine(); }
-    inline const QString& indentation() const { return m_textBuilder.indentation(); }
+    inline auto isBlankLine() const -> bool { return m_textBuilder.isBlankLine(); }
+    inline auto indentation() const -> const QString& { return m_textBuilder.indentation(); }
     inline void setIndentation(const QString &indent) { m_textBuilder.setIndentation(indent); }
 
     void pushCaller(const FileLineColumnPosition &originPosition);
     void popCaller();
 
-    SourceMapTextBuilder& operator << (const OriginText& originText);
-    SourceMapTextBuilder& operator << (const OriginNewLine &originNewLine);
-    SourceMapTextBuilder& operator << (const NewLine);
+    auto operator<<(const OriginText& originText) -> SourceMapTextBuilder&;
+    auto operator<<(const OriginNewLine &originNewLine) -> SourceMapTextBuilder&;
+    auto operator<<(const NewLine) -> SourceMapTextBuilder&;
 
 private:
     TextBuilder m_textBuilder;

@@ -27,9 +27,9 @@ namespace intern {
 
 namespace {
 
-const LineProcessor::Function& findProcessor(const LineProcessor::Map& map,
-                                             const LineProcessor::Function& fallback,
-                                             const FileLine& line)
+auto findProcessor(const LineProcessor::Map &map,
+                   const LineProcessor::Function &fallback,
+                   const FileLine &line) -> const LineProcessor::Function &
 {
     if (line.firstNonSpace != line.end) {
         auto it = map.find(*line.firstNonSpace);

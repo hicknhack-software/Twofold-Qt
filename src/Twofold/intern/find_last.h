@@ -25,13 +25,13 @@ namespace intern {
 
 /// @returns a reverse iterator for a forward iterator
 template<typename It>
-std::reverse_iterator<It> revit(It it) {
+auto revit(It it) -> std::reverse_iterator<It> {
     return std::reverse_iterator<It>(it);
 }
 
 /// @returns the forward iterator for a reverse iterator
 template<typename It>
-It fwdit(std::reverse_iterator<It> rit) {
+auto fwdit(std::reverse_iterator<It> rit) -> It {
     return rit.base();
 }
 
@@ -42,7 +42,7 @@ It fwdit(std::reverse_iterator<It> rit) {
  * works like std::find
  */
 template<typename It, typename Type>
-It find_last(It begin, It eend, const Type& value) {
+auto find_last(It begin, It eend, const Type& value) -> It {
     return fwdit(std::find(revit(eend), revit(begin), value));
 }
 

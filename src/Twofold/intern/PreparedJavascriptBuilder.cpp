@@ -28,7 +28,7 @@ namespace intern {
 
 namespace {
 
-QString escapeForJavascriptString(const TextSpan& source)
+auto escapeForJavascriptString(const TextSpan& source) -> QString
 {
     QString out;
     out.reserve(static_cast<int>(std::distance(source.begin, source.end)));
@@ -46,10 +46,11 @@ QString escapeForJavascriptString(const TextSpan& source)
     return out;
 }
 
-OriginText buildOriginText(FileLineColumnPosition origin,
+auto buildOriginText(FileLineColumnPosition origin,
                            int columnOffset,
                            TextSpan span,
                            Interpolation interpolation = Interpolation::None)
+    -> OriginText
 {
     const FileLineColumnPosition originPosition { origin.name, {origin.line, origin.column + columnOffset} };
     return OriginText { originPosition, span, interpolation };
@@ -57,19 +58,19 @@ OriginText buildOriginText(FileLineColumnPosition origin,
 
 } // namespace
 
-PreparedJavascript PreparedJavascriptBuilder::build() const
+auto PreparedJavascriptBuilder::build() const -> PreparedJavascript
 {
     auto sourceMapText = m_sourceMapBuilder.build();
     return PreparedJavascript { sourceMapText.text, sourceMapText.sourceMap, m_originPositions };
 }
 
-PreparedJavascriptBuilder &PreparedJavascriptBuilder::operator <<(const OriginScript &script)
+auto PreparedJavascriptBuilder::operator <<(const OriginScript &script) -> PreparedJavascriptBuilder &
 {
     m_sourceMapBuilder << script.text << NewLine();
     return *this;
 }
 
-PreparedJavascriptBuilder &PreparedJavascriptBuilder::operator <<(const OriginScriptExpression &expr)
+auto PreparedJavascriptBuilder::operator <<(const OriginScriptExpression &expr) -> PreparedJavascriptBuilder &
 {
     static QString s_prefix("_template.pushPartIndent(%1);_template.appendExpression(");
     static QString s_postfix(", %1);_template.popPartIndent();"); // origin index
@@ -90,7 +91,7 @@ PreparedJavascriptBuilder &PreparedJavascriptBuilder::operator <<(const OriginSc
     return *this;
 }
 
-PreparedJavascriptBuilder &PreparedJavascriptBuilder::operator<<(const OriginTarget &target)
+auto PreparedJavascriptBuilder::operator<<(const OriginTarget &target) -> PreparedJavascriptBuilder &
 {
     static QString s_prefix("_template.append(\"");
     static QString s_postfix("\", %1);"); // origin index
@@ -110,7 +111,7 @@ PreparedJavascriptBuilder &PreparedJavascriptBuilder::operator<<(const OriginTar
     return *this;
 }
 
-PreparedJavascriptBuilder &PreparedJavascriptBuilder::operator <<(const IndentTargetPart &indent)
+auto PreparedJavascriptBuilder::operator <<(const IndentTargetPart &indent) -> PreparedJavascriptBuilder &
 {
     static QString s_prefix("_template.indentPart(\"");
     static QString s_postfix("\", %1);"); // origin index
@@ -127,7 +128,7 @@ PreparedJavascriptBuilder &PreparedJavascriptBuilder::operator <<(const IndentTa
     return *this;
 }
 
-PreparedJavascriptBuilder &PreparedJavascriptBuilder::operator <<(const PushTargetIndentation &indent)
+auto PreparedJavascriptBuilder::operator <<(const PushTargetIndentation &indent) -> PreparedJavascriptBuilder &
 {
     static QString s_prefix("_template.pushIndentation(\"");
     static QString s_postfix("\", %1);"); // origin index
@@ -144,7 +145,7 @@ PreparedJavascriptBuilder &PreparedJavascriptBuilder::operator <<(const PushTarg
     return *this;
 }
 
-PreparedJavascriptBuilder &PreparedJavascriptBuilder::operator <<(const PopTargetIndentation &indent)
+auto PreparedJavascriptBuilder::operator <<(const PopTargetIndentation &indent) -> PreparedJavascriptBuilder &
 {
     static QString s_code("_template.popIndentation();");
 
@@ -153,7 +154,7 @@ PreparedJavascriptBuilder &PreparedJavascriptBuilder::operator <<(const PopTarge
     return *this;
 }
 
-PreparedJavascriptBuilder &PreparedJavascriptBuilder::operator <<(const TargetNewLine newLine)
+auto PreparedJavascriptBuilder::operator <<(const TargetNewLine newLine) -> PreparedJavascriptBuilder &
 {
     static const QString s_code("_template.newLine(%1);");
 
@@ -165,13 +166,13 @@ PreparedJavascriptBuilder &PreparedJavascriptBuilder::operator <<(const TargetNe
     return *this;
 }
 
-PreparedJavascriptBuilder &PreparedJavascriptBuilder::operator <<(const NewLine)
+auto PreparedJavascriptBuilder::operator <<(const NewLine) -> PreparedJavascriptBuilder &
 {
     m_sourceMapBuilder << NewLine();
     return *this;
 }
 
-size_t PreparedJavascriptBuilder::addOriginPosition(const FileLineColumnPosition &position)
+auto PreparedJavascriptBuilder::addOriginPosition(const FileLineColumnPosition &position) -> size_t
 {
     m_originPositions.push_back(position);
     return m_originPositions.size() - 1;

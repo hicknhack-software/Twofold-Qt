@@ -33,7 +33,7 @@ using namespace intern;
 
 namespace {
 
-BacktraceFilePositionList generateExceptionCallerStack(const PreparedTemplate &preparedTemplate, const QStringList &exceptionStackTrace)
+auto generateExceptionCallerStack(const PreparedTemplate &preparedTemplate, const QStringList &exceptionStackTrace) -> BacktraceFilePositionList
 {
     using namespace Qt::StringLiterals;
 
@@ -91,7 +91,7 @@ public:
     {
     }
 
-    Target execPrepared(const PreparedTemplate &preparedTemplate, const QVariantHash &inputs)
+    auto execPrepared(const PreparedTemplate &preparedTemplate, const QVariantHash &inputs) -> Target
     {
         using namespace Qt::StringLiterals;
 
@@ -112,7 +112,7 @@ public:
         return { sourceMapText.sourceMap, sourceMapText.text };
     }
 
-    PreparedTemplateBuilder createPreparedBuilder() {
+    auto createPreparedBuilder() -> PreparedTemplateBuilder {
         return { m_messageHandler, m_textLoader };
     }
 
@@ -171,18 +171,18 @@ Engine::Engine(TextLoaderPtr textLoader, MessageHandlerPtr messageHandler)
 
 Engine::~Engine() = default;
 
-Target Engine::exec(const PreparedTemplate &preparedTemplate, const QVariantHash &inputs)
+auto Engine::exec(const PreparedTemplate &preparedTemplate, const QVariantHash &inputs) -> Target
 {
     return m_private->execPrepared(preparedTemplate, inputs);
 }
 
-PreparedTemplate Engine::prepare(const QString &templateName) const
+auto Engine::prepare(const QString &templateName) const -> PreparedTemplate
 {
     auto prepared = m_private->createPreparedBuilder().build(templateName);
     return prepared;
 }
 
-Target Engine::execTemplateName(const QString &templateName, const QVariantHash &inputs)
+auto Engine::execTemplateName(const QString &templateName, const QVariantHash &inputs) -> Target
 {
     auto prepared = this->prepare(templateName);
     return this->exec(prepared, inputs);

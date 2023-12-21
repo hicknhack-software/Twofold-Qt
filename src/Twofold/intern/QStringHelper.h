@@ -23,7 +23,7 @@
 namespace Twofold {
 namespace intern {
 
-inline QString toQString(const QString::const_iterator &begin, const QString::const_iterator& end) {
+inline auto toQString(const QString::const_iterator &begin, const QString::const_iterator& end) -> QString {
     return QString(begin, std::distance(begin, end));
 }
 

@@ -21,7 +21,7 @@
 namespace Twofold {
 namespace intern {
 
-SourceMapText SourceMapTextBuilder::build() const
+auto SourceMapTextBuilder::build() const -> SourceMapText
 {
     return SourceMapText { SourceMapping(m_sourceData), m_textBuilder.build() };
 }
@@ -39,7 +39,7 @@ void SourceMapTextBuilder::popCaller()
     m_callerIndexStack.pop_back();
 }
 
-SourceMapTextBuilder &SourceMapTextBuilder::operator <<(const OriginText &originText)
+auto SourceMapTextBuilder::operator<<(const OriginText &originText) -> SourceMapTextBuilder &
 {
     if (originText.span.begin == originText.span.end)
         return *this; // empty span would create double entries
@@ -68,7 +68,7 @@ SourceMapTextBuilder &SourceMapTextBuilder::operator <<(const OriginText &origin
     return *this;
 }
 
-SourceMapTextBuilder &SourceMapTextBuilder::operator <<(const OriginNewLine &originNewLine)
+auto SourceMapTextBuilder::operator<<(const OriginNewLine &originNewLine) -> SourceMapTextBuilder &
 {
     const auto callerIndex = m_callerIndexStack.empty() ? CallerIndex{} : m_callerIndexStack.back();
     const auto column = isBlankLine() ? std::max(1, originNewLine.origin.column - 1) : originNewLine.origin.column;
@@ -80,7 +80,7 @@ SourceMapTextBuilder &SourceMapTextBuilder::operator <<(const OriginNewLine &ori
     return *this;
 }
 
-SourceMapTextBuilder &SourceMapTextBuilder::operator <<(const NewLine)
+auto SourceMapTextBuilder::operator<<(const NewLine) -> SourceMapTextBuilder &
 {
     m_textBuilder << NewLine();
     return *this;

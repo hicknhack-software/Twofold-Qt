@@ -51,28 +51,28 @@ class TextBuilder
 {
 public:
     /// retrieve the build text
-    Text build() const;
+    auto build() const -> Text;
 
     /// returns the current indentation
-    const QString& indentation() const;
+    auto indentation() const -> const QString&;
 
     /// returns the current line
-    int line() const;
+    auto line() const -> int;
 
     /// returns the current column
-    int column() const;
+    auto column() const -> int;
 
     /// returns true, if no text is on the current line
-    bool isBlankLine() const;
+    auto isBlankLine() const -> bool;
 
     /// change the indentation for the next line
     void setIndentation(const QString &indent);
 
     /// add part of a line
-    TextBuilder& operator<<(const TextSpan& textSpan);
+    auto operator<<(const TextSpan& textSpan) -> TextBuilder&;
 
     /// explicitly add a line break
-    TextBuilder& operator<<(NewLine);
+    auto operator<<(NewLine) -> TextBuilder&;
 
 private:
     QString m_buffer;

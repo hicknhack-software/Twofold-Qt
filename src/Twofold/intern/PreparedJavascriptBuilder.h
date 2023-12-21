@@ -64,23 +64,23 @@ class PreparedJavascriptBuilder
 public:
     PreparedJavascript build() const;
 
-    inline const QString& indentation() const { return m_sourceMapBuilder.indentation(); }
+    inline auto indentation() const -> const QString& { return m_sourceMapBuilder.indentation(); }
     inline void setIndentation(const QString &indent) { m_sourceMapBuilder.setIndentation(indent); }
 
-    PreparedJavascriptBuilder &operator <<(const OriginScript& script);
-    PreparedJavascriptBuilder &operator <<(const OriginScriptExpression& expr);
-    PreparedJavascriptBuilder &operator <<(const OriginTarget& target);
+    auto operator<<(const OriginScript& script) -> PreparedJavascriptBuilder &;
+    auto operator<<(const OriginScriptExpression& expr) -> PreparedJavascriptBuilder &;
+    auto operator<<(const OriginTarget& target) -> PreparedJavascriptBuilder &;
 
-    PreparedJavascriptBuilder &operator <<(const IndentTargetPart& indent);
-    PreparedJavascriptBuilder &operator <<(const PushTargetIndentation& indent);
-    PreparedJavascriptBuilder &operator <<(const PopTargetIndentation &indent);
+    auto operator<<(const IndentTargetPart& indent) -> PreparedJavascriptBuilder &;
+    auto operator<<(const PushTargetIndentation& indent) -> PreparedJavascriptBuilder &;
+    auto operator<<(const PopTargetIndentation &indent) -> PreparedJavascriptBuilder &;
 
-    PreparedJavascriptBuilder &operator <<(const TargetNewLine newLine);
+    auto operator<<(const TargetNewLine newLine) -> PreparedJavascriptBuilder &;
 
-    PreparedJavascriptBuilder &operator <<(const NewLine);
+    auto operator<<(const NewLine) -> PreparedJavascriptBuilder &;
 
 private:
-    size_t addOriginPosition(const FileLineColumnPosition &position);
+    auto addOriginPosition(const FileLineColumnPosition &position) -> size_t;
 
 private:
     SourceMapTextBuilder m_sourceMapBuilder;

@@ -15,7 +15,7 @@ namespace {
 #define SINGLE_QUOTE '\''
 #define BACK_SLASH '\\'
 
-inline bool isCurlyOrQuote(QChar chr)
+inline auto isCurlyOrQuote(QChar chr) -> bool
 {
     switch (chr.unicode())
     {
@@ -29,7 +29,7 @@ inline bool isCurlyOrQuote(QChar chr)
     }
 }
 
-inline bool isBraceOrQuote(QChar chr)
+inline auto isBraceOrQuote(QChar chr) -> bool
 {
     switch (chr.unicode())
     {
@@ -47,7 +47,7 @@ inline bool isBraceOrQuote(QChar chr)
     }
 }
 
-QString::const_iterator findQuoteEnd(QString::const_iterator it, const QString::const_iterator end)
+auto findQuoteEnd(QString::const_iterator it, const QString::const_iterator end) -> QString::const_iterator
 {
     QChar quote = *it;
     it++;
@@ -64,8 +64,7 @@ QString::const_iterator findQuoteEnd(QString::const_iterator it, const QString::
 
 } // namespace
 
-int
-BraceCounter::countExpressionDepth(It it, const It end, int depth)
+auto BraceCounter::countExpressionDepth(It it, const It end, int depth) -> int
 {
     while (it != end) {
         auto event = std::find_if(it, end, isBraceOrQuote);
@@ -92,8 +91,7 @@ BraceCounter::countExpressionDepth(It it, const It end, int depth)
     return depth;
 }
 
-BraceCounter::It
-BraceCounter::findExpressionEnd(It it, It end)
+auto BraceCounter::findExpressionEnd(It it, It end) -> BraceCounter::It
 {
     int depth = 0;
     while (it != end) {

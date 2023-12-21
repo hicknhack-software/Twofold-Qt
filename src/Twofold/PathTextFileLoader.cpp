@@ -32,7 +32,7 @@ void PathTextFileLoader::addPath(const QString &path)
     m_pathes.insert(m_pathes.begin(), path);
 }
 
-const QString PathTextFileLoader::absolutePath(const QString &name) const
+auto PathTextFileLoader::absolutePath(const QString &name) const -> const QString
 {
     for (const auto& path : m_pathes) {
         const QString fullPath = QDir(path).absoluteFilePath(name);
@@ -49,7 +49,7 @@ const QString PathTextFileLoader::absolutePath(const QString &name) const
     return {};
 }
 
-PathTextFileLoader::Result PathTextFileLoader::load(const QString &name) const
+auto PathTextFileLoader::load(const QString &name) const -> PathTextFileLoader::Result
 {
     QString candidate;
     for (const auto& path : m_pathes) {

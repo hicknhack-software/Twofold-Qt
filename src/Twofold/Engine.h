@@ -34,7 +34,7 @@ struct Target
     const SourceMapping sourceMap;
     const QString text;
 
-    inline Target& operator=(const Target& src) {
+    inline auto operator=(const Target& src) -> Target& {
         this->~Target();
         new(this) Target(src);
         return *this;
@@ -54,11 +54,11 @@ public:
     Engine(TextLoaderPtr textLoader, MessageHandlerPtr messageHandler);
     virtual ~Engine();
 
-    Target exec(const PreparedTemplate &preparedTemplate, const QVariantHash &inputs);
+    auto exec(const PreparedTemplate &preparedTemplate, const QVariantHash &inputs) -> Target;
 
-    PreparedTemplate prepare(const QString &templateName) const;
+    auto prepare(const QString &templateName) const -> PreparedTemplate;
 
-    Target execTemplateName(const QString &templateName, const QVariantHash &inputs);
+    auto execTemplateName(const QString &templateName, const QVariantHash &inputs) -> Target;
 
 private:
     class Private;

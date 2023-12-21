@@ -24,8 +24,8 @@ namespace Twofold {
 namespace intern {
 namespace QCharHelper {
 
-inline bool isSpace(QChar chr) { return chr.category() == QChar::Separator_Space || chr == '\t'; }
-inline bool isNewline(QChar chr) { return chr == '\n' || chr == '\r'; }
+inline auto isSpace(QChar chr) -> bool { return chr.category() == QChar::Separator_Space || chr == '\t'; }
+inline auto isNewline(QChar chr) -> bool { return chr == '\n' || chr == '\r'; }
 
 /**
  * functor structure
@@ -37,7 +37,7 @@ public:
         : m_complement(newLine == '\n' ? '\r' : '\n')
     {}
 
-    inline bool operator() (QChar chr) {
+    inline auto operator() (QChar chr) -> bool {
         return m_complement == chr;
     }
 private:

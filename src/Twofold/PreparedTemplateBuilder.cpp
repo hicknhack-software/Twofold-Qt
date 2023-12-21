@@ -42,7 +42,7 @@ public:
         , lineProcessor(buildLineProcessor())
     {}
 
-    inline LineProcessor buildLineProcessor()
+    inline auto buildLineProcessor() -> LineProcessor
     {
         LineProcessor::Map map;
         map['\\'] = Line::Interpolation(messageHandler, preparedJavascriptBuilder);
@@ -53,7 +53,7 @@ public:
         return { std::move(map), std::move(fallback) };
     }
 
-    inline Line::Command buildLineCommand()
+    inline auto buildLineCommand() -> Line::Command
     {
         Line::Command::Map map;
         map["include"] = Command::Include(messageHandler,
@@ -64,7 +64,7 @@ public:
         return { std::move(map), std::move(fallback) };
     }
 
-    inline PreparedTemplate build(const QString &name) const
+    inline auto build(const QString &name) const -> PreparedTemplate
     {
         const auto result = textLoader->load(name);
         if (result.status != TextLoader::Success) {
@@ -94,7 +94,7 @@ PreparedTemplateBuilder::PreparedTemplateBuilder(TextLoaderPtr textLoader, Messa
 {
 }
 
-PreparedTemplate PreparedTemplateBuilder::build(const QString &name) const
+auto PreparedTemplateBuilder::build(const QString &name) const -> PreparedTemplate
 {
     return m_private->build(name);
 }

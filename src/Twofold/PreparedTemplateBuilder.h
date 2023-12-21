@@ -34,7 +34,7 @@ struct PreparedTemplate
     const SourceMapping sourceMap;
     const FileLineColumnPositionList originPositions;
 
-    inline PreparedTemplate& operator=(const PreparedTemplate& src) {
+    inline auto operator=(const PreparedTemplate& src) -> PreparedTemplate& {
         this->~PreparedTemplate();
         new(this) PreparedTemplate(src);
         return *this;
@@ -54,7 +54,7 @@ public:
     PreparedTemplateBuilder(TextLoaderPtr textLoader, MessageHandlerPtr messageHandler);
     virtual ~PreparedTemplateBuilder();
 
-    PreparedTemplate build(const QString &name) const;
+    auto build(const QString &name) const -> PreparedTemplate;
 
 private:
     class Private;

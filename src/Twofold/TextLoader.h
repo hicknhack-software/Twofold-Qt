@@ -48,7 +48,7 @@ public:
 
 public:
     virtual ~TextLoader() = default;
-    virtual Result load(const QString& name) const = 0;
+    virtual auto load(const QString& name) const -> Result = 0;
 };
 
 } // namespace Twofold

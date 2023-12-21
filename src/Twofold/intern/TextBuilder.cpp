@@ -21,28 +21,28 @@
 namespace Twofold {
 namespace intern {
 
-Text TextBuilder::build() const
+auto TextBuilder::build() const -> Text
 {
     return m_buffer;
 }
 
-const QString &TextBuilder::indentation() const
+auto TextBuilder::indentation() const -> const QString &
 {
     return m_indentation;
 }
 
-int TextBuilder::line() const
+auto TextBuilder::line() const -> int
 {
     return m_line;
 }
 
-int TextBuilder::column() const
+auto TextBuilder::column() const -> int
 {
     if (0 == m_column) return 1 + m_indentation.length();
     return m_column;
 }
 
-bool TextBuilder::isBlankLine() const
+auto TextBuilder::isBlankLine() const -> bool
 {
     return 0 == m_column;
 }
@@ -52,7 +52,7 @@ void TextBuilder::setIndentation(const QString &indent)
     m_indentation = indent;
 }
 
-TextBuilder &TextBuilder::operator<<(const TextSpan &textSpan)
+auto TextBuilder::operator<<(const TextSpan &textSpan) -> TextBuilder &
 {
     auto it = textSpan.begin;
     const auto end = textSpan.end;
@@ -81,7 +81,7 @@ TextBuilder &TextBuilder::operator<<(const TextSpan &textSpan)
     return *this;
 }
 
-TextBuilder &TextBuilder::operator<<(NewLine)
+auto TextBuilder::operator<<(NewLine) -> TextBuilder &
 {
     ++m_line;
     m_column = 0;

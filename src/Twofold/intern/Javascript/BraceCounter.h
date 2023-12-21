@@ -36,13 +36,13 @@ public:
      *
      * It does not enforce that the braces are matching pairs
      */
-    static int countExpressionDepth(It begin, It end, int beginDepth = 0);
+    static auto countExpressionDepth(It begin, It end, int beginDepth = 0) -> int;
 
     /**
      * @return the iterator to the end of the javascript expression
      * will return end if no end of the expression was found
      */
-    static It findExpressionEnd(It begin, It end);
+    static auto findExpressionEnd(It begin, It end) -> It;
 };
 
 } // namespace Javascript

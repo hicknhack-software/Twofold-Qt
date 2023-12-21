@@ -39,11 +39,11 @@ public:
     void addPath(const QString& path);
 
     /// @returns resolved full filename (empty if no readable candidate was found)
-    const QString absolutePath(const QString &name) const;
+    auto absolutePath(const QString &name) const -> const QString;
 
     // TextFileLoader interface
 public:
-    Result load(const QString &name) const override;
+    auto load(const QString &name) const -> Result override;
 
 private:
     std::vector< QString > m_pathes;

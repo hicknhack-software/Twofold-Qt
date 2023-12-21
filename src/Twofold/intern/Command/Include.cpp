@@ -37,7 +37,7 @@ namespace {
 
 inline bool isDoubleQuote(QChar chr) { return chr == '"'; }
 
-QString extractNameArgument(const LineCommand &command)
+auto extractNameArgument(const LineCommand &command) -> QString
 {
     auto nameBegin = std::find_if(command.end, command.line.end, isDoubleQuote);
     if (nameBegin == command.line.end)
