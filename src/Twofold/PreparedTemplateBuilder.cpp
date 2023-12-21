@@ -55,8 +55,9 @@ public:
 
     inline auto buildLineCommand() -> Line::Command
     {
+        using namespace Qt::StringLiterals;
         Line::Command::Map map;
-        map["include"] = Command::Include(messageHandler,
+        map[u"include"_s] = Command::Include(messageHandler,
                                           textLoader,
                                           preparedJavascriptBuilder,
                                           std::ref(lineProcessor));

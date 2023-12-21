@@ -56,19 +56,22 @@ void reportParameterError(const MessageHandlerPtr &messageHandler, const LineCom
 
 void reportLoaderError(const MessageHandlerPtr &messageHandler, const LineCommand &command, const QString &name, TextLoader::Status status)
 {
+    using namespace Qt::StringLiterals;
     const QString message = (status == TextLoader::NotFound)
-            ? QString("Could not find %1").arg(name)
-            : QString("Could not load %1").arg(name);
+            ? u"Could not find %1"_s.arg(name)
+            : u"Could not load %1"_s.arg(name);
 
     messageHandler->templateMessage(MessageType::Error, command.line.position, message);
 }
 
 void reportStackError(const MessageHandlerPtr &messageHandler, const LineCommand &command, const Include::Stack &stack)
 {
+    using namespace Qt::StringLiterals;
     QStringList messageLines;
-    messageLines << QString("Include depth too deep: %1").arg(stack.size());
-    for (auto name : stack)
-        messageLines.prepend(QString("included: %1").arg(name));
+    messageLines << u"Include depth too deep: %1"_s.arg(stack.size());
+    for (const QString& name : stack) {
+        messageLines.prepend(u"included: %1"_s.arg(name));
+    }
 
     messageHandler->templateMessage(
                 MessageType::Error,

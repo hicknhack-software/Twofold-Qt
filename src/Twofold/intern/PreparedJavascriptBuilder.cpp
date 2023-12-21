@@ -72,8 +72,7 @@ auto PreparedJavascriptBuilder::operator <<(const OriginScript &script) -> Prepa
 
 auto PreparedJavascriptBuilder::operator <<(const OriginScriptExpression &expr) -> PreparedJavascriptBuilder &
 {
-    static QString s_prefix("_template.pushPartIndent(%1);_template.appendExpression(");
-    static QString s_postfix(", %1);_template.popPartIndent();"); // origin index
+    using namespace Qt::StringLiterals;
 
     if (0 == std::distance(expr.text.span.begin, expr.text.span.end))
         return *this; // avoid empty script expressions
@@ -81,8 +80,8 @@ auto PreparedJavascriptBuilder::operator <<(const OriginScriptExpression &expr) 
     const auto originLength = std::distance(expr.text.span.begin, expr.text.span.end);
     const auto originIndex = this->addOriginPosition(expr.text.origin);
 
-    const QString prefix = s_prefix.arg(originIndex);
-    const QString postfix = s_postfix.arg(originIndex);
+    const QString prefix = u"_template.pushPartIndent(%1);_template.appendExpression("_s.arg(originIndex);
+    const QString postfix = u", %1);_template.popPartIndent();"_s.arg(originIndex);
 
     m_sourceMapBuilder << buildOriginText(expr.text.origin, -2, prefix, Interpolation::None); // #{
     m_sourceMapBuilder << expr.text;
@@ -93,8 +92,7 @@ auto PreparedJavascriptBuilder::operator <<(const OriginScriptExpression &expr) 
 
 auto PreparedJavascriptBuilder::operator<<(const OriginTarget &target) -> PreparedJavascriptBuilder &
 {
-    static QString s_prefix("_template.append(\"");
-    static QString s_postfix("\", %1);"); // origin index
+    using namespace Qt::StringLiterals;
 
     if (0 == std::distance(target.text.span.begin, target.text.span.end))
         return *this; // avoid empty text
@@ -102,9 +100,9 @@ auto PreparedJavascriptBuilder::operator<<(const OriginTarget &target) -> Prepar
     const auto originLength = std::distance(target.text.span.begin, target.text.span.end);
     const auto originIndex = this->addOriginPosition(target.text.origin);
 
-    const QString postfix = s_postfix.arg(originIndex);
+    const QString postfix = u"\", %1);"_s.arg(originIndex);
 
-    m_sourceMapBuilder << buildOriginText(target.text.origin, -1, s_prefix, Interpolation::None);
+    m_sourceMapBuilder << buildOriginText(target.text.origin, -1, u"_template.append(\""_s, Interpolation::None);
     m_sourceMapBuilder << OriginText { target.text.origin, escapeForJavascriptString(target.text.span) };
     m_sourceMapBuilder << buildOriginText(target.text.origin, originLength, postfix, Interpolation::None);
     m_sourceMapBuilder << NewLine();
@@ -113,15 +111,14 @@ auto PreparedJavascriptBuilder::operator<<(const OriginTarget &target) -> Prepar
 
 auto PreparedJavascriptBuilder::operator <<(const IndentTargetPart &indent) -> PreparedJavascriptBuilder &
 {
-    static QString s_prefix("_template.indentPart(\"");
-    static QString s_postfix("\", %1);"); // origin index
+    using namespace Qt::StringLiterals;
 
     const auto originLength = std::distance(indent.text.span.begin, indent.text.span.end);
     const auto originIndex = this->addOriginPosition(indent.text.origin);
 
-    const QString postfix = s_postfix.arg(originIndex);
+    const QString postfix = u"\", %1);"_s.arg(originIndex);
 
-    m_sourceMapBuilder << buildOriginText(indent.text.origin, -1, s_prefix, Interpolation::None);
+    m_sourceMapBuilder << buildOriginText(indent.text.origin, -1, u"_template.indentPart(\""_s, Interpolation::None);
     m_sourceMapBuilder << OriginText { indent.text.origin, escapeForJavascriptString(indent.text.span) };
     m_sourceMapBuilder << buildOriginText(indent.text.origin, originLength, postfix, Interpolation::None);
     m_sourceMapBuilder << NewLine();
@@ -130,15 +127,13 @@ auto PreparedJavascriptBuilder::operator <<(const IndentTargetPart &indent) -> P
 
 auto PreparedJavascriptBuilder::operator <<(const PushTargetIndentation &indent) -> PreparedJavascriptBuilder &
 {
-    static QString s_prefix("_template.pushIndentation(\"");
-    static QString s_postfix("\", %1);"); // origin index
-
+    using namespace Qt::StringLiterals;
     const auto originLength = std::distance(indent.text.span.begin, indent.text.span.end);
     const auto originIndex = this->addOriginPosition(indent.text.origin);
 
-    const QString postfix = s_postfix.arg(originIndex);
+    const QString postfix = u"\", %1);"_s.arg(originIndex);
 
-    m_sourceMapBuilder << buildOriginText(indent.text.origin, -1, s_prefix, Interpolation::None);
+    m_sourceMapBuilder << buildOriginText(indent.text.origin, -1, u"_template.pushIndentation(\""_s, Interpolation::None);
     m_sourceMapBuilder << OriginText { indent.text.origin, escapeForJavascriptString(indent.text.span) };
     m_sourceMapBuilder << buildOriginText(indent.text.origin, originLength, postfix, Interpolation::None);
     m_sourceMapBuilder << NewLine();
@@ -147,19 +142,19 @@ auto PreparedJavascriptBuilder::operator <<(const PushTargetIndentation &indent)
 
 auto PreparedJavascriptBuilder::operator <<(const PopTargetIndentation &indent) -> PreparedJavascriptBuilder &
 {
-    static QString s_code("_template.popIndentation();");
+    using namespace Qt::StringLiterals;
 
-    m_sourceMapBuilder << OriginText { indent.text.origin, s_code, Interpolation::None };
+    m_sourceMapBuilder << OriginText { indent.text.origin, u"_template.popIndentation();"_s, Interpolation::None };
     m_sourceMapBuilder << NewLine();
     return *this;
 }
 
 auto PreparedJavascriptBuilder::operator <<(const TargetNewLine newLine) -> PreparedJavascriptBuilder &
 {
-    static const QString s_code("_template.newLine(%1);");
+    using namespace Qt::StringLiterals;
 
     const size_t originIndex = this->addOriginPosition(newLine.text.origin);
-    const QString code = s_code.arg(originIndex);
+    const QString code = u"_template.newLine(%1);"_s.arg(originIndex);
 
     m_sourceMapBuilder << OriginText { newLine.text.origin, code, Interpolation::None };
     m_sourceMapBuilder << NewLine();

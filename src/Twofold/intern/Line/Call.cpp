@@ -37,17 +37,18 @@ Call::Call(const MessageHandlerPtr &messageHandler,
 using BraceCounter = Twofold::intern::Javascript::BraceCounter;
 
 void Call::operator()(const FileLine &line) const {
+    using namespace Qt::StringLiterals;
     auto begin = line.firstNonSpace + 1;
     auto end = std::find_if_not(begin, line.end, QCharHelper::isSpace);
 
     auto depth = BraceCounter::countExpressionDepth(end, line.end);
     if (0 < depth) {
         m_messageHandler->templateMessage(MessageType::Error, line.position,
-                                          "expression is not terminated");
+                                          u"expression is not terminated"_s);
     }
     if (0 > depth) {
         m_messageHandler->templateMessage(MessageType::Error, line.position,
-                                          "expression is invalid");
+                                          u"expression is invalid"_s);
     }
 
     if (0 == depth)

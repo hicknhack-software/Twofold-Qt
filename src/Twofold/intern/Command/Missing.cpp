@@ -34,7 +34,8 @@ Missing::Missing(const MessageHandlerPtr &messageHandler)
 
 void Missing::operator()(const LineCommand &command) const
 {
-    QString message = QString("unknown command %1").arg( toQString(command.begin, command.end) );
+    using namespace Qt::StringLiterals;
+    QString message = u"unknown command %1"_s.arg( toQString(command.begin, command.end) );
     m_messageHandler->templateMessage(MessageType::Error, command.line.position, message);
 }
 

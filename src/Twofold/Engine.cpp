@@ -127,14 +127,16 @@ private:
 
     void defineTemplateApi(QtScriptTargetBuilderApi &templateApi)
     {
+        using namespace Qt::StringLiterals;
         QJSValue global = m_scriptEngine.globalObject();
-        global.setProperty("_template", m_scriptEngine.newQObject(&templateApi));
+        global.setProperty(u"_template"_s, m_scriptEngine.newQObject(&templateApi));
     }
 
     void undefineTemplateApi()
     {
+        using namespace Qt::StringLiterals;
         QJSValue global = m_scriptEngine.globalObject();
-        global.setProperty("_template", QJSValue(QJSValue::UndefinedValue));
+        global.setProperty(u"_template"_s, QJSValue(QJSValue::UndefinedValue));
     }
 
     void defineInputs(const QVariantHash &inputs)
