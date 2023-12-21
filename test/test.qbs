@@ -1,12 +1,12 @@
 Project {
-    property bool noBenchmark: false
+    property bool buildBenchmark: true
 
     AutotestRunner {
         name: "Twofold autotest-runner"
     }
 
     SubProject {
-        condition: !noBenchmark
+        condition: buildBenchmark
         filePath: "TestBenchmark/TestBenchmark.qbs"
     }
 
