@@ -147,8 +147,19 @@ Project {
         }
     }
 
+    SubProject {
+        filePath: "vendor/SourceMap/SourceMap-Qt.qbs"
+        Properties {
+            noTest: parent.noTest
+            noTargetNameCompiler: parent.noTargetNameCompiler
+            noTargetNameBuildVariant: parent.noTargetNameBuildVariant
+            noLibInstallDirTargetOs: parent.noLibInstallDirTargetOs
+            noLibInstallDirArchitecture: parent.noLibInstallDirArchitecture
+            installPrefix: parent.installPrefix
+        }
+    }
+
     references: [
-        "vendor/vendor.qbs",
         "example/example.qbs",
         "test/test.qbs",
     ]
