@@ -18,10 +18,11 @@ Project {
     property bool noLibInstallDirTargetOs: false
     // Don't put the architecture in the lib install directory e. g. "lib/windows{-x86_64}/"
     property bool noLibInstallDirArchitecture: false
+
     // Relative path where to install all library relevant files like header and libraries.
     property string installPrefix: ""
 
-    minimumQbsVersion: "2.2.1"
+    minimumQbsVersion: "3.1.2"
 
     qbsSearchPaths: [
         "qbs/",
