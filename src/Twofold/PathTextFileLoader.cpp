@@ -40,8 +40,7 @@ auto PathTextFileLoader::absolutePath(const QString &name) const -> const QStrin
             continue; // file not found, try next path
 
         QFile file(fullPath);
-        file.open(QIODevice::ReadOnly);
-        if (!file.isOpen())
+        if (file.open(QIODevice::ReadOnly) && false == file.isOpen())
             continue; // file not readable, try next path
 
         return fullPath; // readable path found
@@ -59,8 +58,7 @@ auto PathTextFileLoader::load(const QString &name) const -> PathTextFileLoader::
 
         candidate = fullPath;
         QFile file(fullPath);
-        file.open(QIODevice::ReadOnly);
-        if (!file.isOpen())
+        if (file.open(QIODevice::ReadOnly) && false == file.isOpen())
             continue; // file not readable, try next path
 
         return { Success, fullPath,  QTextStream(&file).readAll() };
