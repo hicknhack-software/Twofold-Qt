@@ -4,6 +4,7 @@ Project {
     property bool noTargetNameBuildVariant: false
     property bool noLibInstallDirTargetOs: false
     property bool noLibInstallDirArchitecture: false
+
     property string installPrefix: ""
 
     SubProject {

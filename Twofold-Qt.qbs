@@ -1,14 +1,14 @@
 import qbs.FileInfo
 
 Project {
-    // Compile unit tests
-    property bool buildTests: true
-    // Compile benchmark
-    property bool buildBenchmark: true
-    // Compile vendor code
-    property bool buildVendor: true
-    // Compile examples
-    property bool buildExample: true
+    // Don't compile the unit tests
+    property bool noTest: false
+    // Don't compile the benchmark
+    property bool noBenchmark: false
+    // Don't compile the vendor code
+    property bool noVendor: false
+    // Don't compile the examples
+    property bool noExample: false
 
     // Don't append the compiler signature to the target name e. g. "mylib{-msvc18.40629}-d.lib"
     property bool noTargetNameCompiler: false
@@ -28,7 +28,7 @@ Project {
     ]
 
     SubProject {
-        condition: buildExample
+        condition: !noExample
         filePath: "example/example.qbs"
     }
     SubProject {
@@ -42,16 +42,16 @@ Project {
         filePath: "src/src.qbs"
     }
     SubProject {
-        condition: buildTests
+        condition: !noTest
         Properties {
             buildBenchmark: parent.buildBenchmark
         }
         filePath: "test/test.qbs"
     }
     SubProject {
-        condition: buildVendor
+        condition: !noVendor
         Properties {
-            buildTests: parent.buildTests
+            noTest: parent.noTest
             noTargetNameCompiler: parent.noTargetNameCompiler
             noTargetNameBuildVariant: parent.noTargetNameBuildVariant
             noLibInstallDirTargetOs: parent.noLibInstallDirTargetOs
