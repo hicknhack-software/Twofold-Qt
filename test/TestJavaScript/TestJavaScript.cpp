@@ -105,11 +105,11 @@ void TestJavaScript::testSourceMap_data()
 
     //                                                1         2
     //                                       123456789012345678901234567
-    QTest::newRow("inline expression 1") << "| simple #{(test)? 1 : 2 )}" << "1 : 2" << 1 << 20;
+    QTest::newRow("inline expression 2") << "| simple #{(test)? 1 : 2 )}" << "1 : 2" << 1 << 20;
 
     //                                                 1         2
     //                                       123456789 012345678901
-    QTest::newRow("inline expression 2") << "| simple \n|#{'hello'}" << "hello" << 2 << 5;
+    QTest::newRow("inline expression 3") << "| simple \n|#{'hello'}" << "hello" << 2 << 5;
 
     //                                              1         2
     //                                    123456789 012345678901
