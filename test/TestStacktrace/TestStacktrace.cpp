@@ -48,7 +48,7 @@ char *toString(const std::vector<T> &value)
     QString inner;
     for(qsizetype i{0}; const T& element: value) {
         if (i++ > 0) inner += u", "_s;
-        std::unique_ptr<char> data(::toString(element));
+        std::unique_ptr<char> data(toString(element));
         inner.append(data.get());
     }
     auto frame = u"std::vector{%1}"_s.arg(inner);
@@ -69,7 +69,7 @@ namespace Twofold {
 char *toString(const BacktraceFilePosition &value)
 {
     using namespace Qt::StringLiterals;
-    std::unique_ptr<char[]> fileposition(::toString(static_cast<const SourceMap::FilePosition&>(value)));
+    std::unique_ptr<char[]> fileposition(SourceMap::toString(static_cast<const SourceMap::FilePosition&>(value)));
     auto text = u"BacktraceFilePosition{%1:%2}"_s.arg(value.functionName, fileposition.get());
     return qstrdup(text.toLatin1().data());
 }
