@@ -29,10 +29,7 @@ Project {
     ]
 
     SubProject {
-        condition: !noExample
-        filePath: "example/example.qbs"
-    }
-    SubProject {
+        filePath: "src/src.qbs"
         Properties {
             noTargetNameCompiler: parent.noTargetNameCompiler
             noTargetNameBuildVariant: parent.noTargetNameBuildVariant
@@ -40,17 +37,10 @@ Project {
             noLibInstallDirArchitecture: parent.noLibInstallDirArchitecture
             installPrefix: parent.installPrefix
         }
-        filePath: "src/src.qbs"
     }
+
     SubProject {
-        condition: !noTest
-        Properties {
-            buildBenchmark: parent.buildBenchmark
-        }
-        filePath: "test/test.qbs"
-    }
-    SubProject {
-        condition: !noVendor
+        filePath: "vendor/SourceMap/SourceMap-Qt.qbs"
         Properties {
             noTest: parent.noTest
             noTargetNameCompiler: parent.noTargetNameCompiler
@@ -59,6 +49,10 @@ Project {
             noLibInstallDirArchitecture: parent.noLibInstallDirArchitecture
             installPrefix: parent.installPrefix
         }
-        filePath: "vendor/vendor.qbs"
     }
+
+    references: [
+        "example/example.qbs",
+        "test/test.qbs",
+    ]
 }

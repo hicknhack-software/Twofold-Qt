@@ -2,15 +2,9 @@ import NameUtils
 import qbs.FileInfo
 
 StaticLibrary {
-    property bool noTargetNameCompiler: false
-    property bool noTargetNameBuildVariant: false
-    property bool noLibInstallDirTargetOs: false
-    property bool noLibInstallDirArchitecture: false
-
-    property string installPrefix: ""
-
     name: "Twofold"
-    targetName: NameUtils.libTargetName(cpp, qbs, "twofold", noTargetNameCompiler, noTargetNameBuildVariant)
+
+    targetName: NameUtils.libTargetName(cpp, qbs, "twofold", project.noTargetNameCompiler, project.noTargetNameBuildVariant)
     version: "1.0.0"
 
     Depends { name: "cpp" }
@@ -92,7 +86,7 @@ StaticLibrary {
         name: "Install"
 
         qbs.install: true
-        qbs.installPrefix: product.installPrefix
+        qbs.installPrefix: project.installPrefix
 
         Group {
             name: "Header"
@@ -103,7 +97,7 @@ StaticLibrary {
         Group {
             name: "Library"
             fileTagsFilter: "staticlibrary"
-            qbs.installDir: FileInfo.joinPaths("lib", NameUtils.libDir(product.cpp, product.qbs, product.noLibInstallDirTargetOs, product.noLibInstallDirArchitecture))
+            qbs.installDir: FileInfo.joinPaths("lib", NameUtils.libDir(product.cpp, product.qbs, project.noLibInstallDirTargetOs, project.noLibInstallDirArchitecture))
         }
     }
 
