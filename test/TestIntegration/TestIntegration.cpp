@@ -28,16 +28,13 @@
 
 using namespace Twofold;
 
-class Object : public QObject {
+class Object : public QQmlPropertyMap {
     Q_OBJECT
     Q_PROPERTY(bool boolValue READ boolValue WRITE setBoolValue FINAL)
     Q_PROPERTY(QString stringValue READ stringValue WRITE setStringValue FINAL)
     Q_PROPERTY(int intValue READ intValue WRITE setIntValue FINAL)
-    Q_PROPERTY(QQmlPropertyMap* p READ p CONSTANT FINAL)
 public:
-    explicit Object(QObject *parent = nullptr): QObject(parent), m_p{new QQmlPropertyMap(this)} {}
-
-    QQmlPropertyMap *const p() const { return m_p; }
+    explicit Object(QObject *parent = nullptr): QQmlPropertyMap(this, parent) {}
 
     bool boolValue() const { return m_boolValue; }
     int intValue() const { return m_intValue; }
@@ -47,7 +44,6 @@ public:
     void setStringValue(const QString &newStringValue) { m_stringValue = newStringValue; }
 
 private:
-    QQmlPropertyMap *m_p;
     bool m_boolValue;
     QString m_stringValue;
     int m_intValue;
@@ -76,9 +72,9 @@ void TestIntegration::testTarget_data()
     obj->setBoolValue(true);
     obj->setStringValue("Text");
     obj->setIntValue(1);
-    obj->p()->insert("dynBoolValue", true);
-    obj->p()->insert("dynStringValue", "Text");
-    obj->p()->insert("dynIntValue", 1);
+    obj->setProperty("dynBoolValue", true);
+    obj->setProperty("dynStringValue", "Text");
+    obj->setProperty("dynIntValue", 1);
 
     QStringList qArray;
     qArray.append( "value1" );
@@ -106,7 +102,7 @@ void TestIntegration::testTarget_data()
     QTest::newRow("missing close bracket") << "|1 + 2 = #{ 1 + 2 " << "1 + 2 = \n" << context << MessageCount{ 1, 1, 0 };
 
     QTest::newRow("context qobject static properties") << "|#{qObject.boolValue}, #{qObject.stringValue}, #{qObject.intValue}" << "true, Text, 1\n" << context << MessageCount();
-    QTest::newRow("context qobject dynamic properties") << "|#{qObject.p.dynBoolValue}, #{qObject.p.dynStringValue}, #{qObject.p.dynIntValue}" << "true, Text, 1\n" << context << MessageCount();
+    QTest::newRow("context qobject dynamic properties") << "|#{qObject.dynBoolValue}, #{qObject.dynStringValue}, #{qObject.dynIntValue}" << "true, Text, 1\n" << context << MessageCount();
     QTest::newRow("context qArray") << "|#{qArray[0]}, #{qArray[1]}, #{qArray[2]}" << "value1, value2, value3\n" << context << MessageCount();
     QTest::newRow("context primitive") << "|#{boolValue}, #{stringValue}, #{intValue}" << "true, Text, 2\n" << context << MessageCount();
 
