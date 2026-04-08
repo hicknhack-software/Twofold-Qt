@@ -30,13 +30,6 @@ Project {
 
     SubProject {
         filePath: "src/src.qbs"
-        Properties {
-            noTargetNameCompiler: parent.noTargetNameCompiler
-            noTargetNameBuildVariant: parent.noTargetNameBuildVariant
-            noLibInstallDirTargetOs: parent.noLibInstallDirTargetOs
-            noLibInstallDirArchitecture: parent.noLibInstallDirArchitecture
-            installPrefix: parent.installPrefix
-        }
     }
 
     SubProject {
