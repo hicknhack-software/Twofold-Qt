@@ -30,15 +30,9 @@ namespace Twofold {
 
 struct PreparedTemplate
 {
-    const QString javascript;
-    const SourceMapping sourceMap;
-    const FileLineColumnPositionList originPositions;
-
-    inline auto operator=(const PreparedTemplate& src) -> PreparedTemplate& {
-        this->~PreparedTemplate();
-        new(this) PreparedTemplate(src);
-        return *this;
-    }
+    QString javascript;
+    SourceMapping sourceMap;
+    FileLineColumnPositionList originPositions;
 };
 
 /**

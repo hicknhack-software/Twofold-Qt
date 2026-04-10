@@ -31,14 +31,8 @@ namespace Twofold {
 
 struct Target
 {
-    const SourceMapping sourceMap;
-    const QString text;
-
-    inline auto operator=(const Target& src) -> Target& {
-        this->~Target();
-        new(this) Target(src);
-        return *this;
-    }
+    SourceMapping sourceMap;
+    QString text;
 };
 
 /**
